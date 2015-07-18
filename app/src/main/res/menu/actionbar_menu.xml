@@ -14,21 +14,18 @@
      limitations under the License.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/accounts"
-        android:title="@string/menu_account"
-        android:icon="@drawable/ic_action_social_person"
-        android:showAsAction="ifRoom|withText" />
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/downloads"
         android:title="@string/menu_downloads"
         android:icon="@drawable/ic_action_av_download"
-        android:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
 
     <item android:id="@+id/settings"
         android:title="@string/menu_settings"
         android:icon="@drawable/ic_action_action_settings"
-        android:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
 
 </menu>

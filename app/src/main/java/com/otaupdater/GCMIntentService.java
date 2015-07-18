@@ -26,7 +26,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.otaupdater.utils.Config;
 import com.otaupdater.utils.KernelInfo;
 import com.otaupdater.utils.PropUtils;
-import com.otaupdater.utils.RomInfo;
 
 public class GCMIntentService extends IntentService {
 
@@ -44,28 +43,7 @@ public class GCMIntentService extends IntentService {
         final Config cfg = Config.getInstance(context);
 
         if (extras != null && !extras.isEmpty() && GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-            if (extras.containsKey(RomInfo.KEY_NAME)) {
-                if (!PropUtils.isRomOtaEnabled()) return;
-
-                RomInfo info = RomInfo.FACTORY.fromBundle(extras);
-
-                if (!info.isUpdate()) {
-                    Log.v(Config.LOG_TAG + "GCM", "got rom GCM message, not update");
-                    cfg.clearStoredRomUpdate();
-                    RomInfo.FACTORY.clearUpdateNotif(context);
-                    return;
-                }
-
-                cfg.storeRomUpdate(info);
-                if (cfg.getShowNotif()) {
-                    Log.v(Config.LOG_TAG + "GCM", "got rom GCM message");
-                    info.showUpdateNotif(context);
-                } else {
-                    Log.v(Config.LOG_TAG + "GCM", "got rom GCM message, notif not shown");
-                }
-
-                if (cfg.hasProKey() && cfg.getAutoDlState()) info.startDownload(context);
-            } else if (extras.containsKey(KernelInfo.KEY_NAME)) {
+            if (extras.containsKey(KernelInfo.KEY_NAME)) {
                 if (!PropUtils.isKernelOtaEnabled()) return;
 
                 KernelInfo info = KernelInfo.FACTORY.fromBundle(extras);
@@ -85,7 +63,7 @@ public class GCMIntentService extends IntentService {
                     Log.v(Config.LOG_TAG + "GCM", "got kernel GCM message, notif not shown");
                 }
 
-                if (cfg.hasProKey() && cfg.getAutoDlState()) info.startDownload(context);
+                if (cfg.getAutoDlState()) info.startDownload(context);
             } else {
                 Log.v(Config.LOG_TAG + "GCM", "got malformed GCM message");
             }

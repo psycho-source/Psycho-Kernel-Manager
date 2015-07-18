@@ -16,20 +16,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PropUtils {
-    public static final String GEN_OTA_PROP = "/system/ota.prop";
-    public static final String ROM_OTA_PROP = "/system/rom.ota.prop";
-    public static final String KERNEL_OTA_PROP = "/system/kernel.ota.prop";
-
-    private static final boolean ROM_OTA_ENABLED;
-    private static String cachedRomID = null;
-    private static Date cachedRomDate = null;
-    private static String cachedRomVer = null;
+    public static final String GEN_OTA_PROP = "/jolla-kernel_updater.prop";
+    public static final String KERNEL_OTA_PROP = "/jolla-kernel.prop";
 
     private static /*final*/ boolean KERNEL_OTA_ENABLED;
     private static String cachedKernelID = null;
     private static Date cachedKernelDate = null;
     private static String cachedKernelVer = null;
-    private static String cachedFullKernelVer = null;
     private static String cachedKernelUname = null;
 
     private static String cachedSystemSdPath = null;
@@ -39,17 +32,7 @@ public class PropUtils {
     private static String cachedRebootCmd = null;
 
     static {
-        ROM_OTA_ENABLED = new File("/system/rom.ota.prop").exists() || LegacyCompat.isRomOtaEnabled();
-
-        KERNEL_OTA_ENABLED = new File("/system/kernel.ota.prop").exists();
-        if (KERNEL_OTA_ENABLED) {
-            String fullVer = PropUtils.getFullKernelVersion();
-            String fullOtaVer = PropUtils.getFullKernelOtaVersion();
-            if (!fullVer.equals(fullOtaVer)) {
-                KERNEL_OTA_ENABLED = false;
-                //TODO maybe try to delete the file?
-            }
-        }
+        KERNEL_OTA_ENABLED = new File(KERNEL_OTA_PROP).exists();
     }
 
     // from AOSP source: packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java
@@ -66,59 +49,8 @@ public class PropUtils {
             "(?:PREEMPT\\s+)?" + /* ignore: PREEMPT (optional) */
             "(.+)"; /* group 4: date */
 
-    public static boolean isRomOtaEnabled() {
-        return ROM_OTA_ENABLED;
-    }
-
     public static boolean isKernelOtaEnabled() {
         return KERNEL_OTA_ENABLED;
-    }
-
-    public static String getRomOtaID() {
-        if (!ROM_OTA_ENABLED) return null;
-        if (cachedRomID == null) {
-            readRomOtaProp();
-        }
-        if (cachedRomID == null) {
-            cachedRomID = LegacyCompat.getRomOtaID();
-        }
-        return cachedRomID;
-    }
-
-    public static Date getRomOtaDate() {
-        if (!ROM_OTA_ENABLED) return null;
-        if (cachedRomDate == null) {
-            readRomOtaProp();
-        }
-        if (cachedRomDate == null) {
-            cachedRomDate = LegacyCompat.getRomOtaDate();
-        }
-        return cachedRomDate;
-    }
-
-    public static String getRomOtaVersion() {
-        if (!ROM_OTA_ENABLED) return null;
-        if (cachedRomVer == null) {
-            readRomOtaProp();
-        }
-        if (cachedRomVer == null) {
-            cachedRomVer = LegacyCompat.getRomOtaVersion();
-        }
-        return cachedRomVer;
-    }
-
-    public static String getRomVersion() {
-        ShellCommand cmd = new ShellCommand();
-        CommandResult modVer = cmd.sh.runWaitFor("getprop ro.modversion");
-        if (modVer.stdout.length() != 0) return modVer.stdout;
-
-        CommandResult cmVer = cmd.sh.runWaitFor("getprop ro.cm.version");
-        if (cmVer.stdout.length() != 0) return cmVer.stdout;
-
-        CommandResult aokpVer = cmd.sh.runWaitFor("getprop ro.aokp.version");
-        if (aokpVer.stdout.length() != 0) return aokpVer.stdout;
-
-        return Build.DISPLAY;
     }
 
     public static String getKernelOtaID() {
@@ -163,21 +95,6 @@ public class PropUtils {
             }
         }
         return cachedKernelUname;
-    }
-
-    public static String getFullKernelOtaVersion() {
-        if (!KERNEL_OTA_ENABLED) return null;
-        if (cachedFullKernelVer == null) {
-            readKernelOtaProp();
-        }
-        return cachedFullKernelVer;
-    }
-
-    public static String getFullKernelVersion() {
-        ShellCommand cmd = new ShellCommand();
-        CommandResult procVerResult = cmd.sh.runWaitFor("cat /proc/version");
-        if (procVerResult.stdout.length() == 0) return null;
-        return procVerResult.stdout;
     }
 
     public static String getSystemSdPath() {
@@ -246,23 +163,6 @@ public class PropUtils {
         }
     }
 
-    private static void readRomOtaProp() {
-        if (!ROM_OTA_ENABLED) return;
-
-        ShellCommand cmd = new ShellCommand();
-        CommandResult catResult = cmd.sh.runWaitFor("cat " + ROM_OTA_PROP);
-        if (catResult.stdout.length() == 0) return;
-
-        try {
-            JSONObject romOtaProp = new JSONObject(catResult.stdout);
-            cachedRomID = romOtaProp.getString("otaid");
-            cachedRomVer = romOtaProp.getString("otaver");
-            cachedRomDate = Utils.parseDate(romOtaProp.getString("otatime"));
-        } catch (JSONException e) {
-            Log.e(Config.LOG_TAG + "ReadOTAProp", "Error in rom.ota.prop file!");
-        }
-    }
-
     private static void readKernelOtaProp() {
         if (!KERNEL_OTA_ENABLED) return;
 
@@ -275,52 +175,16 @@ public class PropUtils {
             cachedKernelID = kernelOtaProp.getString("otaid");
             cachedKernelVer = kernelOtaProp.getString("otaver");
             cachedKernelDate = Utils.parseDate(kernelOtaProp.getString("otatime"));
-            cachedFullKernelVer = kernelOtaProp.getString("fullver");
         } catch (JSONException e) {
-            Log.e(Config.LOG_TAG + "ReadOTAProp", "Error in kernel.ota.prop file!");
+            Log.e(Config.LOG_TAG + "ReadOTAProp", "Error in jolla-kernel.prop file!");
         }
     }
 
     private static class LegacyCompat {
-        public static final String OTA_ID_PROP = "otaupdater.otaid";
-        public static final String OTA_VER_PROP = "otaupdater.otaver";
-        public static final String OTA_DATE_PROP = "otaupdater.otatime";
         public static final String OTA_REBOOT_CMD_PROP = "otaupdater.rebootcmd";
         public static final String OTA_NOFLASH_PROP = "otaupdater.noflash";
         public static final String OTA_SYSTEM_SD_PATH_PROP = "otaupdater.sdcard.os";
         public static final String OTA_RECOVERY_SD_PATH_PROP = "otaupdater.sdcard.recovery";
-
-        // cache the legacy ROM id because it's used in isRomOtaEnabled in order to avoid unnecessary forks to getprop
-        private static String cachedRomID = null;
-
-        public static boolean isRomOtaEnabled() {
-            String romID = getRomOtaID();
-            return romID != null && romID.isEmpty();
-        }
-
-        public static String getRomOtaID() {
-            if (cachedRomID == null) {
-                ShellCommand cmd = new ShellCommand();
-                CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_ID_PROP);
-                if (propResult.stdout.length() == 0) return null;
-                cachedRomID = propResult.stdout;
-            }
-            return cachedRomID;
-        }
-
-        public static Date getRomOtaDate() {
-            ShellCommand cmd = new ShellCommand();
-            CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_DATE_PROP);
-            if (propResult.stdout.length() == 0) return null;
-            return Utils.parseDate(propResult.stdout);
-        }
-
-        public static String getRomOtaVersion() {
-            ShellCommand cmd = new ShellCommand();
-            CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_VER_PROP);
-            if (propResult.stdout.length() == 0) return null;
-            return propResult.stdout;
-        }
 
         public static String getRebootCmd() {
             ShellCommand cmd = new ShellCommand();

@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0 rc3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 22
     }
 
     signingConfigs {
@@ -22,7 +22,6 @@ android {
 
     buildTypes {
         release {
-            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             if (System.getenv("SIGNING_KEYSTORE") != null) {
                 signingConfig signingConfigs.release
@@ -32,7 +31,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:20.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.intellij:annotations:+@jar'
     compile files('libs/commons-net-3.1.jar')

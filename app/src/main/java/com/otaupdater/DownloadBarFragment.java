@@ -49,17 +49,11 @@ public class DownloadBarFragment extends Fragment {
     private Config cfg;
     private DownloadManager dm;
 
-    private View romContainer;
-    private ProgressBar romProgressBar;
-    private TextView romProgressText;
-    private TextView romStatusText;
-
     private View kernelContainer;
     private ProgressBar kernelProgressBar;
     private TextView kernelProgressText;
     private TextView kernelStatusText;
 
-    private View romKernelSeperator;
     private View bottomBorder;
 
     protected static final int REFRESH_DELAY = 1000;
@@ -90,29 +84,6 @@ public class DownloadBarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.download_bar, container, false);
 
-        romContainer = view.findViewById(R.id.download_rom_container);
-        romProgressBar = (ProgressBar) view.findViewById(R.id.download_rom_progress_bar);
-        romProgressText = (TextView) view.findViewById(R.id.download_rom_progress_text);
-        romStatusText = (TextView) view.findViewById(R.id.download_rom_status);
-        View romCancelButton = view.findViewById(R.id.download_rom_cancel);
-
-        romContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDownloadingDialog(cfg.getRomDownloadID());
-            }
-        });
-
-        romCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!cfg.isDownloadingRom()) return;
-                dm.remove(cfg.getRomDownloadID());
-                cfg.clearDownloadingRom();
-                updateStatus();
-            }
-        });
-
         kernelContainer = view.findViewById(R.id.download_kernel_container);
         kernelProgressBar = (ProgressBar) view.findViewById(R.id.download_kernel_progress_bar);
         kernelProgressText = (TextView) view.findViewById(R.id.download_kernel_progress_text);
@@ -136,7 +107,6 @@ public class DownloadBarFragment extends Fragment {
             }
         });
 
-        romKernelSeperator = view.findViewById(R.id.download_rom_kernel_separator);
         bottomBorder = view.findViewById(R.id.download_bottom_border);
 
         return view;
@@ -157,32 +127,18 @@ public class DownloadBarFragment extends Fragment {
     }
 
     private void updateStatus() {
-        DownloadStatus romDlStatus = DownloadStatus.forDownloadID(getActivity(), dm, cfg.getRomDownloadID());
         DownloadStatus kernelDlStatus = DownloadStatus.forDownloadID(getActivity(), dm, cfg.getKernelDownloadID());
 
-        if (romDlStatus == null) cfg.clearDownloadingRom();
         if (kernelDlStatus == null) cfg.clearDownloadingKernel();
 
-        updateViews(romDlStatus, romContainer, romProgressBar, romProgressText, romStatusText);
         updateViews(kernelDlStatus, kernelContainer, kernelProgressBar, kernelProgressText, kernelStatusText);
 
-        if (isActive(romDlStatus) || isActive(kernelDlStatus)) {
-            REFRESH_HANDLER.sendMessageDelayed(REFRESH_HANDLER.obtainMessage(), REFRESH_DELAY);
-        }
-
-        boolean romVisible = romContainer.getVisibility() == View.VISIBLE;
         boolean kernelVisible = kernelContainer.getVisibility() == View.VISIBLE;
 
-        if (romVisible || kernelVisible) {
+        if (kernelVisible) {
             bottomBorder.setVisibility(View.VISIBLE);
         } else {
             bottomBorder.setVisibility(View.GONE);
-        }
-
-        if (romVisible && kernelVisible) {
-            romKernelSeperator.setVisibility(View.VISIBLE);
-        } else {
-            romKernelSeperator.setVisibility(View.GONE);
         }
     }
 

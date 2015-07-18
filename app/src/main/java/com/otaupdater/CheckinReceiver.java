@@ -30,7 +30,6 @@ import com.otaupdater.utils.BaseInfo;
 import com.otaupdater.utils.Config;
 import com.otaupdater.utils.KernelInfo;
 import com.otaupdater.utils.PropUtils;
-import com.otaupdater.utils.RomInfo;
 import com.otaupdater.utils.Utils;
 
 public class CheckinReceiver extends BroadcastReceiver {
@@ -43,29 +42,6 @@ public class CheckinReceiver extends BroadcastReceiver {
         assert cfg != null;
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            if (cfg.hasStoredRomUpdate()) {
-                if (PropUtils.isRomOtaEnabled()) {
-                    RomInfo info = cfg.getStoredRomUpdate();
-                    if (info.isUpdate()) {
-                        if (cfg.getShowNotif()) {
-                            info.showUpdateNotif(context);
-                            Log.v(Config.LOG_TAG + "Receiver", "Found stored rom update");
-                        } else {
-                            Log.v(Config.LOG_TAG + "Receiver", "Found stored rom update, notif not shown");
-                        }
-                    } else {
-                        Log.v(Config.LOG_TAG + "Receiver", "Found invalid stored rom update");
-                        cfg.clearStoredRomUpdate();
-                        RomInfo.FACTORY.clearUpdateNotif(context);
-                    }
-                } else {
-                    Log.v(Config.LOG_TAG + "Receiver", "Found stored rom update, not OTA-rom");
-                    cfg.clearStoredRomUpdate();
-                }
-            } else {
-                Log.v(Config.LOG_TAG + "Receiver", "No stored rom update");
-            }
-
             if (cfg.hasStoredKernelUpdate()) {
                 if (PropUtils.isKernelOtaEnabled()) {
                     KernelInfo info = cfg.getStoredKernelUpdate();
@@ -90,48 +66,6 @@ public class CheckinReceiver extends BroadcastReceiver {
             }
 
             setDailyAlarm(context);
-        }
-
-        Utils.updateDeviceRegistration(context);
-
-        if (!Utils.checkPlayServices(context)) {
-            Log.v(Config.LOG_TAG + "Receiver", "No market, using pull method");
-
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-
-            if (PropUtils.isRomOtaEnabled()) {
-                final WakeLock romWL = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, CheckinReceiver.class.getName());
-                romWL.acquire();
-
-                APIUtils.fetchRomInfo(context, new BaseInfo.InfoLoadAdapter<RomInfo>(RomInfo.class, context) {
-                    @Override
-                    public void onInfoLoaded(RomInfo info) {
-                        ROMTab.notifyActiveFragment();
-                    }
-
-                    @Override
-                    public void onComplete(boolean success) {
-                        romWL.release();
-                    }
-                });
-            }
-
-            if (PropUtils.isKernelOtaEnabled()) {
-                final WakeLock kernelWL = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, CheckinReceiver.class.getName());
-                kernelWL.acquire();
-
-                APIUtils.fetchKernelInfo(context, new BaseInfo.InfoLoadAdapter<KernelInfo>(KernelInfo.class, context) {
-                    @Override
-                    public void onInfoLoaded(KernelInfo info) {
-                        KernelTab.notifyActiveFragment();
-                    }
-
-                    @Override
-                    public void onComplete(boolean success) {
-                        kernelWL.release();
-                    }
-                });
-            }
         }
     }
 

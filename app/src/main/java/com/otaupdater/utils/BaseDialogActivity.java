@@ -1,11 +1,10 @@
 package com.otaupdater.utils;
 
-import android.app.Activity;
 import android.app.Dialog;
 
 import java.util.ArrayList;
 
-public abstract class BaseDialogActivity extends Activity implements DialogCallback {
+public abstract class BaseDialogActivity extends android.support.v4.app.FragmentActivity implements DialogCallback {
     private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
 
     @Override

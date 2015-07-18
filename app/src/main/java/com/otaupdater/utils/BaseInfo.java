@@ -43,18 +43,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public String md5;
     public Date date;
 
-    protected BaseInfo() {
-    }
-
-    public BaseInfo(String name, String version, String changelog, String downurl, String md5, Date date) {
-        this.name = name;
-        this.version = version;
-        this.changelog = changelog;
-        this.url = downurl;
-        this.md5 = md5;
-        this.date = date;
-    }
-
     public void addToIntent(Intent i) {
         i.putExtra(getNameKey(), name);
         i.putExtra(KEY_VERSION, version);
@@ -147,10 +135,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         int allowedNetworks = DownloadManager.Request.NETWORK_WIFI;
         if (!cfg.getWifiOnlyDl()) allowedNetworks |= DownloadManager.Request.NETWORK_MOBILE;
         request.setAllowedNetworkTypes(allowedNetworks);
-
-//        if (Build.VERSION.SDK_INT >= 16) {
-//            request.setAllowedOverMetered(false);
-//        }
 
         DownloadManager dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadID = dm.enqueue(request);

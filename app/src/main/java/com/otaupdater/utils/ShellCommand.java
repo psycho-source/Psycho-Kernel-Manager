@@ -34,10 +34,6 @@ public class ShellCommand {
         su = new SH("su");
     }
 
-    public boolean canSU() {
-        return canSU(false);
-    }
-
     @SuppressWarnings("SameParameterValue")
     public boolean canSU(boolean force_check) {
         if (can_su == null || force_check) {
@@ -55,10 +51,6 @@ public class ShellCommand {
         return can_su;
     }
 
-    public SH suOrSH() {
-        return canSU() ? su : sh;
-    }
-
     public class CommandResult {
         public final String stdout;
         public final String stderr;
@@ -69,10 +61,6 @@ public class ShellCommand {
             exit_value = exit_value_in;
             stdout = stdout_in;
             stderr = stderr_in;
-        }
-
-        CommandResult(Integer exit_value_in) {
-            this(exit_value_in, null, null);
         }
 
         public boolean success() {

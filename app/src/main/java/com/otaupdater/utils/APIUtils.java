@@ -1,14 +1,9 @@
 package com.otaupdater.utils;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.otaupdater.R;
 
 import org.apache.http.HttpEntity;
@@ -24,66 +19,6 @@ import org.json.JSONObject;
 
 public class APIUtils {
 
-    public static void userLogin(Context ctx, String username, String password, APICallback callback) {
-        JSONObject data = new JSONObject();
-
-        try {
-            data.put("username", username);
-            data.put("password", password);
-            data.put("device_name", Utils.getDeviceName(ctx));
-        } catch (JSONException ignored) { }
-
-        new APITask(ctx, Config.LOGIN_URL, data, callback).execute();
-    }
-
-    public static void userLogout(Context ctx, APICallback callback) {
-        new APITask(ctx, Config.LOGOUT_URL, null, callback).execute();
-    }
-
-    public static void redeemCode(Context ctx, APICallback callback) {
-        new APITask(ctx, Config.CODE_REDEEM_URL, null, callback).execute();
-    }
-
-    public static void updateDeviceRegistration(Context ctx, APICallback callback) {
-        final Config cfg = Config.getInstance(ctx);
-
-        JSONObject data = new JSONObject();
-        try {
-            data.put("device", Utils.getDevice());
-            data.put("device_id", Utils.getDeviceID(ctx));
-            data.put("reg_id", cfg.getGcmRegistrationId());
-
-            if (PropUtils.isRomOtaEnabled()) data.put("rom_id", PropUtils.getRomOtaID());
-            if (PropUtils.isKernelOtaEnabled()) data.put("kernel_id", PropUtils.getKernelOtaID());
-
-            data.put("app_version", Integer.toString(Utils.getAppVersion(ctx)));
-        } catch (JSONException ignored) {
-        }
-
-        new APITask(ctx, Config.GCM_REGISTER_URL, data, callback).execute();
-
-    }
-
-    public static void doPing(Context ctx, APICallback callback) {
-        new APITask(ctx, Config.PING_URL, null, callback).execute();
-    }
-
-    public static void fetchRomInfo(Context ctx, APICallback callback) {
-        if (!PropUtils.isRomOtaEnabled()) {
-            if (callback != null) callback.onError(ctx.getString(R.string.rom_unsupported), null);
-            return;
-        }
-
-        JSONObject data = new JSONObject();
-        try {
-            data.put("device", Utils.getDevice());
-            data.put("rom_id", PropUtils.getRomOtaID());
-        } catch (JSONException ignored) {
-        }
-
-        new APITask(ctx, Config.ROM_PULL_URL, data, callback).execute();
-    }
-
     public static void fetchKernelInfo(Context ctx, APICallback callback) {
         if (!PropUtils.isKernelOtaEnabled()) {
             if (callback != null) callback.onError(ctx.getString(R.string.kernel_unsupported), null);
@@ -93,23 +28,11 @@ public class APIUtils {
         JSONObject data = new JSONObject();
         try {
             data.put("device", Utils.getDevice());
-            data.put("rom_id", PropUtils.getRomOtaID());
+            data.put("rom_id", PropUtils.getKernelOtaID());
         } catch (JSONException ignored) {
         }
 
         new APITask(ctx, Config.KERNEL_PULL_URL, data, callback).execute();
-    }
-
-    private static String getOAuthToken(Context ctx) {
-        try {
-            AccountManager am = AccountManager.get(ctx);
-            Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-            if (accounts.length == 0) return "";
-            return GoogleAuthUtil.getToken(ctx, accounts[0].name, "audience:server:client_id:" + Config.OAUTH_CLIENT_ID);
-        } catch (Exception ignored) {
-//            ignored.printStackTrace();
-        }
-        return "";
     }
 
     public static class APITask extends AsyncTask<Void, Void, Boolean> {
@@ -177,15 +100,12 @@ public class APIUtils {
                 HttpClient http = new DefaultHttpClient();
 
                 String reqBody = data == null ? "" : data.toString();
-                String hmacSig = UserUtils.userHmac(ctx, reqBody);
 
                 HttpPost req = new HttpPost(Config.SITE_BASE_URL + endpoint);
 
                 req.addHeader("Content-Type", "application/json");
                 req.addHeader("Accept", "application/json");
 
-                if (hmacSig != null) req.addHeader("X-Authorization-Signature", hmacSig);
-                req.addHeader("X-API-Authentication", getOAuthToken(ctx));
                 req.addHeader("X-Device-ID", Utils.getDeviceID(ctx));
 
                 req.setEntity(new StringEntity(reqBody, "UTF-8"));
@@ -233,44 +153,12 @@ public class APIUtils {
         }
     }
 
-    public static abstract class ProgressDialogAPICallback extends APIAdapter {
-        private final Context ctx;
-        private final String loadingText;
-        private final DialogCallback dlgCallback;
-
-        private ProgressDialog dlg;
-
-        public ProgressDialogAPICallback(Context ctx, String loadingText, DialogCallback dlgCallback) {
-            this.ctx = ctx;
-            this.loadingText = loadingText;
-            this.dlgCallback = dlgCallback;
-        }
-
-        @Override
-        public void onStart(final APITask task) {
-            dlg = ProgressDialog.show(ctx, "", loadingText, true, true, new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    if (dlgCallback != null) dlgCallback.onDialogClosed(dlg);
-                    task.cancel(true);
-                }
-            });
-            if (dlgCallback != null) dlgCallback.onDialogShown(dlg);
-        }
-
-        @Override
-        public void onComplete(boolean success) {
-            dlg.dismiss();
-            if (dlgCallback != null) dlgCallback.onDialogClosed(dlg);
-        }
-    }
-
-    public static interface APICallback {
-        public void onStart(APITask task);
-        public void onSuccess(String message, JSONObject respObj);
-        public void onError(String message, JSONObject respObj);
-        public void onCancel();
-        public void onComplete(boolean success);
+    public interface APICallback {
+        void onStart(APITask task);
+        void onSuccess(String message, JSONObject respObj);
+        void onError(String message, JSONObject respObj);
+        void onCancel();
+        void onComplete(boolean success);
     }
 
     public static abstract class APIAdapter implements APICallback {

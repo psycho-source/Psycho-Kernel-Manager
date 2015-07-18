@@ -17,7 +17,7 @@
 package com.otaupdater;
 
 import android.app.Activity;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,12 +88,6 @@ public class KernelTab extends ListFragment {
             item.put(KEY_TITLE, getString(R.string.kernel_version));
             item.put(KEY_SUMMARY, kernelVersion);
             item.put(KEY_ICON, R.drawable.ic_settings);
-            DATA.add(item);
-
-            item = new HashMap<String, Object>();
-            item.put(KEY_TITLE, getString(R.string.main_otaid));
-            item.put(KEY_SUMMARY, PropUtils.getKernelOtaID());
-            item.put(KEY_ICON, R.drawable.ic_key);
             DATA.add(item);
 
             item = new HashMap<String, Object>();
@@ -233,9 +227,5 @@ public class KernelTab extends ListFragment {
                 fetching = false;
             }
         });
-    }
-
-    public static void notifyActiveFragment() {
-        if (activeFragment != null) activeFragment.updateStatus();
     }
 }

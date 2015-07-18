@@ -19,13 +19,10 @@ package com.otaupdater;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -34,50 +31,26 @@ import android.widget.Toast;
 
 import com.otaupdater.utils.BaseDownloadDialogActivity;
 import com.otaupdater.utils.BaseInfo;
-import com.otaupdater.utils.Config;
 import com.otaupdater.utils.KernelInfo;
 import com.otaupdater.utils.PropUtils;
-import com.otaupdater.utils.RomInfo;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class DownloadsActivity extends BaseDownloadDialogActivity implements ActionBar.OnNavigationListener {
-    public static final String FLASH_ROM_ACTION = "com.otaupdater.action.FLASH_ROM_ACTION";
+public class DownloadsActivity extends BaseDownloadDialogActivity {
     public static final String FLASH_KERNEL_ACTION = "com.otaupdater.action.FLASH_KERNEL_ACTION";
 
-    public static final String EXTRA_FLASH_INFO = "flash_info";
-
     public static final String EXTRA_GOTO_TYPE = "goto_type";
-    public static final int GOTO_TYPE_ROM = 0;
     public static final int GOTO_TYPE_KERNEL = 1;
 
     private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
 
-    private DownloadListFragment dlFragment = null;
-
-    private final Handler adsHandler = new AdsHandler(this);
     private ActionBar bar;
-
-    private static class AdsHandler extends Handler {
-        private final WeakReference<DownloadsActivity> act;
-
-        public AdsHandler(DownloadsActivity act) {
-            this.act = new WeakReference<DownloadsActivity>(act);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            Fragment adFragment = act.get().getFragmentManager().findFragmentById(R.id.ads);
-            if (adFragment != null) act.get().getFragmentManager().beginTransaction().show(adFragment).commit();
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,26 +64,17 @@ public class DownloadsActivity extends BaseDownloadDialogActivity implements Act
 
         setContentView(R.layout.downloads);
 
-        dlFragment = (DownloadListFragment) getFragmentManager().findFragmentById(R.id.download_list);
-
-        Fragment adFragment = getFragmentManager().findFragmentById(R.id.ads);
-        if (adFragment != null) getFragmentManager().beginTransaction().hide(adFragment).commit();
-
         bar = getActionBar();
         assert bar != null;
 
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        bar.setListNavigationCallbacks(ArrayAdapter.createFromResource(this, R.array.download_types, android.R.layout.simple_spinner_dropdown_item), this);
 
         int state = -1;
         String action = getIntent().getAction();
         if (action != null) {
-            if (action.equals(FLASH_ROM_ACTION)) {
-                state = GOTO_TYPE_ROM;
-                showFlashDialog(RomInfo.FACTORY.fromIntent(getIntent()));
-            } else if (action.equals(FLASH_KERNEL_ACTION)) {
+            if (action.equals(FLASH_KERNEL_ACTION)) {
                 state = GOTO_TYPE_KERNEL;
                 showFlashDialog(KernelInfo.FACTORY.fromIntent(getIntent()));
             } else {
@@ -118,9 +82,6 @@ public class DownloadsActivity extends BaseDownloadDialogActivity implements Act
             }
         }
 
-        if (savedInstanceState != null) {
-            if (state == -1) state = savedInstanceState.getInt("state", dlFragment.getState());
-        }
         bar.setSelectedNavigationItem(state);
     }
 
@@ -133,7 +94,6 @@ public class DownloadsActivity extends BaseDownloadDialogActivity implements Act
     @Override
     protected void onResume() {
         super.onResume();
-        adsHandler.sendMessageDelayed(adsHandler.obtainMessage(), Config.AD_SHOW_DELAY);
     }
 
     @Override
@@ -144,12 +104,6 @@ public class DownloadsActivity extends BaseDownloadDialogActivity implements Act
         dlgs.clear();
         super.onPause();
 
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        dlFragment.setState(itemPosition);
-        return true;
     }
 
     @Override

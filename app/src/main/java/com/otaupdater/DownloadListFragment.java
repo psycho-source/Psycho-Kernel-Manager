@@ -28,19 +28,6 @@ public class DownloadListFragment extends ListFragment {
     private final ArrayList<FileInfo> fileList = new ArrayList<FileInfo>();
     private ArrayAdapter<FileInfo> fileAdapter = null;
 
-    private int state = 0;
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-        ((TextView) getListView().getEmptyView()).setText(
-                getResources().getStringArray(R.array.download_types_empty)[state]);
-        updateFileList();
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -108,7 +95,7 @@ public class DownloadListFragment extends ListFragment {
     }
 
     protected void updateFileList() {
-        File dir = state == 0 ? Config.ROM_DL_PATH_FILE : Config.KERNEL_DL_PATH_FILE;
+        File dir = Config.KERNEL_DL_PATH_FILE;
         File[] files = dir.listFiles();
         fileList.clear();
         for (File file : files) {

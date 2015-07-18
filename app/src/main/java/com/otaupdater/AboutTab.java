@@ -16,12 +16,8 @@
 
 package com.otaupdater;
 
-import android.app.ListFragment;
-import android.content.Context;
+import android.support.v4.app.ListFragment;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,18 +43,6 @@ public class AboutTab extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context ctx = getActivity().getApplicationContext();
-        PackageManager pm = ctx.getPackageManager();
-
-        PackageInfo pInfo = null;
-        try {
-            pInfo = pm.getPackageInfo(ctx.getPackageName(), 0);
-
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String version = pInfo == null ? getString(R.string.about_version_unknown) : pInfo.versionName;
-
         HashMap<String, String> item;
 
         item = new HashMap<String, String>();
@@ -68,15 +52,8 @@ public class AboutTab extends ListFragment {
 
         item = new HashMap<String, String>();
         item.put(KEY_TITLE, getString(R.string.about_version_title));
-        item.put(KEY_SUMMARY, version);
+        item.put(KEY_SUMMARY, Config.VERSION);
         DATA.add(item);
-
-        if (!pm.hasSystemFeature(Config.OTA_FEATURE_KEY)) {
-            item = new HashMap<String, String>();
-            item.put(KEY_TITLE, getString(R.string.about_ota_feature_missing_title));
-            item.put(KEY_SUMMARY, getString(R.string.about_ota_feature_missing_summary));
-            DATA.add(item);
-        }
 
         item = new HashMap<String, String>();
         item.put(KEY_TITLE, getString(R.string.about_license_title));
@@ -86,16 +63,6 @@ public class AboutTab extends ListFragment {
         item = new HashMap<String, String>();
         item.put(KEY_TITLE, getString(R.string.about_contrib_title));
         item.put(KEY_SUMMARY, "");
-        DATA.add(item);
-
-        item = new HashMap<String, String>();
-        item.put(KEY_TITLE, getString(R.string.about_feedback_title));
-        item.put(KEY_SUMMARY, "");
-        DATA.add(item);
-
-        item = new HashMap<String, String>();
-        item.put(KEY_TITLE, getString(R.string.about_uptodate));
-        item.put(KEY_SUMMARY, getString(R.string.about_follow_title));
         DATA.add(item);
     }
 
@@ -119,19 +86,13 @@ public class AboutTab extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         switch (position) {
         case 0:
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_BASE_URL)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_GITHUB_URL)));
             break;
         case 2:
             startActivity(new Intent(getActivity(), LicenseActivity.class));
             break;
         case 3:
             startActivity(new Intent(getActivity(), ContributorsActivity.class));
-            break;
-        case 4:
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_BASE_URL + Config.WEB_FEEDBACK_URL)));
-            break;
-        case 5:
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.GPLUS_URL)));
             break;
         }
     }

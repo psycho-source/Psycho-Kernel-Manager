@@ -20,74 +20,38 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.File;
-import java.util.Date;
-import java.util.Locale;
 
 public class Config {
-    public static final String LOG_TAG = "OTA::";
 
-    public static final String HTTPC_UA = "OTA Updater App";
+    public static final String VERSION = "1.0";
 
-    public static final String GPLUS_URL = "https://plus.google.com/102074511541445644953/posts";
+    public static final String LOG_TAG = "jolla::";
 
-    public static final String SITE_BASE_URL = "https://www.otaupdatecenter.pro/";
-    public static final String WEB_FEEDBACK_URL = "contact-us";
-    public static final String DONATE_URL = "donate";
-    public static final String LOGIN_URL = "device/user/login";
-    public static final String LOGOUT_URL = "device/user/logout";
-    public static final String CODE_REDEEM_URL = "device/user/redeem_code";
-    public static final String GCM_REGISTER_URL = "device/register";
-    public static final String PING_URL = "device/ping";
-    public static final String ROM_PULL_URL = "device/info/rom";
-    public static final String KERNEL_PULL_URL = "device/info/kernel";
+    public static final String HTTPC_UA = "jolla-kernel Updater App";
 
-    public static final String ADMOB_UNIT_ID = "ca-app-pub-0361534644858126/7580389175";
-
-    public static final String HMAC_ALGORITHM = "HmacSHA256";
-    public static final String GCM_SENDER_ID = "1068482628480";
-    public static final String OAUTH_CLIENT_ID = "1068482628480-jsufug7klk4b4ab2v6f83dtp5q38k74t.apps.googleusercontent.com";
-
-    public static final String OTA_FEATURE_KEY = "com.otaupdater.ota_feature";
-    public static final String PROKEY_SKU = "prokey";
-
-    public static final long MIN_PING_TIME = 604800000; // 1 week in ms
-
-    public static final int ROM_NOTIF_ID = 100;
-    public static final int ROM_FAILED_NOTIF_ID = 101;
-    public static final int ROM_FLASH_NOTIF_ID = 102;
+    public static final String SITE_BASE_URL = "http://buf.jollaman999.com/";
+    public static final String SITE_GITHUB_URL = "https://github.com/jollaman999";
+    public static final String KERNEL_PULL_URL = "jolla-kernel_AIO-gproj";
 
     public static final int KERNEL_NOTIF_ID = 200;
     public static final int KERNEL_FAILED_NOTIF_ID = 201;
     public static final int KERNEL_FLASH_NOTIF_ID = 202;
 
-    public static final int AD_SHOW_DELAY = 3000;
-
-    public static final String BASE_SD_PATH = "/OTA-Updater/download/";
-    public static final String BASE_DL_PATH = PropUtils.getSystemSdPath() + BASE_SD_PATH;
-    public static final String ROM_DL_PATH = BASE_DL_PATH + "ROM/";
-    public static final String ROM_SD_PATH = BASE_SD_PATH + "ROM/";
-    public static final String KERNEL_DL_PATH = BASE_DL_PATH + "kernel/";
-    public static final String KERNEL_SD_PATH = BASE_SD_PATH + "kernel/";
+    public static final String BASE_DL_PATH = PropUtils.getSystemSdPath();
+    public static final String KERNEL_SD_PATH = "/jolla-kernel/";
+    public static final String KERNEL_DL_PATH = BASE_DL_PATH + "/jolla-kernel/";
 
     public static final File DL_PATH_FILE = new File(BASE_DL_PATH);
-    public static final File ROM_DL_PATH_FILE = new File(ROM_DL_PATH);
     public static final File KERNEL_DL_PATH_FILE = new File(KERNEL_DL_PATH);
 
     static {
         //noinspection ResultOfMethodCallIgnored
         DL_PATH_FILE.mkdirs();
         //noinspection ResultOfMethodCallIgnored
-        ROM_DL_PATH_FILE.mkdirs();
-        //noinspection ResultOfMethodCallIgnored
         KERNEL_DL_PATH_FILE.mkdirs();
     }
 
     private String gcmRegistrationId = null;
-    private boolean gcmRegVersionOverride = false;
-    private Date lastPingDate = null;
-
-    private String keyPurchaseToken = null;
-    private String redeemCode = null;
 
     private boolean showNotif = true;
     private boolean wifiOnlyDl = true;
@@ -99,22 +63,12 @@ public class Config {
 
     private int lastVersion = -1;
     private String lastDevice = null;
-    private String lastRomID = null;
     private String lastKernelID = null;
 
-    private int curVersion = -1;
-    private String curDevice = null;
-    private String curRomID = null;
-    private String curKernelID = null;
-
-    private RomInfo storedRomUpdate = null;
     private KernelInfo storedKernelUpdate = null;
 
     private long romDownloadID = -1;
     private long kernelDownloadID = -1;
-
-    private String username = null;
-    private String hmacKey = null;
 
     private static final String PREFS_NAME = "prefs";
     private final SharedPreferences PREFS;
@@ -125,13 +79,6 @@ public class Config {
         PREFS = ctx.getSharedPreferences(PREFS_NAME, 0);
 
         gcmRegistrationId = PREFS.getString("gcmRegistrationId", gcmRegistrationId);
-        lastPingDate = PREFS.contains("lastPingDate") ? new Date(PREFS.getLong("lastPingDate", 0)) : null;
-
-        keyPurchaseToken = PREFS.getString("keyState", keyPurchaseToken);
-        redeemCode = PREFS.getString("redeemCode", redeemCode);
-
-        username = PREFS.getString("username", username);
-        hmacKey = PREFS.getString("hmacKey", hmacKey);
 
         showNotif = PREFS.getBoolean("showNotif", showNotif);
         wifiOnlyDl = PREFS.getBoolean("wifiOnlyDl", wifiOnlyDl);
@@ -140,14 +87,6 @@ public class Config {
         ignoredUnsupportedWarn = PREFS.getBoolean("ignoredUnsupportedWarn", ignoredUnsupportedWarn);
         ignoredDataWarn = PREFS.getBoolean("ignoredDataWarn", ignoredDataWarn);
         ignoredWifiWarn = PREFS.getBoolean("ignoredWifiWarn", ignoredWifiWarn);
-
-        if (PREFS.contains("rom_info_name")) {
-            if (PropUtils.isRomOtaEnabled()) {
-                storedRomUpdate = RomInfo.FACTORY.fromSharedPrefs(PREFS);
-            } else {
-                clearStoredRomUpdate();
-            }
-        }
 
         if (PREFS.contains("kernel_info_name")) {
             if (PropUtils.isKernelOtaEnabled()) {
@@ -159,71 +98,14 @@ public class Config {
 
         lastVersion  = PREFS.getInt("version", lastVersion);
         lastDevice   = PREFS.getString("device", lastDevice);
-        lastRomID    = PREFS.getString("rom_id", lastRomID);
         lastKernelID = PREFS.getString("kernel_id", lastKernelID);
 
-        curVersion  = Utils.getAppVersion(ctx);
-        curDevice   = android.os.Build.DEVICE.toLowerCase(Locale.US);
-        curRomID    = PropUtils.isRomOtaEnabled() ? PropUtils.getRomOtaID() : null;
-        curKernelID = PropUtils.isKernelOtaEnabled() ? PropUtils.getKernelOtaID() : null;
-
-        romDownloadID = PREFS.getLong("romDownloadID", romDownloadID);
         kernelDownloadID = PREFS.getLong("kernelDownloadID", kernelDownloadID);
     }
     private static Config instance = null;
     public static synchronized Config getInstance(Context ctx) {
         if (instance == null) instance = new Config(ctx);
         return instance;
-    }
-
-    public boolean hasProKey() {
-        return keyPurchaseToken != null || redeemCode != null;
-    }
-
-    public boolean isKeyRedeemCode() {
-        return redeemCode != null;
-    }
-
-    public String getGcmRegistrationId() {
-        if (gcmRegistrationId == null) return null;
-        if (lastVersion != curVersion && !gcmRegVersionOverride) return null;
-        return gcmRegistrationId;
-    }
-
-    public void setGcmRegistrationId(String id) {
-        this.gcmRegistrationId = id;
-        this.gcmRegVersionOverride = true;
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.putString("gcmRegistrationId", gcmRegistrationId);
-            editor.apply();
-        }
-    }
-
-    public String getKeyPurchaseToken() {
-        return keyPurchaseToken;
-    }
-
-    public void setKeyPurchaseToken(String keyPurchaseToken) {
-        this.keyPurchaseToken = keyPurchaseToken;
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.putString("keyState", keyPurchaseToken);
-            editor.apply();
-        }
-    }
-
-    public String getRedeemCode() {
-        return redeemCode;
-    }
-
-    public void setRedeemCode(String redeemCode) {
-        this.redeemCode = redeemCode;
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.putString("redeemCode", redeemCode);
-            editor.apply();
-        }
     }
 
     public boolean getShowNotif() {
@@ -294,72 +176,6 @@ public class Config {
         putBoolean("ignoredWifiWarn", ignored);
     }
 
-    public void setValuesToCurrent() {
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.putInt("version", curVersion);
-            editor.putString("device", curDevice);
-            editor.putString("rom_id", curRomID);
-            editor.putString("kernel_id", curKernelID);
-            editor.apply();
-        }
-    }
-
-    public boolean upToDate() {
-        if (lastDevice == null) return false;
-
-        boolean romIdUpToDate = true;
-        if (PropUtils.isRomOtaEnabled()) {
-            romIdUpToDate = lastRomID != null && curRomID.equals(lastRomID);
-        } else if (lastRomID != null) {
-            romIdUpToDate = false;
-        }
-
-        boolean kernelIdUpToDate = true;
-        if (PropUtils.isKernelOtaEnabled()) {
-            kernelIdUpToDate = lastKernelID != null && curKernelID.equals(lastKernelID);
-        } else if (lastKernelID != null) {
-            kernelIdUpToDate = false;
-        }
-
-        return curVersion == lastVersion && curDevice.equals(lastDevice) && romIdUpToDate && kernelIdUpToDate;
-    }
-
-    public boolean needPing() {
-        return lastPingDate == null || (new Date().getTime() - lastPingDate.getTime()) > MIN_PING_TIME;
-    }
-
-    public void setPingedCurrent() {
-        lastPingDate = new Date();
-        putLong("lastPingDate", lastPingDate.getTime());
-    }
-
-    public boolean hasStoredRomUpdate() {
-        return storedRomUpdate != null;
-    }
-
-    public RomInfo getStoredRomUpdate() {
-        return storedRomUpdate;
-    }
-
-    public void storeRomUpdate(RomInfo info) {
-        this.storedRomUpdate = info;
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            info.putToSharedPrefs(editor);
-            editor.apply();
-        }
-    }
-
-    public void clearStoredRomUpdate() {
-        storedRomUpdate = null;
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            RomInfo.FACTORY.clearFromSharedPrefs(editor);
-            editor.apply();
-        }
-    }
-
     public boolean hasStoredKernelUpdate() {
         return storedKernelUpdate != null;
     }
@@ -386,57 +202,8 @@ public class Config {
         }
     }
 
-    public boolean isUserLoggedIn() {
-        return username != null && hmacKey != null;
-    }
-
-    public void storeLogin(String username, String hmacKey) {
-        this.username = username;
-        this.hmacKey = hmacKey;
-
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.putString("username", username);
-            editor.putString("hmacKey", hmacKey);
-            editor.apply();
-        }
-    }
-
-    public void clearLogin() {
-        username = null;
-        hmacKey = null;
-
-        synchronized (PREFS) {
-            SharedPreferences.Editor editor = PREFS.edit();
-            editor.remove("username");
-            editor.remove("hmacKey");
-            editor.apply();
-        }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getHmacKey() {
-        return hmacKey;
-    }
-
-    public void storeRomDownloadID(long downloadID) {
-        romDownloadID = downloadID;
-        putLong("romDownloadID", romDownloadID);
-    }
-
-    public long getRomDownloadID() {
-        return romDownloadID;
-    }
-
     public boolean isDownloadingRom() {
         return romDownloadID != -1;
-    }
-
-    public void clearDownloadingRom() {
-        if (romDownloadID != -1) storeRomDownloadID(-1);
     }
 
     public void storeKernelDownloadID(long downloadID) {
@@ -457,27 +224,15 @@ public class Config {
     }
 
     public void storeDownloadID(BaseInfo info, long downloadID) {
-        if (info instanceof RomInfo) {
-            storeRomDownloadID(downloadID);
-        } else if (info instanceof KernelInfo) {
-            storeKernelDownloadID(downloadID);
-        }
+        storeKernelDownloadID(downloadID);
     }
 
     public void storeUpdate(BaseInfo info) {
-        if (info instanceof RomInfo) {
-            storeRomUpdate((RomInfo) info);
-        } else if (info instanceof KernelInfo) {
-            storeKernelUpdate((KernelInfo) info);
-        }
+        storeKernelUpdate((KernelInfo) info);
     }
 
     public void clearStoredUpdate(Class<? extends BaseInfo> cls) {
-        if (cls.equals(RomInfo.class)) {
-            clearStoredRomUpdate();
-        } else if (cls.equals(KernelInfo.class)) {
-            clearStoredKernelUpdate();
-        }
+        clearStoredKernelUpdate();
     }
 
     private void putBoolean(String name, boolean value) {
