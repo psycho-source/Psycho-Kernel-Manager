@@ -1,4 +1,6 @@
-OTA Update Center -  v2
-=======================
+jolla-kernel Updater -  v1.0
+=============================
 
-For instructions how to use, please visit [our site](https://www.otaupdatecenter.pro)
+Kernel updater for my jolla-kernel!
+
+https://github.com/jollaman999/jolla-kernel_G_Gen3

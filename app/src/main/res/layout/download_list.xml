@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <ListView 
+
+    <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -16,5 +16,5 @@
         android:text="@string/downloads_none"
         android:textStyle="bold"
         android:textSize="20sp" />
-    
+
 </FrameLayout>

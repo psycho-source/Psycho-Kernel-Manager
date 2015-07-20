@@ -47,11 +47,11 @@
     <string name="kernel_download_done">jolla-kernel Download Complete</string>
     <string name="kernel_download_alert_title">Downloading jolla-kernel update (%1$s version %2$s)</string>
     <string name="kernel_toast_no_update">There is no jolla-kernel update at this time</string>
-    <string name="kernel_update_to">This update will update your jolla-kernel (%1$s) to version %2$s</string>
-    <string name="kernel_version">Kernel Version</string>
+    <string name="kernel_update_to">This update will update your jolla-kernel to version %2$s</string>
+    <string name="kernel_version">jolla-kernel Version</string>
     <string name="kernel_version_unknown">Unknown Kernel Version</string>
     <string name="kernel_unsupported">No jolla-kernel?</string>
-    <string name="kernel_unsupported_summary">There is no jolla-kernel! :(\n\n(jolla-kernel.prop missing)</string>
+    <string name="kernel_unsupported_summary">It seems you are not using a jolla-kernel! :(\n\n(jolla-kernel.prop missing)</string>
 
     <string name="alert_nodata_title">No Data Connection!</string>
     <string name="alert_nodata_message">You have no data connection.\nPlease turn on Wi-Fi or Mobile Data in order to check for and download jolla-kernel updates.</string>
@@ -80,21 +80,15 @@
     <string name="toast_file_error">Error loading file</string>
     <string name="toast_nosd_shared">Your SD card is unavailable - mounted as USB Storage</string>
     <string name="toast_nosd_error">You SD card is unavailable</string>
-    <string name="toast_blank_userpass_error">Please enter your username and password!!</string>
     <string name="toast_update_fetch_error">There was an error fetching update information</string>
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
 
     <string name="about_ota_title">jolla-kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2015\njolla-kernel Updater\nBased on OTA Updater\n\nAll of kernel and updater sources are available.\nTap to visit my github.</string>
+    <string name="about_ota_summary">Copyright © 2015\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my github.\n(Tap to visit my github.)</string>
     <string name="about_version_title">Version</string>
     <string name="about_version_unknown">Unknown Version (error in package manager)</string>
-    <string name="about_ota_feature_missing_title">Missing OTA Feature File!!</string>
-    <string name="about_ota_feature_missing_summary">The feature XML file is missing from this Kernel. Without this file, you will not be able to update this app via the Play Store.\n\nPlease contact your Kernel developer and kindly ask them to add the file. Instructions are available on our website on how to do this.</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
-    <string name="about_feedback_title">Feedback</string>
-    <string name="about_uptodate">Keep Up-to-Date!</string>
-    <string name="about_follow_title">Follow us on Google+</string>
 
     <string name="updates_avail_title">Available Updates</string>
     <string name="updates_checking">Checking for available updates…</string>
@@ -102,7 +96,7 @@
     <string name="update_fetch_error">Error fetching update info: %1$s</string>
     <string name="updates_new">New update: %1$s (version %2$s)\nTap to download/flash!</string>
 
-    <string name="downloads_kernel_label">Downloading Kernel Update</string>
+    <string name="downloads_kernel_label">Downloading jolla-kernel Update</string>
     <string name="downloads_size_progress_b">%1$.1f%% (%2$d / %3$d bytes)</string>
     <string name="downloads_size_progress_kb">%1$.1f%% (%2$d / %3$d KB)</string>
     <string name="downloads_size_progress_mb">%1$.1f%% (%2$d / %3$d MB)</string>

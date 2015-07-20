@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment class="com.otaupdater.DownloadBarFragment"
+    <fragment class="com.jollakernelupdater.DownloadBarFragment"
         android:id="@+id/downloads_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

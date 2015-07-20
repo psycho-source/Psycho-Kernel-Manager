@@ -1,3 +1,7 @@
+Rebuilt for jolla-kernel
+by jollaman999
+
+
 OTAUPDATECENTER TEAM
 ====================
 
