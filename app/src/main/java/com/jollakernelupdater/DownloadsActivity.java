@@ -30,9 +30,8 @@ import android.widget.Toast;
 
 import com.jollakernelupdater.utils.BaseDownloadDialogActivity;
 import com.jollakernelupdater.utils.BaseInfo;
+import com.jollakernelupdater.utils.KernelInfo;
 import com.jollakernelupdater.utils.PropUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.text.SimpleDateFormat;
@@ -43,10 +42,9 @@ import java.util.Locale;
 public class DownloadsActivity extends BaseDownloadDialogActivity {
     public static final String FLASH_KERNEL_ACTION = "com.jollakernelupdater.action.FLASH_KERNEL_ACTION";
 
-    public static final String EXTRA_GOTO_TYPE = "goto_type";
-    public static final int GOTO_TYPE_KERNEL = 1;
-
     private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
+
+    private ActionBar bar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,20 +58,16 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
         setContentView(R.layout.downloads);
 
-        final ActionBar bar = getActionBar();
-        if (bar != null) {
-            bar.setDisplayHomeAsUpEnabled(true);
+        bar = getActionBar();
+        assert bar != null;
+
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setDisplayShowTitleEnabled(false);
+
+        String action = getIntent().getAction();
+        if (action != null && action.equals(FLASH_KERNEL_ACTION)) {
+            showFlashDialog(KernelInfo.FACTORY.fromIntent(getIntent()));
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
