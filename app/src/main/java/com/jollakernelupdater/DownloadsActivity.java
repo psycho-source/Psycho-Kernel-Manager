@@ -16,7 +16,7 @@
 
 package com.jollakernelupdater;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.jollakernelupdater.utils.BaseDownloadDialogActivity;
 import com.jollakernelupdater.utils.BaseInfo;
+import com.jollakernelupdater.utils.Config;
 import com.jollakernelupdater.utils.KernelInfo;
 import com.jollakernelupdater.utils.PropUtils;
 
@@ -46,6 +47,9 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
     private ActionBar bar;
 
+    public static boolean is_called_by_DownloadList;
+    public static String DownloadList_File_Name;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +62,10 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
         setContentView(R.layout.downloads);
 
-        bar = getActionBar();
+        bar = getSupportActionBar();
         assert bar != null;
 
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setDisplayShowTitleEnabled(false);
 
         String action = getIntent().getAction();
         if (action != null && action.equals(FLASH_KERNEL_ACTION)) {
@@ -97,7 +100,6 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
         String[] installOpts = getResources().getStringArray(R.array.install_options);
         final boolean[] selectedOpts = new boolean[installOpts.length];
-        selectedOpts[selectedOpts.length - 1] = true;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.alert_install_title);
@@ -118,13 +120,21 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
                 builder.setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        flashFiles(new String[] { info.getRecoveryFilePath() }, selectedOpts[0], selectedOpts[2], selectedOpts[1]);
+                        if (is_called_by_DownloadList) {
+                            String file_path = PropUtils.getRecoverySdPath() + Config.KERNEL_SD_PATH + DownloadList_File_Name;
+                            flashFiles(new String[]{file_path}, selectedOpts[0], selectedOpts[2], selectedOpts[1]);
+                        } else {
+                            flashFiles(new String[]{info.getRecoveryFilePath()}, selectedOpts[0], selectedOpts[2], selectedOpts[1]);
+                        }
+                        DownloadList_File_Name = null;
+                        is_called_by_DownloadList = false;
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        finish();
                     }
                 });
                 builder.show();
@@ -134,6 +144,7 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                finish();
             }
         });
 

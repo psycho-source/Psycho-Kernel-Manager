@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <string name="app_name">jolla-kernel Updater</string>
+    <string name="app_name" translatable="false">jolla-kernel Updater</string>
     <string name="app_license">License</string>
     <string name="app_contrib">Contributors</string>
     <string name="app_downloads">Downloads</string>
@@ -34,10 +34,14 @@
     <string name="login">Login</string>
     <string name="icon">Icon</string>
 
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
     <string name="main_device">Device</string>
     <string name="main_kernel">Kernel</string>
     <string name="main_about">About</string>
-    <string name="main_otaid">jolla-kernel Updater ID</string>
+    <string name="main_otaid" translatable="false">jolla-kernel Updater ID</string>
 
     <string name="kernel_download_ticker">jolla-kernel Update Available</string>
     <string name="kernel_download_title">jolla-kernel Update Available: %1$s</string>
@@ -66,7 +70,6 @@
     <string name="alert_downloading">Downloading…</string>
     <string name="alert_unsupported_title">Unsupported Kernel</string>
     <string name="alert_unsupported_message">There is no jolla-kernel! This updater only available with jolla-kernel!\n\n(jolla-kernel.prop missing)</string>
-    <string name="alert_changelog">View Changelog</string>
     <string name="alert_changelog_title">Changelog for version %1$s</string>
 
     <string name="menu_downloads">Downloads</string>
@@ -79,14 +82,13 @@
     <string name="toast_delete_error">There was a problem while deleting the selected file</string>
     <string name="toast_file_error">Error loading file</string>
     <string name="toast_nosd_shared">Your SD card is unavailable - mounted as USB Storage</string>
-    <string name="toast_nosd_error">You SD card is unavailable</string>
+    <string name="toast_nosd_error">Your SD card is unavailable</string>
     <string name="toast_update_fetch_error">There was an error fetching update information</string>
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
 
-    <string name="about_ota_title">jolla-kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2015\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my github.\n(Tap to visit my github.)</string>
+    <string name="about_ota_title" translatable="false">jolla-kernel Updater</string>
+    <string name="about_ota_summary">Copyright © 2015\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
     <string name="about_version_title">Version</string>
-    <string name="about_version_unknown">Unknown Version (error in package manager)</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
 
@@ -97,14 +99,14 @@
     <string name="updates_new">New update: %1$s (version %2$s)\nTap to download/flash!</string>
 
     <string name="downloads_kernel_label">Downloading jolla-kernel Update</string>
-    <string name="downloads_size_progress_b">%1$.1f%% (%2$d / %3$d bytes)</string>
-    <string name="downloads_size_progress_kb">%1$.1f%% (%2$d / %3$d KB)</string>
-    <string name="downloads_size_progress_mb">%1$.1f%% (%2$d / %3$d MB)</string>
-    <string name="downloads_size_progress_gb">%1$.1f%% (%2$d / %3$d GB)</string>
-    <string name="downloads_size_progress_unknown_b">%1$.1f%% (%2$d bytes)</string>
-    <string name="downloads_size_progress_unknown_kb">%1$.1f%% (%2$d KB)</string>
-    <string name="downloads_size_progress_unknown_mb">%1$.1f%% (%2$d MB)</string>
-    <string name="downloads_size_progress_unknown_gb">%1$.1f%% (%2$d GB)</string>
+    <string name="downloads_size_progress_b" translatable="false">%1$.1f%% (%2$d / %3$d bytes)</string>
+    <string name="downloads_size_progress_kb" translatable="false">%1$.1f%% (%2$d / %3$d KB)</string>
+    <string name="downloads_size_progress_mb" translatable="false">%1$.1f%% (%2$d / %3$d MB)</string>
+    <string name="downloads_size_progress_gb" translatable="false">%1$.1f%% (%2$d / %3$d GB)</string>
+    <string name="downloads_size_progress_unknown_b" translatable="false">%1$.1f%% (%2$d bytes)</string>
+    <string name="downloads_size_progress_unknown_kb" translatable="false">%1$.1f%% (%2$d KB)</string>
+    <string name="downloads_size_progress_unknown_mb" translatable="false">%1$.1f%% (%2$d MB)</string>
+    <string name="downloads_size_progress_unknown_gb" translatable="false">%1$.1f%% (%2$d GB)</string>
     <string name="downloads_starting">Starting Download…</string>
     <string name="downloads_paused_wifi">Waiting for Wi-Fi…</string>
     <string name="downloads_paused_network">Waiting for Data connection…</string>
@@ -121,8 +123,7 @@
     <string name="downloads_no_status">Unable to get download status</string>
     <string name="downloads_changelog_title">Changelog:</string>
     <string name="downloads_complete">Finished! Ready to flash update!</string>
-    <string name="downloads_file">%1$s (v%2$s)</string>
-    <string name="downloads_file_nover">%1$s</string>
+    <string name="downloads_file" translatable="false">%1$s</string>
 
     <string name="settings_title">jolla-kernel Updater Settings</string>
     <string name="settings_notif_title">Notify me of new updates</string>
@@ -139,5 +140,7 @@
     <string name="settings_support">Support Development</string>
 
     <string name="unknown_error">An unknown error has occurred!</string>
+    <string name="alert_changelog">View Changelog</string>
+    <string name="about_version_unknown">Unknown Version </string>
 
 </resources>

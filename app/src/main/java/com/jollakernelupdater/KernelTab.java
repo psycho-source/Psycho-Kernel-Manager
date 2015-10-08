@@ -147,6 +147,12 @@ public class KernelTab extends ListFragment {
     }
 
     @Override
+    public void onDestroy() {
+        cfg.clearStoredKernelUpdate();
+        super.onDestroy();
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         if (position == AVAIL_UPDATES_IDX) {
             if (cfg.hasStoredKernelUpdate()) {

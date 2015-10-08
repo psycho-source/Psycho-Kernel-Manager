@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jollakernelupdater.utils.BaseInfo;
 import com.jollakernelupdater.utils.Config;
 import com.jollakernelupdater.utils.DialogCallback;
 
@@ -58,18 +60,45 @@ public class DownloadListFragment extends ListFragment {
                 .setTitle(info.toString())
                 .setIcon(R.drawable.ic_archive)
                 .setItems(new String[]{
-                        getString(R.string.delete)
+                        getString(R.string.flash), getString(R.string.delete)
                 }, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
                         case 0:
-                            if (info.file.delete()) {
-                                Toast.makeText(getActivity(), R.string.toast_delete, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), R.string.toast_delete_error, Toast.LENGTH_SHORT).show();
-                            }
-                            updateFileList();
+                            DownloadsActivity.is_called_by_DownloadList = true;
+                            DownloadsActivity.DownloadList_File_Name = info.toString();
+
+                            Intent intent = new Intent(getActivity(), DownloadsActivity.class);
+                            intent.setAction(DownloadsActivity.FLASH_KERNEL_ACTION);
+                            getActivity().startActivity(intent);
+                            break;
+                        case 1:
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            //Yes button clicked
+                                            if (info.file.delete()) {
+                                                Toast.makeText(getActivity(), R.string.toast_delete, Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getActivity(), R.string.toast_delete_error, Toast.LENGTH_SHORT).show();
+                                            }
+                                            updateFileList();
+                                            break;
+
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            //No button clicked
+                                            break;
+                                    }
+                                }
+                            };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setMessage(R.string.are_you_sure)
+                                    .setPositiveButton(R.string.yes, dialogClickListener)
+                                    .setNegativeButton(R.string.no, dialogClickListener).show();
                             break;
                         }
                     }
@@ -111,7 +140,6 @@ public class DownloadListFragment extends ListFragment {
     protected class FileInfo {
         private File file;
         private String name;
-        private String version = null;
 
         public FileInfo(File file) {
             this.file = file;
@@ -121,22 +149,11 @@ public class DownloadListFragment extends ListFragment {
 
             name = name.substring(0, name.length() - 4);
             if (!name.contains("__")) return;
-
-            int split = name.indexOf("__");
-            version = name.substring(split + 2);
-
-            name = name.substring(0, split);
-            name = name.replace('_', ' ');
-            name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
         }
 
         @Override
         public String toString() {
-            if (version == null) {
-                return getString(R.string.downloads_file_nover, name);
-            } else {
-                return getString(R.string.downloads_file, name, version);
-            }
+            return getString(R.string.downloads_file, name)  + ".zip";
         }
     }
 }

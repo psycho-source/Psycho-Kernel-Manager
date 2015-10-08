@@ -63,7 +63,7 @@ public class KernelInfo extends BaseInfo {
     }
 
     @Override
-    protected String getNameKey() {
+    public String getNameKey() {
         return KEY_NAME;
     }
 
@@ -78,13 +78,13 @@ public class KernelInfo extends BaseInfo {
     }
 
     @Override
-    protected File getDownloadPathFile() {
-        return Config.KERNEL_DL_PATH_FILE;
+    public String getDownloadSdPath() {
+        return Config.KERNEL_SD_PATH;
     }
 
     @Override
-    protected String getDownloadSdPath() {
-        return Config.KERNEL_SD_PATH;
+    protected File getDownloadPathFile() {
+        return Config.KERNEL_DL_PATH_FILE;
     }
 
     @Override

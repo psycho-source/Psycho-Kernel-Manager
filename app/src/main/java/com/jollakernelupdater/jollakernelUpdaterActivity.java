@@ -16,7 +16,8 @@
 
 package com.jollakernelupdater;
 
-import android.app.ActionBar;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,7 +52,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
 
     private Config cfg;
 
-    private ActionBar bar;
+   ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +160,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        bar = getActionBar();
+        bar = getSupportActionBar();
         assert bar != null;
 
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -278,10 +280,10 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
             }
         }
 
-        public TabsAdapter(android.support.v4.app.FragmentActivity fragmentActivity, ViewPager pager) {
-            super(fragmentActivity.getSupportFragmentManager());
-            ctx = fragmentActivity;
-            mActionBar = fragmentActivity.getActionBar();
+        public TabsAdapter(AppCompatActivity activity, ViewPager pager) {
+            super(activity.getSupportFragmentManager());
+            ctx = activity;
+            mActionBar = activity.getSupportActionBar();
             mViewPager = pager;
             mViewPager.setAdapter(this);
             mViewPager.setOnPageChangeListener(this);
@@ -323,7 +325,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
         }
 
         @Override
-        public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
             Object tag = tab.getTag();
             for (int i = 0; i < mTabs.size(); i++) {
                 if (mTabs.get(i) == tag) {
@@ -333,12 +335,12 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
         }
 
         @Override
-        public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
         }
 
         @Override
-        public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
         }
     }

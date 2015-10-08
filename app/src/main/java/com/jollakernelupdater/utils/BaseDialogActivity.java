@@ -1,10 +1,11 @@
 package com.jollakernelupdater.utils;
 
 import android.app.Dialog;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public abstract class BaseDialogActivity extends android.support.v4.app.FragmentActivity implements DialogCallback {
+public abstract class BaseDialogActivity extends AppCompatActivity implements DialogCallback {
     private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
 
     @Override
