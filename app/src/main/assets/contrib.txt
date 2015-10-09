@@ -1,4 +1,4 @@
-Rebuilt for jolla-kernel
+Modified for jolla-kernel
 by jollaman999
 
 
