@@ -53,6 +53,7 @@ public class KernelTab extends ListFragment {
 
     private Config cfg;
     private boolean fetching = false;
+    private boolean is_init = true;
 
     private static KernelTab activeFragment = null;
 
@@ -92,17 +93,7 @@ public class KernelTab extends ListFragment {
 
             item = new HashMap<String, Object>();
             item.put(KEY_TITLE, getString(R.string.updates_avail_title));
-            if (cfg.hasStoredKernelUpdate()) {
-                KernelInfo info = cfg.getStoredKernelUpdate();
-                if (info.isUpdate()) {
-                    item.put(KEY_SUMMARY, getString(R.string.updates_new, info.name, info.version));
-                } else {
-                    item.put(KEY_SUMMARY, getString(R.string.updates_none));
-                    cfg.clearStoredKernelUpdate();
-                }
-            } else {
-                item.put(KEY_SUMMARY, getString(R.string.updates_none));
-            }
+            checkForKernelUpdates();
             item.put(KEY_ICON, R.drawable.ic_cloud_download);
             AVAIL_UPDATES_IDX = DATA.size();
             DATA.add(item);
@@ -217,7 +208,11 @@ public class KernelTab extends ListFragment {
 
             @Override
             public void onInfoLoaded(KernelInfo info) {
-                updateStatus(info);
+                if (is_init) {
+                    is_init = false;
+                } else {
+                    updateStatus(info);
+                }
                 Activity act = getActivity();
                 if (info.isUpdate())
                     info.showUpdateDialog(act, act instanceof DownloadDialogCallback ? (DownloadDialogCallback) act : null);
