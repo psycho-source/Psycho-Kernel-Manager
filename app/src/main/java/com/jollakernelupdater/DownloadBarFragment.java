@@ -248,8 +248,13 @@ public class DownloadBarFragment extends Fragment {
         final TextView statusText = (TextView) view.findViewById(R.id.download_dlg_status);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.download_dlg_progress_bar);
 
+        DownloadStatus status = DownloadStatus.forDownloadID(ctx, dm, downloadID);
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setTitle(R.string.alert_downloading);
+        if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
+            builder.setTitle(R.string.downloads_complete);
+        } else {
+            builder.setTitle(R.string.alert_downloading);
+        }
         builder.setView(view);
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.hide, new DialogInterface.OnClickListener() {
@@ -336,6 +341,7 @@ public class DownloadBarFragment extends Fragment {
                     statusText.setVisibility(View.VISIBLE);
 
                     if (status.isSuccessful()) {
+                        dlg.setTitle(R.string.downloads_complete);
                         dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.flash);
                         statusText.setText(R.string.downloads_complete);
                     } else {

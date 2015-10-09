@@ -28,7 +28,7 @@
     <string name="delete">삭제</string>
     <string name="download">다운로드</string>
     <string name="downloads_changelog_title">변경사항:</string>
-    <string name="downloads_complete">다운로드 완료! 업데이트 설치 준비!</string>
+    <string name="downloads_complete">다운로드 완료! 플래시 준비!</string>
     <string name="downloads_failed_fileexists">다운로드 실패: 파일이 이미 있습니다</string>
     <string name="downloads_failed_http">다운로드 실패: HTTP 에러</string>
     <string name="downloads_failed_md5">다운로드 실패: MD5 에러 - 올바르지 않은 다운로드</string>

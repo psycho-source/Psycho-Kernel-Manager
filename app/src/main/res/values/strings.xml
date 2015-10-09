@@ -122,7 +122,7 @@
     <string name="downloads_none">No Downloads Found</string>
     <string name="downloads_no_status">Unable to get download status</string>
     <string name="downloads_changelog_title">Changelog:</string>
-    <string name="downloads_complete">Finished! Ready to flash update!</string>
+    <string name="downloads_complete">Finished! Ready to flash!</string>
     <string name="downloads_file" translatable="false">%1$s</string>
 
     <string name="settings_title">jolla-kernel Updater Settings</string>
