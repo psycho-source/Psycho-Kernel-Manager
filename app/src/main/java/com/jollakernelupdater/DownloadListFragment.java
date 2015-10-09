@@ -1,6 +1,5 @@
 package com.jollakernelupdater;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListFragment;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.jollakernelupdater.utils.BaseInfo;
 import com.jollakernelupdater.utils.Config;
 import com.jollakernelupdater.utils.DialogCallback;
 
@@ -27,11 +25,6 @@ public class DownloadListFragment extends ListFragment {
 
     private final ArrayList<FileInfo> fileList = new ArrayList<FileInfo>();
     private ArrayAdapter<FileInfo> fileAdapter = null;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
