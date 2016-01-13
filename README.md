@@ -1,6 +1,6 @@
-jolla-kernel Updater -  v1.2
+jolla-kernel Updater -  v1.3
 =============================
 
 Kernel updater for my jolla-kernel!
 
-https://github.com/jollaman999/jolla-kernel_G_Gen3
+https://github.com/jollaman999/jolla-kernel_bullhead
