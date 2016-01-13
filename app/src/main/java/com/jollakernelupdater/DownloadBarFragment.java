@@ -18,7 +18,6 @@
 package com.jollakernelupdater;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
@@ -41,8 +40,6 @@ import com.jollakernelupdater.utils.Config;
 import com.jollakernelupdater.utils.DownloadDialogCallback;
 import com.jollakernelupdater.utils.DownloadStatus;
 
-import java.lang.ref.WeakReference;
-
 public class DownloadBarFragment extends Fragment {
 
     private static DownloadBarFragment activeFragment = null;
@@ -50,35 +47,114 @@ public class DownloadBarFragment extends Fragment {
     private Config cfg;
     private DownloadManager dm;
 
-    private View kernelContainer;
-    private ProgressBar kernelProgressBar;
-    private TextView kernelProgressText;
-    private TextView kernelStatusText;
+    private static View kernelContainer;
+    private static ProgressBar kernelProgressBar;
+    private static TextView kernelProgressText;
+    private static TextView kernelStatusText;
+
+    private static TextView progressText;
+    private static TextView statusText;
+    private static ProgressBar progressBar;
+
+    static AlertDialog.Builder builder;
+    static AlertDialog dlg;
+
+    private static boolean is_download_end = false;
 
     private View bottomBorder;
 
     protected static final int REFRESH_DELAY = 1000;
-    private final Handler REFRESH_HANDLER = new RefreshHandler(this);
+    private static Handler REFRESH_HANDLER = new RefreshHandler();
+
+    static Context RefreshHandler_ctx;
+    static DownloadManager RefreshHandler_dm;
+    static long RefreshHandler_downloadID;
 
     private static class RefreshHandler extends Handler {
-        private final WeakReference<DownloadBarFragment> fragment;
-
-        public RefreshHandler(DownloadBarFragment fragment) {
-            this.fragment = new WeakReference<DownloadBarFragment>(fragment);
-        }
-
         @Override
         public void handleMessage(Message msg) {
-            fragment.get().updateStatus();
+            DownloadStatus status = DownloadStatus.forDownloadID(
+                    RefreshHandler_ctx, RefreshHandler_dm, RefreshHandler_downloadID);
+
+            if (status == null) {
+                dlg.dismiss();
+                return;
+            }
+
+            if (isActive(status)) {
+                dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(android.R.string.cancel);
+                progressBar.setVisibility(View.VISIBLE);
+
+                if (status.getStatus() == DownloadManager.STATUS_PENDING) {
+                    progressText.setVisibility(View.GONE);
+
+                    progressBar.setIndeterminate(true);
+
+                    statusText.setVisibility(View.VISIBLE);
+                    statusText.setText(R.string.downloads_starting);
+                } else {
+                    if (status.getStatus() == DownloadManager.STATUS_PAUSED) {
+                        progressText.setVisibility(progressText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+                        int pausedStatus = -1;
+                        switch (status.getReason()) {
+                            case DownloadManager.PAUSED_QUEUED_FOR_WIFI:
+                                pausedStatus = R.string.downloads_paused_wifi;
+                                break;
+                            case DownloadManager.PAUSED_WAITING_FOR_NETWORK:
+                                pausedStatus = R.string.downloads_paused_network;
+                                break;
+                            case DownloadManager.PAUSED_WAITING_TO_RETRY:
+                                pausedStatus = R.string.downloads_paused_retry;
+                                break;
+                            case DownloadManager.PAUSED_UNKNOWN:
+                                pausedStatus = R.string.downloads_paused_unknown;
+                                break;
+                        }
+
+                        if (pausedStatus == -1) {
+                            statusText.setVisibility(View.GONE);
+                        } else {
+                            statusText.setVisibility(View.VISIBLE);
+                            statusText.setText(pausedStatus);
+                        }
+                    } else {
+                        progressText.setVisibility(View.VISIBLE);
+
+                        statusText.setVisibility(View.GONE);
+                    }
+
+                    progressText.setText(status.getProgressStr(RefreshHandler_ctx));
+
+                    progressBar.setIndeterminate(false);
+                    progressBar.setMax(status.getTotalBytes());
+                    progressBar.setProgress(status.getDownloadedBytes());
+                }
+            } else {
+                progressText.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                statusText.setVisibility(View.VISIBLE);
+
+                if (status.isSuccessful()) {
+                    dlg.setTitle(R.string.downloads_complete);
+                    dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.flash);
+                    statusText.setText(R.string.downloads_complete);
+                } else {
+                    dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.retry);
+                    statusText.setText(status.getErrorString(RefreshHandler_ctx));
+                }
+            }
+
+            this.sendMessageDelayed(this.obtainMessage(), DownloadBarFragment.REFRESH_DELAY);
         }
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        cfg = Config.getInstance(activity);
-        dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+        cfg = Config.getInstance(context);
+        dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
     @Override
@@ -94,7 +170,9 @@ public class DownloadBarFragment extends Fragment {
         kernelContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDownloadingDialog(cfg.getKernelDownloadID());
+                if (!is_download_end) {
+                    showDownloadingDialog(cfg.getKernelDownloadID());
+                }
             }
         });
 
@@ -105,6 +183,12 @@ public class DownloadBarFragment extends Fragment {
                 dm.remove(cfg.getKernelDownloadID());
                 cfg.clearDownloadingKernel();
                 updateStatus();
+                REFRESH_HANDLER.removeCallbacksAndMessages(null);
+
+                if (kernelContainer != null) kernelContainer.setVisibility(View.GONE);
+                if (progressText != null) progressText.setVisibility(View.GONE);
+                if (statusText != null) statusText.setVisibility(View.GONE);
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -134,6 +218,16 @@ public class DownloadBarFragment extends Fragment {
 
         updateViews(kernelDlStatus, kernelContainer, kernelProgressBar, kernelProgressText, kernelStatusText);
 
+        if (isActive(kernelDlStatus)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateStatus();
+                }
+            }, REFRESH_DELAY);
+            //REFRESH_HANDLER_2.sendMessageDelayed(REFRESH_HANDLER_2.obtainMessage(), REFRESH_DELAY);
+        }
+
         boolean kernelVisible = kernelContainer.getVisibility() == View.VISIBLE;
 
         if (kernelVisible) {
@@ -143,7 +237,9 @@ public class DownloadBarFragment extends Fragment {
         }
     }
 
-    private void updateViews(DownloadStatus status, View container, ProgressBar progressBar, TextView progressText, TextView statusText) {
+    private void updateViews(final DownloadStatus status, final View container, final ProgressBar progressBar, final TextView progressText, final TextView statusText) {
+        is_download_end = false;
+
         if (status == null) {
             container.setVisibility(View.GONE);
         } else {
@@ -159,6 +255,8 @@ public class DownloadBarFragment extends Fragment {
 
                     statusText.setVisibility(View.VISIBLE);
                     statusText.setText(R.string.downloads_starting);
+                } else if (status.getStatus() == DownloadManager.STATUS_RUNNING) {
+                    statusText.setText(R.string.alert_downloading);
                 } else {
                     if (status.getStatus() == DownloadManager.STATUS_PAUSED) {
                         progressText.setVisibility(progressText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -204,6 +302,7 @@ public class DownloadBarFragment extends Fragment {
 
                 if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
                     statusText.setText(R.string.downloads_complete);
+                    is_download_end = true;
                 } else {
                     statusText.setText(status.getErrorString(getActivity()));
                 }
@@ -231,6 +330,10 @@ public class DownloadBarFragment extends Fragment {
     public static Dialog showDownloadingDialog(final Context ctx, final long downloadID, final DownloadDialogCallback callback) {
         final DownloadManager dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
 
+        RefreshHandler_ctx = ctx;
+        RefreshHandler_dm = dm;
+        RefreshHandler_downloadID = downloadID;
+
         DownloadStatus initStatus = DownloadStatus.forDownloadID(ctx, dm, downloadID);
         if (initStatus == null) return null;
 
@@ -245,16 +348,18 @@ public class DownloadBarFragment extends Fragment {
         titleView.setText(ctx.getString(info.getDownloadingTitle(), info.name, info.version));
         changelogView.setText(info.changelog);
 
-        final TextView progressText = (TextView) view.findViewById(R.id.download_dlg_progress_text);
-        final TextView statusText = (TextView) view.findViewById(R.id.download_dlg_status);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.download_dlg_progress_bar);
+        progressText = (TextView) view.findViewById(R.id.download_dlg_progress_text);
+        statusText = (TextView) view.findViewById(R.id.download_dlg_status);
+        progressBar = (ProgressBar) view.findViewById(R.id.download_dlg_progress_bar);
 
         DownloadStatus status = DownloadStatus.forDownloadID(ctx, dm, downloadID);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
-            builder.setTitle(R.string.downloads_complete);
-        } else {
-            builder.setTitle(R.string.alert_downloading);
+        builder = new AlertDialog.Builder(ctx);
+        if (status != null) {
+            if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
+                builder.setTitle(R.string.downloads_complete);
+            } else {
+                builder.setTitle(R.string.alert_downloading);
+            }
         }
         builder.setView(view);
         builder.setCancelable(true);
@@ -269,91 +374,17 @@ public class DownloadBarFragment extends Fragment {
                 }
             }
         });
+
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                activeFragment.cfg.clearDownloadingKernel();
+                notifyActiveFragment();
+                REFRESH_HANDLER.removeCallbacksAndMessages(null);
             }
         });
 
-        final AlertDialog dlg = builder.create();
-
-        final Handler REFRESH_HANDLER = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                DownloadStatus status = DownloadStatus.forDownloadID(ctx, dm, downloadID);
-
-                if (status == null) {
-                    dlg.dismiss();
-                    return;
-                }
-
-                if (isActive(status)) {
-                    dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(android.R.string.cancel);
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    if (status.getStatus() == DownloadManager.STATUS_PENDING) {
-                        progressText.setVisibility(View.GONE);
-
-                        progressBar.setIndeterminate(true);
-
-                        statusText.setVisibility(View.VISIBLE);
-                        statusText.setText(R.string.downloads_starting);
-                    } else {
-                        if (status.getStatus() == DownloadManager.STATUS_PAUSED) {
-                            progressText.setVisibility(progressText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-                            int pausedStatus = -1;
-                            switch (status.getReason()) {
-                            case DownloadManager.PAUSED_QUEUED_FOR_WIFI:
-                                pausedStatus = R.string.downloads_paused_wifi;
-                                break;
-                            case DownloadManager.PAUSED_WAITING_FOR_NETWORK:
-                                pausedStatus = R.string.downloads_paused_network;
-                                break;
-                            case DownloadManager.PAUSED_WAITING_TO_RETRY:
-                                pausedStatus = R.string.downloads_paused_retry;
-                                break;
-                            case DownloadManager.PAUSED_UNKNOWN:
-                                pausedStatus = R.string.downloads_paused_unknown;
-                                break;
-                            }
-
-                            if (pausedStatus == -1) {
-                                statusText.setVisibility(View.GONE);
-                            } else {
-                                statusText.setVisibility(View.VISIBLE);
-                                statusText.setText(pausedStatus);
-                            }
-                        } else {
-                            progressText.setVisibility(View.VISIBLE);
-
-                            statusText.setVisibility(View.GONE);
-                        }
-
-                        progressText.setText(status.getProgressStr(ctx));
-
-                        progressBar.setIndeterminate(false);
-                        progressBar.setMax(status.getTotalBytes());
-                        progressBar.setProgress(status.getDownloadedBytes());
-                    }
-                } else {
-                    progressText.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
-                    statusText.setVisibility(View.VISIBLE);
-
-                    if (status.isSuccessful()) {
-                        dlg.setTitle(R.string.downloads_complete);
-                        dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.flash);
-                        statusText.setText(R.string.downloads_complete);
-                    } else {
-                        dlg.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.retry);
-                        statusText.setText(status.getErrorString(ctx));
-                    }
-                }
-
-                this.sendMessageDelayed(this.obtainMessage(), DownloadBarFragment.REFRESH_DELAY);
-            }
-        };
+        dlg = builder.create();
 
         dlg.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -366,14 +397,16 @@ public class DownloadBarFragment extends Fragment {
                         if (isActive(status)) {
                             dlg.dismiss();
                             dm.remove(downloadID);
-                        } else if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
-                            Intent i = new Intent(ctx, DownloadsActivity.class);
-                            i.setAction(info.getFlashAction());
-                            info.addToIntent(i);
-                            ctx.startActivity(i);
-                        } else if (status.getStatus() == DownloadManager.STATUS_FAILED) {
-                            dlg.dismiss();
-                            info.downloadFileDialog(ctx, callback);
+                        } else if (status != null) {
+                            if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
+                                Intent i = new Intent(ctx, DownloadsActivity.class);
+                                i.setAction(info.getFlashAction());
+                                info.addToIntent(i);
+                                ctx.startActivity(i);
+                            } else if (status.getStatus() == DownloadManager.STATUS_FAILED) {
+                                dlg.dismiss();
+                                info.downloadFileDialog(ctx, callback);
+                            }
                         }
                     }
                 });

@@ -48,7 +48,7 @@ public class KernelTab extends ListFragment {
     protected static final String KEY_SUMMARY = "summary";
     protected static final String KEY_ICON = "icon";
 
-    private final ArrayList<HashMap<String, Object>> DATA = new ArrayList<HashMap<String, Object>>();
+    private final ArrayList<HashMap<String, Object>> DATA = new ArrayList<>();
     private /*final*/ int AVAIL_UPDATES_IDX = -1;
     private /*final*/ SimpleAdapter adapter;
 
@@ -66,13 +66,13 @@ public class KernelTab extends ListFragment {
 
         HashMap<String, Object> item;
 
-        item = new HashMap<String, Object>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.main_device));
         item.put(KEY_SUMMARY, android.os.Build.DEVICE.toLowerCase(Locale.US));
         item.put(KEY_ICON, R.drawable.ic_device);
         DATA.add(item);
 
-        item = new HashMap<String, Object>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.main_kernel));
         item.put(KEY_SUMMARY, PropUtils.getKernelVersion());
         item.put(KEY_ICON, R.drawable.ic_info_outline);
@@ -86,13 +86,13 @@ public class KernelTab extends ListFragment {
                 kernelVersion += " (" + DateFormat.getDateTimeInstance().format(kernelDate) + ")";
             }
 
-            item = new HashMap<String, Object>();
+            item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.kernel_version));
             item.put(KEY_SUMMARY, kernelVersion);
             item.put(KEY_ICON, R.drawable.ic_settings);
             DATA.add(item);
 
-            item = new HashMap<String, Object>();
+            item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.updates_avail_title));
             checkForKernelUpdates();
             item.put(KEY_ICON, R.drawable.ic_cloud_download);
@@ -101,7 +101,7 @@ public class KernelTab extends ListFragment {
         } else {
             if (cfg.hasStoredKernelUpdate()) cfg.clearStoredKernelUpdate();
 
-            item = new HashMap<String, Object>();
+            item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.kernel_unsupported));
             item.put(KEY_SUMMARY, getString(R.string.kernel_unsupported_summary));
             item.put(KEY_ICON, R.drawable.ic_cloud_off);

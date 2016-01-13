@@ -25,7 +25,6 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 
 public class ShellCommand {
-    private Boolean can_su;
 
     public final SH sh;
     public final SH su;
@@ -33,23 +32,6 @@ public class ShellCommand {
     public ShellCommand() {
         sh = new SH("sh");
         su = new SH("su");
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public boolean canSU(boolean force_check) {
-        if (can_su == null || force_check) {
-            CommandResult r = su.runWaitFor("id");
-            StringBuilder out = new StringBuilder();
-
-            if (r.stdout != null)
-                out.append(r.stdout).append(" ; ");
-            if (r.stderr != null)
-                out.append(r.stderr);
-
-            Log.v(Config.LOG_TAG + "ShellCmd", "canSU() su[" + r.exit_value + "]: " + out);
-            can_su = r.success();
-        }
-        return can_su;
     }
 
     public class CommandResult {
@@ -62,10 +44,6 @@ public class ShellCommand {
             exit_value = exit_value_in;
             stdout = stdout_in;
             stderr = stderr_in;
-        }
-
-        public boolean success() {
-            return exit_value != null && exit_value == 0;
         }
     }
 
@@ -123,9 +101,7 @@ public class ShellCommand {
                     stdout = getStreamLines(process.getInputStream());
                     stderr = getStreamLines(process.getErrorStream());
 
-                } catch(InterruptedException e) {
-                    Log.e(Config.LOG_TAG + "ShellCmd", "runWaitFor " + e.toString());
-                } catch(NullPointerException e) {
+                } catch(InterruptedException | NullPointerException e) {
                     Log.e(Config.LOG_TAG + "ShellCmd", "runWaitFor " + e.toString());
                 }
             }

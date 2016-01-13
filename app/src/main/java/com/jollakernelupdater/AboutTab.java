@@ -38,7 +38,7 @@ public class AboutTab extends ListFragment {
     protected static final String KEY_TITLE = "title";
     protected static final String KEY_SUMMARY = "summary";
 
-    private final ArrayList<HashMap<String, String>> DATA = new ArrayList<HashMap<String,String>>();
+    private final ArrayList<HashMap<String, String>> DATA = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,22 +46,22 @@ public class AboutTab extends ListFragment {
 
         HashMap<String, String> item;
 
-        item = new HashMap<String, String>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.about_ota_title));
         item.put(KEY_SUMMARY, getString(R.string.about_ota_summary));
         DATA.add(item);
 
-        item = new HashMap<String, String>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.about_version_title));
         item.put(KEY_SUMMARY, Config.VERSION);
         DATA.add(item);
 
-        item = new HashMap<String, String>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.about_license_title));
         item.put(KEY_SUMMARY, "");
         DATA.add(item);
 
-        item = new HashMap<String, String>();
+        item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.about_contrib_title));
         item.put(KEY_SUMMARY, "");
         DATA.add(item);

@@ -24,7 +24,7 @@ import java.io.File;
 
 public class Config {
 
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3";
 
     public static final String LOG_TAG = "jolla::";
 
@@ -60,9 +60,9 @@ public class Config {
     private boolean ignoredDataWarn = false;
     private boolean ignoredWifiWarn = false;
 
-    private int lastVersion = -1;
-    private String lastDevice = null;
-    private String lastKernelID = null;
+    int lastVersion = -1;
+    String lastDevice = null;
+    String lastKernelID = null;
 
     private KernelInfo storedKernelUpdate = null;
 
@@ -220,7 +220,7 @@ public class Config {
         if (romDownloadID != -1) storeKernelDownloadID(-1);
     }
 
-    public void storeDownloadID(BaseInfo info, long downloadID) {
+    public void storeDownloadID(long downloadID) {
         storeKernelDownloadID(downloadID);
     }
 
@@ -228,7 +228,7 @@ public class Config {
         storeKernelUpdate((KernelInfo) info);
     }
 
-    public void clearStoredUpdate(Class<? extends BaseInfo> cls) {
+    public void clearStoredUpdate() {
         clearStoredKernelUpdate();
     }
 

@@ -158,7 +158,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
         DownloadManager dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadID = dm.enqueue(request);
-        cfg.storeDownloadID(this, downloadID);
+        cfg.storeDownloadID(downloadID);
         DownloadBarFragment.notifyActiveFragment();
         clearUpdateNotif(ctx);
 
@@ -455,7 +455,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
         @Override
         public void onSuccess(String message, JSONObject respObj) {
-            InfoFactory<T> factory = new InfoFactory<T>(CLASS);
+            InfoFactory<T> factory = new InfoFactory<>(CLASS);
             T info = factory.fromJSON(respObj);
 
             if (info != null && info.isUpdate()) {
@@ -466,7 +466,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
                     Log.v(Config.LOG_TAG + "InfoLoad", "found " + info.getNameKey() + " update, notif not shown");
                 }
             } else {
-                cfg.clearStoredUpdate(CLASS);
+                cfg.clearStoredUpdate();
                 factory.clearUpdateNotif(ctx);
             }
 

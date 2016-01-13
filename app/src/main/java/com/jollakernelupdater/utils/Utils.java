@@ -20,28 +20,21 @@ package com.jollakernelupdater.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
-import java.security.SecureRandom;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Random;
 
 public class Utils {
-//    protected static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
-    private static final Random random = new SecureRandom();
     private static final SimpleDateFormat OTA_DATE = new SimpleDateFormat("yyyyMMdd-kkmm", Locale.US);
 
     private Utils() { }
@@ -58,7 +51,7 @@ public class Utils {
         return "";
     }
 
-    private static final HashMap<File, String> MD5_FILE_CACHE = new HashMap<File, String>();
+    private static final HashMap<File, String> MD5_FILE_CACHE = new HashMap<>();
     public static String md5(File f) {
         if (!f.exists()) return "";
         if (MD5_FILE_CACHE.containsKey(f)) {
@@ -135,20 +128,11 @@ public class Utils {
     }
 
     private static String deviceID = null;
-    public static String getDeviceID(Context ctx) {
+    public static String getRandomID() {
 
         if (deviceID != null) return deviceID;
 
-        deviceID = ((TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        if (deviceID == null) {
-            WifiManager wm = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
-            if (wm.isWifiEnabled()) {
-                deviceID = wm.getConnectionInfo().getMacAddress();
-            } else {
-                //fallback to ANDROID_ID - gets reset on data wipe, but it's better than nothing
-                deviceID = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
-            }
-        }
+        deviceID = "" + Math.random();
         deviceID = md5(deviceID);
 
         return deviceID;

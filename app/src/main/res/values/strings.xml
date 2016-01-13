@@ -29,6 +29,7 @@
     <string name="ignore">Ignore</string>
     <string name="exit">Exit</string>
     <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
     <string name="hide">Hide</string>
     <string name="install">Install</string>
     <string name="login">Login</string>
@@ -87,7 +88,7 @@
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
 
     <string name="about_ota_title" translatable="false">jolla-kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2015\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
+    <string name="about_ota_summary">Copyright © 2016\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
     <string name="about_version_title">Version</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
@@ -142,5 +143,7 @@
     <string name="unknown_error">An unknown error has occurred!</string>
     <string name="alert_changelog">View Changelog</string>
     <string name="about_version_unknown">Unknown Version </string>
+
+    <string name="allow_permissions">Please allow permissions for kernel updates!</string>
 
 </resources>

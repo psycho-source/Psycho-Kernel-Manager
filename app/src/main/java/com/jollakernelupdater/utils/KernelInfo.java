@@ -30,7 +30,7 @@ import java.util.Date;
 public class KernelInfo extends BaseInfo {
     public static final String KEY_NAME = "kernel";
 
-    public static final InfoFactory<KernelInfo> FACTORY = new InfoFactory<KernelInfo>(KernelInfo.class);
+    public static final InfoFactory<KernelInfo> FACTORY = new InfoFactory<>(KernelInfo.class);
     public static final Creator<KernelInfo> CREATOR = FACTORY.getParcelableCreator();
 
     @Override

@@ -40,7 +40,7 @@ import java.util.ArrayList;
 
 public class DownloadListFragment extends ListFragment {
 
-    private final ArrayList<FileInfo> fileList = new ArrayList<FileInfo>();
+    private final ArrayList<FileInfo> fileList = new ArrayList<>();
     private ArrayAdapter<FileInfo> fileAdapter = null;
 
     @Override
@@ -140,7 +140,7 @@ public class DownloadListFragment extends ListFragment {
         }
 
         if (fileAdapter == null) {
-            fileAdapter = new ArrayAdapter<FileInfo>(getActivity(), R.layout.download_file, fileList);
+            fileAdapter = new ArrayAdapter<>(getActivity(), R.layout.download_file, fileList);
             setListAdapter(fileAdapter);
         } else {
             fileAdapter.notifyDataSetChanged();
@@ -158,7 +158,6 @@ public class DownloadListFragment extends ListFragment {
             if (!name.endsWith(".zip")) return;
 
             name = name.substring(0, name.length() - 4);
-            if (!name.contains("__")) return;
         }
 
         @Override

@@ -100,4 +100,6 @@
     <string name="updates_checking">이용가능한 업데이트 확인 중...</string>
     <string name="updates_new">새 업데이트: %1$s (version %2$s)\n다운로드/플래시를 위해 터치하세요!</string>
     <string name="updates_none">업데이트 없음. 수동 확인을 위해 터치하세요.</string>
+    <string name="allow_permissions">커널 업데이트를 위해서 권한들을 허용해 주세요!</string>
+    <string name="cancel">취소</string>
 </resources>

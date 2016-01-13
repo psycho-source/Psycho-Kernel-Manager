@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:drawableLeft="@drawable/ic_archive"
+    android:drawableStart="@drawable/ic_archive"
     android:drawablePadding="7dip"
     android:padding="7dip"
     android:textAppearance="?android:attr/textAppearanceMedium" />

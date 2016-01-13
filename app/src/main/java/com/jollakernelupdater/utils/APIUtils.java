@@ -23,14 +23,14 @@ import android.util.Log;
 
 import com.jollakernelupdater.R;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.HttpStatus;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
+import cz.msebera.android.httpclient.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,7 +114,7 @@ public class APIUtils {
             Log.v(Config.LOG_TAG + "serverCall", endpoint);
 
             try {
-                HttpClient http = new DefaultHttpClient();
+                HttpClient http = HttpClientBuilder.create().build();
 
                 String reqBody = data == null ? "" : data.toString();
 
@@ -124,7 +124,7 @@ public class APIUtils {
                 req.addHeader("Accept", "application/json");
 
                 req.addHeader("X-API-Authentication", "");
-                req.addHeader("X-Device-ID", Utils.getDeviceID(ctx));
+                req.addHeader("X-Device-ID", Utils.getRandomID());
 
                 req.setEntity(new StringEntity(reqBody, "UTF-8"));
 

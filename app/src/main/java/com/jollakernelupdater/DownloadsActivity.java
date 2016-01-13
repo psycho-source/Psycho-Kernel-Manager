@@ -44,9 +44,7 @@ import java.util.Locale;
 public class DownloadsActivity extends BaseDownloadDialogActivity {
     public static final String FLASH_KERNEL_ACTION = "com.jollakernelupdater.action.FLASH_KERNEL_ACTION";
 
-    private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
-
-    private ActionBar bar;
+    private final ArrayList<Dialog> dlgs = new ArrayList<>();
 
     public static boolean is_called_by_DownloadList;
     public static String DownloadList_File_Name;
@@ -63,7 +61,7 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
         setContentView(R.layout.downloads);
 
-        bar = getSupportActionBar();
+        ActionBar bar = getSupportActionBar();
         assert bar != null;
 
         bar.setDisplayHomeAsUpEnabled(true);
@@ -82,16 +80,6 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
         dlgs.clear();
         super.onPause();
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return false;
     }
 
     protected void showFlashDialog(final BaseInfo info) {

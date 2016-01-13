@@ -17,6 +17,8 @@
 
 package com.jollakernelupdater;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -53,11 +55,15 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
 
     private Config cfg;
 
-   ActionBar bar;
+    ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
 
         final Context context = getApplicationContext();
         cfg = Config.getInstance(context);
@@ -271,7 +277,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
         private final Context ctx;
         private final ActionBar mActionBar;
         private final ViewPager mViewPager;
-        private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+        private final ArrayList<TabInfo> mTabs = new ArrayList<>();
 
         static final class TabInfo {
             private final Class<?> clss;
