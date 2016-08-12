@@ -182,7 +182,7 @@ public class PropUtils {
         if (!KERNEL_OTA_ENABLED) return;
 
         ShellCommand cmd = new ShellCommand();
-        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("cat " + KERNEL_OTA_PROP);
+        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("su -c cat " + KERNEL_OTA_PROP);
         if (catResult.stdout.length() == 0) return;
 
         try {
