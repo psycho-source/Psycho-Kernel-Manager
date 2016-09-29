@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 23
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'org.jetbrains:annotations:13.0'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
 }
