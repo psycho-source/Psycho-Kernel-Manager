@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 public class PropUtils {
     public static final String GEN_OTA_PROP = "/system/jolla-kernel_updater.prop";
-    public static final String KERNEL_OTA_PROP = "/jolla-kernel.prop";
+    public static final String KERNEL_OTA_PROP = "/proc/jolla-kernel";
 
     private static /*final*/ boolean KERNEL_OTA_ENABLED;
     private static String cachedKernelID = null;
@@ -182,14 +182,17 @@ public class PropUtils {
         if (!KERNEL_OTA_ENABLED) return;
 
         ShellCommand cmd = new ShellCommand();
-        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("su -c cat " + KERNEL_OTA_PROP);
+        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("cat " + KERNEL_OTA_PROP);
         if (catResult.stdout.length() == 0) return;
 
         try {
             JSONObject kernelOtaProp = new JSONObject(catResult.stdout);
-            cachedKernelID = kernelOtaProp.getString("otaid");
-            cachedKernelVer = kernelOtaProp.getString("otaver");
-            cachedKernelDate = Utils.parseDate(kernelOtaProp.getString("otatime"));
+            cachedKernelID = kernelOtaProp.getString("kernel-name");
+            cachedKernelVer = kernelOtaProp.getString("version");
+            cachedKernelDate = Utils.parseDate(kernelOtaProp.getString("buildtime"));
+            Log.i(Config.LOG_TAG+ "ReadOTAProp", "kernel-name: " + cachedKernelID);
+            Log.i(Config.LOG_TAG+ "ReadOTAProp", "version: " + cachedKernelVer);
+            Log.i(Config.LOG_TAG+ "ReadOTAProp", "buildtime: " + cachedKernelDate);
         } catch (JSONException e) {
             Log.e(Config.LOG_TAG + "ReadOTAProp", "Error in jolla-kernel.prop file!");
         }

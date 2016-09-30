@@ -17,6 +17,7 @@
 
 package com.jollakernelupdater;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,11 +25,15 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.jollakernelupdater.utils.BaseInfo;
 import com.jollakernelupdater.utils.KernelInfo;
 import com.jollakernelupdater.utils.DownloadStatus;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public class DownloadReceiver extends BroadcastReceiver {
     public static final String DL_KERNEL_ACTION = "com.jollakernelupdater.action.DL_KERNEL_ACTION";
@@ -39,6 +44,14 @@ public class DownloadReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action == null) return;
+
+        if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(context, R.string.need_storage_permission, Toast.LENGTH_LONG).show();
+            Intent i = new Intent(context, jollakernelUpdaterActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+            return;
+        }
 
         switch (action) {
             case DL_KERNEL_ACTION:

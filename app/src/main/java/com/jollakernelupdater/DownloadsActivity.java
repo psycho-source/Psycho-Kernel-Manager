@@ -25,8 +25,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jollakernelupdater.utils.BaseDownloadDialogActivity;

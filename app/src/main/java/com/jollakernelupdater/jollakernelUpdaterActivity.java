@@ -34,6 +34,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jollakernelupdater.utils.BaseDownloadDialogActivity;
 import com.jollakernelupdater.utils.Config;
@@ -53,6 +54,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     public static final String KEY_TAB = "tab";
     private int kernelTabIdx = 0;
 
+    Context context;
     private Config cfg;
 
     ActionBar bar;
@@ -61,13 +63,18 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        context = getApplicationContext();
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), R.string.need_storage_permission, Toast.LENGTH_LONG).show();
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            return;
         }
 
-        final Context context = getApplicationContext();
+        startMainActivity(context, savedInstanceState);
+    }
+
+    private void startMainActivity(Context context, Bundle savedInstanceState) {
         cfg = Config.getInstance(context);
 
         boolean data = Utils.dataAvailable(this);
@@ -195,6 +202,21 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startMainActivity(context, null);
+                } else {
+                    finish();
+                }
+                break;
+        }
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleNotifAction(intent);
@@ -208,7 +230,8 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     @Override
     protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_TAB, bar.getSelectedNavigationIndex());
+        if (bar != null)
+            outState.putInt(KEY_TAB, bar.getSelectedNavigationIndex());
     }
 
     @Override

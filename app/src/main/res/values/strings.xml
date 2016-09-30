@@ -145,5 +145,6 @@
     <string name="about_version_unknown">Unknown Version </string>
 
     <string name="allow_permissions">Please allow permissions for kernel updates!</string>
+    <string name="need_storage_permission">Please grant storage permission.</string>
 
 </resources>
