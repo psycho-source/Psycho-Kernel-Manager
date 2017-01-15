@@ -7,6 +7,14 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 25
+        jackOptions {
+            enabled true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -38,6 +46,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
     compile 'org.jetbrains:annotations:15.0'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.2'
 }
