@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class SettingsActivity extends PreferenceActivity implements DialogCallback {
 
-    private final ArrayList<Dialog> dlgs = new ArrayList<Dialog>();
+    private final ArrayList<Dialog> dlgs = new ArrayList<>();
 
     private Config cfg;
 

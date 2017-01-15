@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,21 +28,21 @@ public class Config {
 
     public static final String LOG_TAG = "jolla::";
 
-    public static final String HTTPC_UA = "jolla-kernel Updater App";
+    static final String HTTPC_UA = "jolla-kernel Updater App";
 
-    public static final String SITE_BASE_URL = "https://www.otaupdatecenter.pro/";
+    static final String SITE_BASE_URL = "https://www.otaupdatecenter.pro/";
     public static final String SITE_GITHUB_URL = "https://github.com/jollaman999";
-    public static final String KERNEL_PULL_URL = "device/info/kernel";
+    static final String KERNEL_PULL_URL = "device/info/kernel";
 
-    public static final int KERNEL_NOTIF_ID = 200;
-    public static final int KERNEL_FAILED_NOTIF_ID = 201;
-    public static final int KERNEL_FLASH_NOTIF_ID = 202;
+    static final int KERNEL_NOTIF_ID = 200;
+    static final int KERNEL_FAILED_NOTIF_ID = 201;
+    static final int KERNEL_FLASH_NOTIF_ID = 202;
 
-    public static final String BASE_DL_PATH = PropUtils.getSystemSdPath();
+    private static final String BASE_DL_PATH = PropUtils.getSystemSdPath();
     public static final String KERNEL_SD_PATH = "/jolla-kernel/";
-    public static final String KERNEL_DL_PATH = BASE_DL_PATH + "/jolla-kernel/";
+    private static final String KERNEL_DL_PATH = BASE_DL_PATH + "/jolla-kernel/";
 
-    public static final File DL_PATH_FILE = new File(BASE_DL_PATH);
+    private static final File DL_PATH_FILE = new File(BASE_DL_PATH);
     public static final File KERNEL_DL_PATH_FILE = new File(KERNEL_DL_PATH);
 
     static {
@@ -59,10 +59,6 @@ public class Config {
     private boolean ignoredUnsupportedWarn = false;
     private boolean ignoredDataWarn = false;
     private boolean ignoredWifiWarn = false;
-
-    int lastVersion = -1;
-    String lastDevice = null;
-    String lastKernelID = null;
 
     private KernelInfo storedKernelUpdate = null;
 
@@ -92,10 +88,6 @@ public class Config {
                 clearStoredKernelUpdate();
             }
         }
-
-        lastVersion  = PREFS.getInt("version", lastVersion);
-        lastDevice   = PREFS.getString("device", lastDevice);
-        lastKernelID = PREFS.getString("kernel_id", lastKernelID);
 
         kernelDownloadID = PREFS.getLong("kernelDownloadID", kernelDownloadID);
     }
@@ -181,7 +173,7 @@ public class Config {
         return storedKernelUpdate;
     }
 
-    public void storeKernelUpdate(KernelInfo info) {
+    private void storeKernelUpdate(KernelInfo info) {
         this.storedKernelUpdate = info;
         synchronized (PREFS) {
             SharedPreferences.Editor editor = PREFS.edit();
@@ -199,11 +191,11 @@ public class Config {
         }
     }
 
-    public boolean isDownloadingRom() {
+    boolean isDownloadingRom() {
         return romDownloadID != -1;
     }
 
-    public void storeKernelDownloadID(long downloadID) {
+    private void storeKernelDownloadID(long downloadID) {
         kernelDownloadID = downloadID;
         putLong("kernelDownloadID", kernelDownloadID);
     }
@@ -220,15 +212,15 @@ public class Config {
         if (romDownloadID != -1) storeKernelDownloadID(-1);
     }
 
-    public void storeDownloadID(long downloadID) {
+    void storeDownloadID(long downloadID) {
         storeKernelDownloadID(downloadID);
     }
 
-    public void storeUpdate(BaseInfo info) {
+    void storeUpdate(BaseInfo info) {
         storeKernelUpdate((KernelInfo) info);
     }
 
-    public void clearStoredUpdate() {
+    void clearStoredUpdate() {
         clearStoredKernelUpdate();
     }
 

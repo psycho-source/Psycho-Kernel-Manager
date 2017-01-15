@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2015 jollaman999
      Copyright (C) 2014 OTA Update Center
+     Copyright (C) 2017 jollaman999
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -22,10 +22,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <fragment class="com.jollakernelupdater.DownloadBarFragment"
         android:id="@+id/downloads_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tabs"
         tools:layout="@layout/download_bar" />
 
     <android.support.v4.view.ViewPager
@@ -33,5 +39,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/downloads_bar" />
-    
+
 </RelativeLayout>

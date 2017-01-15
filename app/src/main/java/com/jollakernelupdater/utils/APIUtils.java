@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,7 +62,7 @@ public class APIUtils {
         private String respMsg;
         private JSONObject respObj;
 
-        public APITask(Context ctx, String endpoint, JSONObject data, APICallback callback) {
+        APITask(Context ctx, String endpoint, JSONObject data, APICallback callback) {
             this.ctx = ctx;
             this.endpoint = endpoint;
             this.data = data;
@@ -110,7 +111,7 @@ public class APIUtils {
             if (callback != null) callback.onCancel();
         }
 
-        public JSONObject makeServerCall(String endpoint, JSONObject data) {
+        JSONObject makeServerCall(String endpoint, JSONObject data) {
             Log.v(Config.LOG_TAG + "serverCall", endpoint);
 
             try {
@@ -171,7 +172,7 @@ public class APIUtils {
         }
     }
 
-    public interface APICallback {
+    interface APICallback {
         void onStart(APITask task);
         void onSuccess(String message, JSONObject respObj);
         void onError(String message, JSONObject respObj);
@@ -179,7 +180,7 @@ public class APIUtils {
         void onComplete(boolean success);
     }
 
-    public static abstract class APIAdapter implements APICallback {
+    static abstract class APIAdapter implements APICallback {
         @Override public void onStart(APITask task) { }
         @Override public void onSuccess(String message, JSONObject respObj) { }
         @Override public void onError(String message, JSONObject respObj) { }

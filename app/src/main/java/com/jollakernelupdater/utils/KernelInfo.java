@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.io.File;
 import java.util.Date;
 
 public class KernelInfo extends BaseInfo {
-    public static final String KEY_NAME = "kernel";
+    private static final String KEY_NAME = "kernel";
 
     public static final InfoFactory<KernelInfo> FACTORY = new InfoFactory<>(KernelInfo.class);
     public static final Creator<KernelInfo> CREATOR = FACTORY.getParcelableCreator();

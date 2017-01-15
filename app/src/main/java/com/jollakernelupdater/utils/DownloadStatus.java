@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,27 +24,27 @@ import android.database.Cursor;
 import com.jollakernelupdater.R;
 
 public class DownloadStatus {
-    public static final int ERROR_MD5_MISMATCH = 900;
+    static final int ERROR_MD5_MISMATCH = 900;
 
-    public static final int SCALE_KBYTES = 1024;
-    public static final int KBYTE_THRESH = 920; //0.9kb
+    private static final int SCALE_KBYTES = 1024;
+    private static final int KBYTE_THRESH = 920; //0.9kb
 
-    public static final int SCALE_MBYTES = 1048576;
-    public static final int MBYTE_THRESH = 943718; //0.9mb
+    private static final int SCALE_MBYTES = 1048576;
+    private static final int MBYTE_THRESH = 943718; //0.9mb
 
-    public static final int SCALE_GBYTES = 1073741824;
-    public static final int GBYTE_THRESH = 966367641; //0.9gb
+    private static final int SCALE_GBYTES = 1073741824;
+    private static final int GBYTE_THRESH = 966367641; //0.9gb
 
-    protected final long ID;
+    private final long ID;
 
-    protected int status;
-    protected int reason;
-    protected int totalBytes;
-    protected int downloadedBytes;
+    private int status;
+    private int reason;
+    private int totalBytes;
+    private int downloadedBytes;
 
     protected BaseInfo info = null;
 
-    protected DownloadStatus(long id) {
+    private DownloadStatus(long id) {
         ID = id;
     }
 
@@ -99,7 +99,7 @@ public class DownloadStatus {
         return status == DownloadManager.STATUS_SUCCESSFUL;
     }
 
-    public void checkDownloadedFile() {
+    private void checkDownloadedFile() {
         if (status != DownloadManager.STATUS_SUCCESSFUL) return;
         if (info == null) return;
 
@@ -122,7 +122,7 @@ public class DownloadStatus {
         return downloadedBytes;
     }
 
-    public double getDownloadedPercent() {
+    private double getDownloadedPercent() {
         if (totalBytes <= 0) return 0;
         return 100.0 * (double) downloadedBytes / (double) totalBytes;
     }
@@ -133,16 +133,6 @@ public class DownloadStatus {
 
         if (totalBytes == 0 || totalBytes == -1) {
             int bytesTxtRes = R.string.downloads_size_progress_unknown_b;
-            if (totalBytes >= DownloadStatus.GBYTE_THRESH) {
-                scaledDone /= DownloadStatus.SCALE_GBYTES;
-                bytesTxtRes = R.string.downloads_size_progress_unknown_gb;
-            } else if (totalBytes >= DownloadStatus.MBYTE_THRESH) {
-                scaledDone /= DownloadStatus.SCALE_MBYTES;
-                bytesTxtRes = R.string.downloads_size_progress_unknown_mb;
-            } else if (totalBytes >= DownloadStatus.KBYTE_THRESH) {
-                scaledDone /= DownloadStatus.SCALE_KBYTES;
-                bytesTxtRes = R.string.downloads_size_progress_unknown_kb;
-            }
             return ctx.getString(bytesTxtRes, getDownloadedPercent(), scaledDone);
         } else {
             int bytesTxtRes = R.string.downloads_size_progress_b;

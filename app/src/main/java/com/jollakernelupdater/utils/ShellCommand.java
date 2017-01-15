@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *  ** (Code from Kevin @ TeslaCoil) **
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,20 +24,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 
-public class ShellCommand {
+class ShellCommand {
 
-    public final SH sh;
-    public final SH su;
+    final SH sh;
 
-    public ShellCommand() {
+    ShellCommand() {
         sh = new SH("sh");
-        su = new SH("su");
     }
 
-    public class CommandResult {
-        public final String stdout;
-        public final String stderr;
-        public final Integer exit_value;
+    class CommandResult {
+        final String stdout;
+        final String stderr;
+        final Integer exit_value;
 
         CommandResult(Integer exit_value_in, String stdout_in, String stderr_in)
         {
@@ -50,11 +48,11 @@ public class ShellCommand {
     public class SH {
         private String SHELL = "sh";
 
-        public SH(String SHELL_in) {
+        SH(String SHELL_in) {
             SHELL = SHELL_in;
         }
 
-        public Process run(String s) {
+        Process run(String s) {
             Process process;
             try {
                 process = Runtime.getRuntime().exec(SHELL);

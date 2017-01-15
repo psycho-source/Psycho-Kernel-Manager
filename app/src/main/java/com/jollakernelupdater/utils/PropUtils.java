@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PropUtils {
-    public static final String GEN_OTA_PROP = "/system/jolla-kernel_updater.prop";
-    public static final String KERNEL_OTA_PROP = "/proc/jolla-kernel";
+    private static final String GEN_OTA_PROP = "/system/jolla-kernel_updater.prop";
+    private static final String KERNEL_OTA_PROP = "/proc/jolla-kernel";
 
     private static /*final*/ boolean KERNEL_OTA_ENABLED;
     private static String cachedKernelID = null;
@@ -68,7 +68,7 @@ public class PropUtils {
         return KERNEL_OTA_ENABLED;
     }
 
-    public static String getKernelOtaID() {
+    static String getKernelOtaID() {
         if (!KERNEL_OTA_ENABLED) return null;
         if (cachedKernelID == null) {
             readKernelOtaProp();
@@ -112,7 +112,7 @@ public class PropUtils {
         return cachedKernelUname;
     }
 
-    public static String getSystemSdPath() {
+    static String getSystemSdPath() {
         if (cachedSystemSdPath == null) {
             readGenOtaProp();
         }
@@ -141,7 +141,7 @@ public class PropUtils {
     }
 
     @SuppressLint("SdCardPath")
-    public static String getDefaultRecoverySdPath() {
+    private static String getDefaultRecoverySdPath() {
         String userPath = "";
         if (Environment.isExternalStorageEmulated() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             userPath = "/0";
@@ -199,19 +199,19 @@ public class PropUtils {
     }
 
     private static class LegacyCompat {
-        public static final String OTA_REBOOT_CMD_PROP = "otaupdater.rebootcmd";
-        public static final String OTA_NOFLASH_PROP = "otaupdater.noflash";
-        public static final String OTA_SYSTEM_SD_PATH_PROP = "otaupdater.sdcard.os";
-        public static final String OTA_RECOVERY_SD_PATH_PROP = "otaupdater.sdcard.recovery";
+        static final String OTA_REBOOT_CMD_PROP = "otaupdater.rebootcmd";
+        static final String OTA_NOFLASH_PROP = "otaupdater.noflash";
+        static final String OTA_SYSTEM_SD_PATH_PROP = "otaupdater.sdcard.os";
+        static final String OTA_RECOVERY_SD_PATH_PROP = "otaupdater.sdcard.recovery";
 
-        public static String getRebootCmd() {
+        static String getRebootCmd() {
             ShellCommand cmd = new ShellCommand();
             ShellCommand.CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_REBOOT_CMD_PROP);
             if (propResult.stdout.length() == 0) return null;
             return propResult.stdout;
         }
 
-        public static Boolean getNoflash() {
+        static Boolean getNoflash() {
             ShellCommand cmd = new ShellCommand();
             ShellCommand.CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_NOFLASH_PROP);
             if (propResult.stdout.length() == 0) return null;
@@ -219,7 +219,7 @@ public class PropUtils {
         }
 
         @SuppressLint("SdCardPath")
-        public static String getSystemSdPath() {
+        static String getSystemSdPath() {
             ShellCommand cmd = new ShellCommand();
             ShellCommand.CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_SYSTEM_SD_PATH_PROP);
             if (propResult.stdout.length() == 0) return null;
@@ -227,7 +227,7 @@ public class PropUtils {
         }
 
         @SuppressLint("SdCardPath")
-        public static String getRecoverySdPath() {
+        static String getRecoverySdPath() {
             ShellCommand cmd = new ShellCommand();
             ShellCommand.CommandResult propResult = cmd.sh.runWaitFor("getprop " + OTA_RECOVERY_SD_PATH_PROP);
             if (propResult.stdout.length() == 0) return null;

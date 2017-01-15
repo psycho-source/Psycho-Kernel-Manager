@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class Utils {
 
     private Utils() { }
 
-    public static String md5(String s) {
+    private static String md5(String s) {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
@@ -52,7 +52,7 @@ public class Utils {
     }
 
     private static final HashMap<File, String> MD5_FILE_CACHE = new HashMap<>();
-    public static String md5(File f) {
+    static String md5(File f) {
         if (!f.exists()) return "";
         if (MD5_FILE_CACHE.containsKey(f)) {
             String cachedMD5 = MD5_FILE_CACHE.get(f);
@@ -103,7 +103,7 @@ public class Utils {
         return ni != null && ni.isConnected() && ni.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
-    public static Date parseDate(String date) {
+    static Date parseDate(String date) {
         if (date == null) return null;
         try {
             return OTA_DATE.parse(date);
@@ -113,13 +113,13 @@ public class Utils {
         return null;
     }
 
-    public static String formatDate(Date date) {
+    static String formatDate(Date date) {
         if (date == null) return null;
         return OTA_DATE.format(date);
     }
 
     private static String device = null;
-    public static String getDevice() {
+    static String getDevice() {
         if (device != null) return device;
 
         device = Build.DEVICE.toLowerCase(Locale.US);
@@ -128,7 +128,7 @@ public class Utils {
     }
 
     private static String deviceID = null;
-    public static String getRandomID() {
+    static String getRandomID() {
 
         if (deviceID != null) return deviceID;
 
@@ -138,7 +138,7 @@ public class Utils {
         return deviceID;
     }
 
-    public static String sanitizeName(String name) {
+    static String sanitizeName(String name) {
         if (name == null) return "";
 
         name = Normalizer.normalize(name, Normalizer.Form.NFD);
@@ -152,7 +152,7 @@ public class Utils {
     }
 
     private static final char[] HEX_DIGITS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-    public static String byteArrToStr(byte[] bytes) {
+    private static String byteArrToStr(byte[] bytes) {
         StringBuilder str = new StringBuilder();
         for (byte b : bytes) {
             str.append(HEX_DIGITS[(0xF0 & b) >>> 4]);

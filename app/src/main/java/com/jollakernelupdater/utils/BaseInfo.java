@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,12 +46,12 @@ import java.util.Date;
 public abstract class BaseInfo implements Parcelable, Serializable {
     private static final long serialVersionUID = 7138464743643950748L;
 
-    public static final String KEY_NAME = "name";
-    public static final String KEY_VERSION = "version";
-    public static final String KEY_CHANGELOG = "changelog";
-    public static final String KEY_URL = "url";
-    public static final String KEY_MD5 = "md5";
-    public static final String KEY_DATE = "date";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_VERSION = "version";
+    private static final String KEY_CHANGELOG = "changelog";
+    private static final String KEY_URL = "url";
+    private static final String KEY_MD5 = "md5";
+    private static final String KEY_DATE = "date";
 
     public String name;
     public String version;
@@ -60,7 +60,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public String md5;
     public Date date;
 
-    protected BaseInfo() {
+    BaseInfo() {
     }
 
     public void addToIntent(Intent i) {
@@ -72,7 +72,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         i.putExtra(KEY_DATE, Utils.formatDate(date));
     }
 
-    public void putToSharedPrefs(SharedPreferences.Editor editor) {
+    void putToSharedPrefs(SharedPreferences.Editor editor) {
         editor.putString(getNameKey() + "_info_" + KEY_NAME, name);
         editor.putString(getNameKey() + "_info_" + KEY_VERSION, version);
         editor.putString(getNameKey() + "_info_" + KEY_CHANGELOG, changelog);
@@ -173,7 +173,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         return Utils.sanitizeName(name) + "__" + Utils.sanitizeName(version) + ".zip";
     }
 
-    public File getDownloadFile() {
+    private File getDownloadFile() {
         return new File(getDownloadPathFile(), getDownloadFileName());
     }
 
@@ -184,7 +184,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         return 0;
     }
 
-    public Uri getDownloadFileUri() {
+    private Uri getDownloadFileUri() {
         return Uri.parse("file://" + getDownloadFile().getAbsolutePath());
     }
 
@@ -238,7 +238,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         dlg.show();
     }
 
-    public void showChangelogDialog(final Context ctx, final DownloadDialogCallback callback) {
+    private void showChangelogDialog(final Context ctx, final DownloadDialogCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setTitle(ctx.getString(R.string.alert_changelog_title, version));
         builder.setMessage(changelog);
@@ -317,11 +317,11 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public static class InfoFactory<T extends BaseInfo> {
         private final Class<T> CLASS;
 
-        public InfoFactory(Class<T> cls) {
+        InfoFactory(Class<T> cls) {
             this.CLASS = cls;
         }
 
-        public T fromJSON(JSONObject json) {
+        T fromJSON(JSONObject json) {
             if (json == null || json.length() == 0 || json.has("error")) return null;
 
             try {
@@ -342,7 +342,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
             return null;
         }
 
-        public T fromBundle(Bundle bundle) {
+        T fromBundle(Bundle bundle) {
             if (bundle == null || bundle.isEmpty()) return null;
 
             try {
@@ -367,7 +367,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
             return fromBundle(i.getExtras());
         }
 
-        public T fromSharedPrefs(SharedPreferences prefs) {
+        T fromSharedPrefs(SharedPreferences prefs) {
             try {
                 T info = CLASS.newInstance();
 
@@ -386,7 +386,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
             return null;
         }
 
-        public Creator<T> getParcelableCreator() {
+        Creator<T> getParcelableCreator() {
             return new Creator<T>() {
                 @Override
                 @SuppressWarnings("unchecked")
@@ -424,7 +424,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
             }
         }
 
-        public void clearFromSharedPrefs(SharedPreferences.Editor editor) {
+        void clearFromSharedPrefs(SharedPreferences.Editor editor) {
             try {
                 T info = CLASS.newInstance();
 
@@ -445,7 +445,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         private final Context ctx;
         private final Config cfg;
 
-        public InfoLoadAdapter(Class<T> cls, Context ctx) {
+        protected InfoLoadAdapter(Class<T> cls, Context ctx) {
             this.CLASS = cls;
             this.ctx = ctx;
             this.cfg = Config.getInstance(ctx);

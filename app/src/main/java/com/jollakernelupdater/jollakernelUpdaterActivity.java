@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 jollaman999
  * Copyright (C) 2014 OTA Update Center
+ * Copyright (C) 2017 jollaman999
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ package com.jollakernelupdater;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -30,7 +32,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,22 +44,16 @@ import com.jollakernelupdater.utils.KernelInfo;
 import com.jollakernelupdater.utils.Utils;
 import com.jollakernelupdater.utils.PropUtils;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-
 public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     public static final String KERNEL_NOTIF_ACTION = "com.jollakernelupdater.action.KERNEL_NOTIF_ACTION";
 
     public static final String EXTRA_FLAG_DOWNLOAD_DIALOG = "SHOW_DOWNLOAD_DIALOG";
 
-    public static final String KEY_TAB = "tab";
-    private int kernelTabIdx = 0;
-
     Context context;
     private Config cfg;
 
     ActionBar bar;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +67,10 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
             return;
         }
 
-        startMainActivity(context, savedInstanceState);
+        startMainActivity(context);
     }
 
-    private void startMainActivity(Context context, Bundle savedInstanceState) {
+    private void startMainActivity(Context context) {
         cfg = Config.getInstance(context);
 
         boolean data = Utils.dataAvailable(this);
@@ -175,40 +171,84 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
         setContentView(R.layout.main);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         bar = getSupportActionBar();
         assert bar != null;
 
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setTitle(R.string.app_name);
 
-        TabsAdapter mTabsAdapter = new TabsAdapter(this, mViewPager);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.main_about), AboutTab.class);
-
-        ActionBar.Tab kernelTab = bar.newTab().setText(R.string.main_kernel);
-        if (cfg.hasStoredKernelUpdate()) kernelTab.setIcon(R.drawable.ic_action_warning);
-        kernelTabIdx = mTabsAdapter.addTab(kernelTab, KernelTab.class);
+        if (cfg.hasStoredKernelUpdate()) {
+            TabLayout.Tab tab = tabLayout.getTabAt(1);
+            if (tab != null) {
+                tab.setIcon(R.drawable.ic_action_warning);
+            }
+        }
 
         if (!handleNotifAction(getIntent())) {
             if (cfg.hasStoredKernelUpdate() && !cfg.isDownloadingKernel()) {
                 cfg.getStoredKernelUpdate().showUpdateNotif(this);
             }
+        }
+    }
 
-            if (savedInstanceState != null) {
-                bar.setSelectedNavigationItem(savedInstanceState.getInt(KEY_TAB, 0));
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            switch (position) {
+                case 0:
+                    return new AboutTab();
+                case 1:
+                    return new KernelTab();
             }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.main_about);
+                case 1:
+                    return getResources().getString(R.string.main_kernel);
+            }
+            return null;
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 0:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startMainActivity(context, null);
+                    startMainActivity(context);
                 } else {
                     finish();
                 }
@@ -225,13 +265,6 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (bar != null)
-            outState.putInt(KEY_TAB, bar.getSelectedNavigationIndex());
     }
 
     @Override
@@ -270,10 +303,13 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     }
 
     public void updateKernelTabIcon(boolean update) {
-        if (update) {
-            bar.getTabAt(kernelTabIdx).setIcon(R.drawable.ic_action_warning);
-        } else {
-            bar.getTabAt(kernelTabIdx).setIcon(null);
+        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        if (tab != null) {
+            if (update) {
+                tab.setIcon(R.drawable.ic_action_warning);
+            } else {
+                tab.setIcon(null);
+            }
         }
     }
 
@@ -281,7 +317,6 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
         String action = intent.getAction();
         if (KERNEL_NOTIF_ACTION.equals(action)) {
             KernelInfo.FACTORY.clearUpdateNotif(this);
-            bar.setSelectedNavigationItem(kernelTabIdx);
 
             if (intent.getBooleanExtra(EXTRA_FLAG_DOWNLOAD_DIALOG, false)) {
                 DownloadBarFragment.showDownloadingDialog(this, cfg.getKernelDownloadID(), this);
@@ -294,86 +329,5 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
             return false;
         }
         return true;
-    }
-
-    public static class TabsAdapter extends FragmentPagerAdapter
-            implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
-
-        private final Context ctx;
-        private final ActionBar mActionBar;
-        private final ViewPager mViewPager;
-        private final ArrayList<TabInfo> mTabs = new ArrayList<>();
-
-        static final class TabInfo {
-            private final Class<?> clss;
-
-            TabInfo(Class<?> _class) {
-                clss = _class;
-            }
-        }
-
-        public TabsAdapter(AppCompatActivity activity, ViewPager pager) {
-            super(activity.getSupportFragmentManager());
-            ctx = activity;
-            mActionBar = activity.getSupportActionBar();
-            mViewPager = pager;
-            mViewPager.setAdapter(this);
-            mViewPager.setOnPageChangeListener(this);
-        }
-
-        public int addTab(ActionBar.Tab tab, Class<?> clss) {
-            TabInfo info = new TabInfo(clss);
-            tab.setTag(info);
-            tab.setTabListener(this);
-            mTabs.add(info);
-            mActionBar.addTab(tab);
-            notifyDataSetChanged();
-
-            return mTabs.size() - 1;
-        }
-
-        @Override
-        public int getCount() {
-            return mTabs.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            TabInfo info = mTabs.get(position);
-            return Fragment.instantiate(ctx, info.clss.getName());
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            mActionBar.setSelectedNavigationItem(position);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
-
-        @Override
-        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-            Object tag = tab.getTag();
-            for (int i = 0; i < mTabs.size(); i++) {
-                if (mTabs.get(i) == tag) {
-                    mViewPager.setCurrentItem(i);
-                }
-            }
-        }
-
-        @Override
-        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-        }
-
-        @Override
-        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-        }
     }
 }
