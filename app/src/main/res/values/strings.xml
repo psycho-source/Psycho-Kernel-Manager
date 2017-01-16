@@ -89,7 +89,7 @@
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
 
     <string name="about_ota_title" translatable="false">jolla-kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2016\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
+    <string name="about_ota_summary">Copyright © 2017\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
     <string name="about_version_title">Version</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
