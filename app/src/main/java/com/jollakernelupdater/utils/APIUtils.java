@@ -28,12 +28,12 @@ import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.HttpStatus;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 public class APIUtils {
 
@@ -43,29 +43,20 @@ public class APIUtils {
             return;
         }
 
-        JSONObject data = new JSONObject();
-        try {
-            data.put("device", Utils.getDevice());
-            data.put("kernel_id", PropUtils.getKernelOtaID());
-        } catch (JSONException ignored) {
-        }
-
-        new APITask(ctx, Config.KERNEL_PULL_URL, data, callback).execute();
+        new APITask(ctx, Config.KERNEL_PULL_URL, callback).execute();
     }
 
     public static class APITask extends AsyncTask<Void, Void, Boolean> {
         private final Context ctx;
         private final String endpoint;
-        private final JSONObject data;
         private final APICallback callback;
 
         private String respMsg;
         private JSONObject respObj;
 
-        APITask(Context ctx, String endpoint, JSONObject data, APICallback callback) {
+        APITask(Context ctx, String endpoint, APICallback callback) {
             this.ctx = ctx;
             this.endpoint = endpoint;
-            this.data = data;
             this.callback = callback;
         }
 
@@ -81,7 +72,7 @@ public class APIUtils {
                 return false;
             }
 
-            JSONObject resp = makeServerCall(endpoint, data);
+            JSONObject resp = makeServerCall(endpoint);
             if (resp == null || resp.length() == 0) {
                 respMsg = ctx.getString(R.string.unknown_error);
                 return false;
@@ -111,23 +102,14 @@ public class APIUtils {
             if (callback != null) callback.onCancel();
         }
 
-        JSONObject makeServerCall(String endpoint, JSONObject data) {
+        JSONObject makeServerCall(String endpoint) {
+            endpoint += android.os.Build.DEVICE.toLowerCase(Locale.US) + ".json";
             Log.v(Config.LOG_TAG + "serverCall", endpoint);
 
             try {
                 HttpClient http = HttpClientBuilder.create().build();
 
-                String reqBody = data == null ? "" : data.toString();
-
                 HttpPost req = new HttpPost(Config.SITE_BASE_URL + endpoint);
-
-                req.addHeader("Content-Type", "application/json");
-                req.addHeader("Accept", "application/json");
-
-                req.addHeader("X-API-Authentication", "");
-                req.addHeader("X-Device-ID", Utils.getRandomID());
-
-                req.setEntity(new StringEntity(reqBody, "UTF-8"));
 
                 HttpResponse resp = http.execute(req);
 

@@ -48,7 +48,7 @@
 
     <string name="kernel_download_ticker">jolla-kernel Update Available</string>
     <string name="kernel_download_title">jolla-kernel Update Available: %1$s</string>
-    <string name="kernel_download_details">jolla-kernel update is available\n\nVersion: %1$s\nChangelog:\n%2$s</string>
+    <string name="kernel_download_details">jolla-kernel update is available\n\nVersion: %1$s</string>
     <string name="kernel_download_progress">jolla-kernel Update Downloading</string>
     <string name="kernel_download_failed">jolla-kernel Download Failed</string>
     <string name="kernel_download_done">jolla-kernel Download Complete</string>
@@ -73,7 +73,6 @@
     <string name="alert_downloading">Downloading…</string>
     <string name="alert_unsupported_title">Unsupported Kernel</string>
     <string name="alert_unsupported_message">There is no jolla-kernel! This updater only available with jolla-kernel!\n\n(jolla-kernel.prop missing)</string>
-    <string name="alert_changelog_title">Changelog for version %1$s</string>
 
     <string name="menu_downloads">Downloads</string>
     <string name="menu_settings">Settings</string>
@@ -124,7 +123,6 @@
     <string name="downloads_failed_unknown">Download failed</string>
     <string name="downloads_none">No Downloads Found</string>
     <string name="downloads_no_status">Unable to get download status</string>
-    <string name="downloads_changelog_title">Changelog:</string>
     <string name="downloads_complete">Finished! Ready to flash!</string>
     <string name="downloads_file" translatable="false">%1$s</string>
 

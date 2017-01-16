@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.File;
+import java.util.Locale;
 
 public class Config {
 
@@ -30,9 +31,18 @@ public class Config {
 
     static final String HTTPC_UA = "jolla-kernel Updater App";
 
-    static final String SITE_BASE_URL = "https://www.otaupdatecenter.pro/";
+    static final String SITE_BASE_URL = "http://tp.jollaman999.com/";
     public static final String SITE_GITHUB_URL = "https://github.com/jollaman999";
-    static final String KERNEL_PULL_URL = "device/info/kernel";
+    private static final String SITE_CHANGELOG_URL_PART1 = "https://github.com/jollaman999/jolla-kernel_AIO/blob/";
+    private static final String SITE_CHANGELOG_URL_PART2_EN = "/META-INF/com/google/android/aroma/changelog/en.txt";
+    private static final String SITE_CHANGELOG_URL_PART2_KO = "/META-INF/com/google/android/aroma/changelog/ko.txt";
+    static final String SITE_CHANGELOG_URL_EN = SITE_CHANGELOG_URL_PART1 +
+                                                          android.os.Build.DEVICE.toLowerCase(Locale.US) +
+                                                          SITE_CHANGELOG_URL_PART2_EN;
+    static final String SITE_CHANGELOG_URL_KO = SITE_CHANGELOG_URL_PART1 +
+                                                          android.os.Build.DEVICE.toLowerCase(Locale.US) +
+                                                          SITE_CHANGELOG_URL_PART2_KO;
+    static final String KERNEL_PULL_URL = "jolla-kernel_json/";
 
     static final int KERNEL_NOTIF_ID = 200;
     static final int KERNEL_FAILED_NOTIF_ID = 201;

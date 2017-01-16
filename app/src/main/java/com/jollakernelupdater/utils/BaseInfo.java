@@ -42,20 +42,19 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 public abstract class BaseInfo implements Parcelable, Serializable {
     private static final long serialVersionUID = 7138464743643950748L;
 
     private static final String KEY_NAME = "name";
     private static final String KEY_VERSION = "version";
-    private static final String KEY_CHANGELOG = "changelog";
     private static final String KEY_URL = "url";
     private static final String KEY_MD5 = "md5";
     private static final String KEY_DATE = "date";
 
     public String name;
     public String version;
-    public String changelog;
     public String url;
     public String md5;
     public Date date;
@@ -66,7 +65,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public void addToIntent(Intent i) {
         i.putExtra(getNameKey(), name);
         i.putExtra(KEY_VERSION, version);
-        i.putExtra(KEY_CHANGELOG, changelog);
         i.putExtra(KEY_URL, url);
         i.putExtra(KEY_MD5, md5);
         i.putExtra(KEY_DATE, Utils.formatDate(date));
@@ -75,7 +73,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     void putToSharedPrefs(SharedPreferences.Editor editor) {
         editor.putString(getNameKey() + "_info_" + KEY_NAME, name);
         editor.putString(getNameKey() + "_info_" + KEY_VERSION, version);
-        editor.putString(getNameKey() + "_info_" + KEY_CHANGELOG, changelog);
         editor.putString(getNameKey() + "_info_" + KEY_URL, url);
         editor.putString(getNameKey() + "_info_" + KEY_MD5, md5);
         editor.putString(getNameKey() + "_info_" + KEY_DATE, Utils.formatDate(date));
@@ -90,7 +87,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(version);
-        dest.writeString(changelog);
         dest.writeString(url);
         dest.writeString(md5);
         dest.writeLong(date.getTime());
@@ -129,7 +125,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         builder.setTicker(ctx.getString(getNotifTextStr(), version));
         builder.setWhen(System.currentTimeMillis());
         builder.setSmallIcon(R.drawable.ic_stat_system_update);
-        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(ctx.getString(getNotifDetailsStr(), version, changelog)));
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(ctx.getString(getNotifDetailsStr(), version)));
         builder.setPriority(NotificationCompat.PRIORITY_LOW);
         builder.addAction(R.drawable.ic_action_av_download, ctx.getString(R.string.download), dlPIntent);
 
@@ -205,49 +201,16 @@ public abstract class BaseInfo implements Parcelable, Serializable {
             }
         });
 
-        if (changelog.length() != 0) {
-            builder.setNeutralButton(R.string.alert_changelog, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    showChangelogDialog(ctx, callback);
-                }
-            });
-        }
-
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.alert_changelog, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-            }
-        });
-
-        final AlertDialog dlg = builder.create();
-        dlg.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                if (callback != null) callback.onDialogShown(dlg);
-            }
-        });
-        dlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (callback != null) callback.onDialogClosed(dlg);
-            }
-        });
-        dlg.show();
-    }
-
-    private void showChangelogDialog(final Context ctx, final DownloadDialogCallback callback) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setTitle(ctx.getString(R.string.alert_changelog_title, version));
-        builder.setMessage(changelog);
-
-        builder.setPositiveButton(R.string.download, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-                downloadFileDialog(ctx, callback);
+                String strLanguage = Locale.getDefault().getLanguage();
+                if (strLanguage.equals("ko")) {
+                    ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_CHANGELOG_URL_KO)));
+                } else {
+                    ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_CHANGELOG_URL_EN)));
+                }
             }
         });
 
@@ -329,7 +292,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
                 info.name = json.getString(info.getNameKey());
                 info.version = json.getString(KEY_VERSION);
-                info.changelog = json.getString(KEY_CHANGELOG);
                 info.url = json.getString(KEY_URL);
                 info.md5 = json.getString(KEY_MD5);
                 info.date = Utils.parseDate(json.getString(KEY_DATE));
@@ -350,7 +312,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
                 info.name = bundle.getString(info.getNameKey());
                 info.version = bundle.getString(KEY_VERSION);
-                info.changelog = bundle.getString(KEY_CHANGELOG);
                 info.url = bundle.getString(KEY_URL);
                 info.md5 = bundle.getString(KEY_MD5);
                 info.date = Utils.parseDate(bundle.getString(KEY_DATE));
@@ -373,7 +334,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
                 info.name = prefs.getString(info.getNameKey() + "_info_" + KEY_NAME, null);
                 info.version = prefs.getString(info.getNameKey() + "_info_" + KEY_VERSION, null);
-                info.changelog = prefs.getString(info.getNameKey() + "_info_" + KEY_CHANGELOG, null);
                 info.url = prefs.getString(info.getNameKey() + "_info_" + KEY_URL, null);
                 info.md5 = prefs.getString(info.getNameKey() + "_info_" + KEY_MD5, null);
                 info.date = Utils.parseDate(prefs.getString(info.getNameKey() + "_info_" + KEY_DATE, null));
@@ -401,7 +361,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
                         info.name = source.readString();
                         info.version = source.readString();
-                        info.changelog = source.readString();
                         info.url = source.readString();
                         info.md5 = source.readString();
                         info.date = new Date(source.readLong());
@@ -430,7 +389,6 @@ public abstract class BaseInfo implements Parcelable, Serializable {
 
                 editor.remove(info.getNameKey() + "_info_" + KEY_NAME);
                 editor.remove(info.getNameKey() + "_info_" + KEY_VERSION);
-                editor.remove(info.getNameKey() + "_info_" + KEY_CHANGELOG);
                 editor.remove(info.getNameKey() + "_info_" + KEY_URL);
                 editor.remove(info.getNameKey() + "_info_" + KEY_MD5);
                 editor.remove(info.getNameKey() + "_info_" + KEY_DATE);

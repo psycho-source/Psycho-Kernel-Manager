@@ -342,11 +342,9 @@ public class DownloadBarFragment extends Fragment {
         View view = inflater.inflate(R.layout.download_dialog, null);
 
         TextView titleView = (TextView) view.findViewById(R.id.download_dlg_title);
-        TextView changelogView = (TextView) view.findViewById(R.id.download_dlg_changelog);
 
         final BaseInfo info = initStatus.getInfo();
         titleView.setText(ctx.getString(info.getDownloadingTitle(), info.name, info.version));
-        changelogView.setText(info.changelog);
 
         progressText = (TextView) view.findViewById(R.id.download_dlg_progress_text);
         statusText = (TextView) view.findViewById(R.id.download_dlg_status);

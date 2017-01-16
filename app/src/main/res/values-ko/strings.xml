@@ -23,8 +23,7 @@
     <string name="about_version_title">버젼</string>
     <string name="about_version_unknown">알 수 없는 버젼</string>
     <string name="alert_changelog">변경 사항 보기</string>
-    <string name="alert_changelog_title">%1$s 에 대한 변경사항</string>
-    <string name="alert_downloading">다운로드 중...</string>
+    <string name="alert_downloading">다운로드 중..</string>
     <string name="alert_install_message">이 업데이트를 설치하는 것은 ZIP 파일을 플래싱 하기 위해 리커버리 모드로 재부팅 할 것입니다. 설치 완료 후, 시스템이 자동으로 재부팅 됩니다.</string>
     <string name="alert_install_title">ZIP 설치</string>
     <string name="alert_nodata_message">활성화된 연결이 없습니다.\njolla-kernel 업데이트를 체크하거나 다운로드 하기 위해 Wi-Fi 나 모바일 데이터를 활성화 해주십시오.</string>
@@ -44,7 +43,6 @@
     <string name="close">닫기</string>
     <string name="delete">삭제</string>
     <string name="download">다운로드</string>
-    <string name="downloads_changelog_title">변경사항:</string>
     <string name="downloads_complete">다운로드 완료! 플래시 준비!</string>
     <string name="downloads_failed_fileexists">다운로드 실패: 파일이 이미 있습니다</string>
     <string name="downloads_failed_http">다운로드 실패: HTTP 에러</string>
@@ -56,11 +54,11 @@
     <string name="downloads_kernel_label">jolla-kernel 업데이트 다운로드 중</string>
     <string name="downloads_no_status">다운로드 상태를 가져올 수 없습니다</string>
     <string name="downloads_none">다운로드 항목 없음</string>
-    <string name="downloads_paused_network">데이터 연결 기다리는 중...</string>
-    <string name="downloads_paused_retry">다운로드 재시도 기다리는 중...</string>
-    <string name="downloads_paused_unknown">다운로드가 진행되기를 기다리는 중...</string>
-    <string name="downloads_paused_wifi">Wi-Fi 대기중...</string>
-    <string name="downloads_starting">다운로드 시작 중...</string>
+    <string name="downloads_paused_network">데이터 연결 기다리는 중..</string>
+    <string name="downloads_paused_retry">다운로드 재시도 기다리는 중..</string>
+    <string name="downloads_paused_unknown">다운로드가 진행되기를 기다리는 중..</string>
+    <string name="downloads_paused_wifi">Wi-Fi 대기중..</string>
+    <string name="downloads_starting">다운로드 시작 중..</string>
     <string name="exit">닫기</string>
     <string name="flash">플래시</string>
     <string name="hide">숨기기</string>
@@ -68,7 +66,7 @@
     <string name="ignore">무시</string>
     <string name="install">설치</string>
     <string name="kernel_download_alert_title">jolla-kernel 업데이트 다운로드 중 (%1$s version %2$s)</string>
-    <string name="kernel_download_details">jolla-kernel 업데이트 가능\n\n버젼: %1$s\n변경사항:\n%2$s</string>
+    <string name="kernel_download_details">jolla-kernel 업데이트 가능\n\n버젼: %1$s</string>
     <string name="kernel_download_done">jolla-kernel 다운로드 완료</string>
     <string name="kernel_download_failed">jolla-kernel 다운로드 실패</string>
     <string name="kernel_download_progress">jolla-kernel 업데이트 다운로드 중</string>
@@ -114,7 +112,7 @@
     <string name="unknown_error">알 수 없는 에러 발생!</string>
     <string name="update_fetch_error">업데이트 정보 가져오기 실패: %1$s</string>
     <string name="updates_avail_title">이용가능한 업데이트</string>
-    <string name="updates_checking">이용가능한 업데이트 확인 중...</string>
+    <string name="updates_checking">이용가능한 업데이트 확인 중..</string>
     <string name="updates_new">새 업데이트: %1$s (version %2$s)\n다운로드/플래시를 위해 터치하세요!</string>
     <string name="updates_none">업데이트 없음. 수동 확인을 위해 터치하세요.</string>
     <string name="allow_permissions">커널 업데이트를 위해서 권한들을 허용해 주세요!</string>
