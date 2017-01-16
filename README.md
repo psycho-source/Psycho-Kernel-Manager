@@ -1,4 +1,4 @@
-jolla-kernel Updater -  v1.3
+jolla-kernel Updater -  v1.7
 =============================
 
 Kernel updater for my jolla-kernel!
