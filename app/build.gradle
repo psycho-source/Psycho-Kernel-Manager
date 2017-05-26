@@ -1,20 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 'android-O'
+    buildToolsVersion '26.0.0-rc2'
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 25
-        jackOptions {
-            enabled true
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetSdkVersion 'O'
     }
 
     signingConfigs {
@@ -45,8 +37,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:26+'
+    compile 'com.android.support:design:26+'
     compile 'org.jetbrains:annotations:15.0'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.2'
 }
