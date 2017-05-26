@@ -118,4 +118,7 @@
     <string name="allow_permissions">커널 업데이트를 위해서 권한들을 허용해 주세요!</string>
     <string name="cancel">취소</string>
     <string name="need_storage_permission">저장소 권한을 허용해 주십시오.</string>
+    <string name="need_root_permission">jolla-kernel Updater 는 root 권한을 필요로 합니다!</string>
+    <string name="root_check_failed">root 상태 확인 실패! \'whoami\' 명령이 존재하지 않습니까?</string>
+    <string name="unsupported_su">지원되지 않는 SU 바이너리 입니다! 최신 버젼의 Magisk 나 SuperSU 를 설치해 주시기 바랍니다.</string>
 </resources>

@@ -32,7 +32,6 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +42,10 @@ import com.jollakernelupdater.utils.Config;
 import com.jollakernelupdater.utils.KernelInfo;
 import com.jollakernelupdater.utils.Utils;
 import com.jollakernelupdater.utils.PropUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     public static final String KERNEL_NOTIF_ACTION = "com.jollakernelupdater.action.KERNEL_NOTIF_ACTION";
@@ -58,6 +61,32 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), R.string.need_root_permission, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        try {
+            Process process = Runtime.getRuntime().exec("su - -c whoami");
+            InputStreamReader input_stream_reader = new InputStreamReader(process.getInputStream());
+            String s_whoami = new BufferedReader(input_stream_reader).readLine();
+
+            if (!s_whoami.equals("root")) {
+                Toast.makeText(getApplicationContext(), R.string.root_check_failed, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), R.string.unsupported_su, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), R.string.need_storage_permission, Toast.LENGTH_LONG).show();

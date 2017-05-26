@@ -95,7 +95,7 @@ public class PropUtils {
     public static String getKernelVersion() {
         if (cachedKernelUname == null) {
             ShellCommand cmd = new ShellCommand();
-            ShellCommand.CommandResult procVerResult = cmd.sh.runWaitFor("cat /proc/version");
+            ShellCommand.CommandResult procVerResult = cmd.sh.runWaitFor("su - -c cat /proc/version");
             if (procVerResult.stdout.length() == 0) return null;
 
             Pattern p = Pattern.compile(PROC_VERSION_REGEX);
@@ -182,7 +182,7 @@ public class PropUtils {
         if (!KERNEL_OTA_ENABLED) return;
 
         ShellCommand cmd = new ShellCommand();
-        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("cat " + KERNEL_OTA_PROP);
+        ShellCommand.CommandResult catResult = cmd.sh.runWaitFor("su - -c cat " + KERNEL_OTA_PROP);
         if (catResult.stdout.length() == 0) return;
 
         try {
