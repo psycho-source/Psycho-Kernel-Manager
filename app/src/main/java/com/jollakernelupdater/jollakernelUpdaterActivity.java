@@ -66,7 +66,7 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
             Runtime.getRuntime().exec("su");
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), R.string.need_root_permission, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.need_root_permission, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -77,19 +77,19 @@ public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
             String s_whoami = new BufferedReader(input_stream_reader).readLine();
 
             if (s_whoami == null) {
-                Toast.makeText(getApplicationContext(), R.string.su_exec_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.su_exec_error, Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
 
             if (!s_whoami.equals("root")) {
-                Toast.makeText(getApplicationContext(), R.string.root_check_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.root_check_failed, Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), R.string.unsupported_su, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.unsupported_su, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
