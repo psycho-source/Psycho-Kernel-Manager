@@ -18,7 +18,6 @@
 package com.jollakernelupdater.utils;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -66,14 +65,6 @@ public class PropUtils {
 
     public static boolean isKernelOtaEnabled() {
         return KERNEL_OTA_ENABLED;
-    }
-
-    static String getKernelOtaID() {
-        if (!KERNEL_OTA_ENABLED) return null;
-        if (cachedKernelID == null) {
-            readKernelOtaProp();
-        }
-        return cachedKernelID;
     }
 
     public static Date getKernelOtaDate() {
@@ -143,7 +134,7 @@ public class PropUtils {
     @SuppressLint("SdCardPath")
     private static String getDefaultRecoverySdPath() {
         String userPath = "";
-        if (Environment.isExternalStorageEmulated() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Environment.isExternalStorageEmulated()) {
             userPath = "/0";
         }
 
