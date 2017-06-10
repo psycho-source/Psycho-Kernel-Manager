@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-O'
-    buildToolsVersion '26.0.0-rc2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.0'
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 25
+        targetSdkVersion 26
     }
 
     signingConfigs {
@@ -37,8 +37,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:26+'
-    compile 'com.android.support:design:26+'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
     compile 'org.jetbrains:annotations:15.0'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.2'
 }
