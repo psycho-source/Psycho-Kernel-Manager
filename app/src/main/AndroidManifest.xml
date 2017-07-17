@@ -19,11 +19,11 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.jollakernelupdater"
+    package="com.psychomods.updater"
     android:versionCode="10"
     android:versionName="1.0">
 
-    <uses-feature android:name="com.jollakernelupdater.ota_feature" android:required="true" />
+    <uses-feature android:name="com.psychomods.updater.ota_feature" android:required="true" />
 
     <uses-permission android:name="android.permission.REBOOT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -44,7 +44,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.jollakernelupdater.jollakernelUpdaterActivity"
+            android:name="com.psychomods.updater.jollakernelUpdaterActivity"
             android:launchMode="singleTask"
             android:label="@string/app_name">
 
@@ -55,44 +55,44 @@
         </activity>
 
         <activity
-            android:name="com.jollakernelupdater.LicenseActivity"
+            android:name="com.psychomods.updater.LicenseActivity"
             android:label="@string/app_license">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.jollakernelupdater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
         </activity>
         
         <activity 
-            android:name="com.jollakernelupdater.ContributorsActivity"
+            android:name="com.psychomods.updater.ContributorsActivity"
             android:label="@string/app_contrib">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.jollakernelupdater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
         </activity>
 
         <activity
-            android:name="com.jollakernelupdater.SettingsActivity"
+            android:name="com.psychomods.updater.SettingsActivity"
             android:label="@string/app_settings">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.jollakernelupdater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
         </activity>
 
         <activity
-            android:name="com.jollakernelupdater.DownloadsActivity"
+            android:name="com.psychomods.updater.DownloadsActivity"
             android:label="@string/app_downloads">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.jollakernelupdater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
         </activity>
         
-        <receiver android:name="com.jollakernelupdater.DownloadReceiver"
+        <receiver android:name="com.psychomods.updater.DownloadReceiver"
                   tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="com.jollakernelupdater.action.DL_KERNEL_ACTION" />
-                <action android:name="com.jollakernelupdater.action.CLEAR_DL_ACTION" />
+                <action android:name="com.psychomods.updater.action.DL_KERNEL_ACTION" />
+                <action android:name="com.psychomods.updater.action.CLEAR_DL_ACTION" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.jollakernelupdater.CheckinReceiver">
+        <receiver android:name="com.psychomods.updater.CheckinReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

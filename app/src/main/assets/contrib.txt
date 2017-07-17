@@ -1,5 +1,5 @@
-Modified for jolla-kernel
-by jollaman999
+Modified for Psycho-Kernel
+by Psycho-Mods
 
 
 OTAUPDATECENTER TEAM
@@ -10,6 +10,9 @@ M3ntion
 Vetruvet
 T-Junk
 
+JOLLA-KERNEL
+============
+jollaman999
 
 APP DEVELOPMENT
 ===============
