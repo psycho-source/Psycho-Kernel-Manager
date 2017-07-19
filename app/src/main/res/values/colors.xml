@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -17,7 +18,7 @@
 -->
 
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#2196f3</color>
+    <color name="colorPrimaryDark">#1E88E5</color>
+    <color name="colorAccent">#f44336</color>
 </resources>

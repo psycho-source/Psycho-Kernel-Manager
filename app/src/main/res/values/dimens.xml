@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -21,5 +22,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="appbar_padding_top">0dp</dimen>
 </resources>

@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -18,8 +19,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/settings_title">
 
         <CheckBoxPreference
             android:title="@string/settings_notif_title"
@@ -47,6 +46,5 @@
             android:summary="@string/settings_resetwarn_summary"
             android:key="resetwarn_pref" />
 
-    </PreferenceCategory>
 
 </PreferenceScreen>

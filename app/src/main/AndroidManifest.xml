@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -19,11 +20,11 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.psychomods.updater"
+    package="com.psychokernelupdater"
     android:versionCode="10"
     android:versionName="1.0">
 
-    <uses-feature android:name="com.psychomods.updater.ota_feature" android:required="true" />
+    <uses-feature android:name="com.psychokernelupdater.ota_feature" android:required="true" />
 
     <uses-permission android:name="android.permission.REBOOT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -44,7 +45,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.psychomods.updater.jollakernelUpdaterActivity"
+            android:name="com.psychokernelupdater.jollakernelUpdaterActivity"
             android:launchMode="singleTask"
             android:label="@string/app_name">
 
@@ -55,44 +56,45 @@
         </activity>
 
         <activity
-            android:name="com.psychomods.updater.LicenseActivity"
+            android:name="com.psychokernelupdater.LicenseActivity"
             android:label="@string/app_license">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychokernelupdater.jollakernelUpdaterActivity" />
         </activity>
         
         <activity 
-            android:name="com.psychomods.updater.ContributorsActivity"
+            android:name="com.psychokernelupdater.ContributorsActivity"
             android:label="@string/app_contrib">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychokernelupdater.jollakernelUpdaterActivity" />
         </activity>
 
         <activity
-            android:name="com.psychomods.updater.SettingsActivity"
-            android:label="@string/app_settings">
+            android:name="com.psychokernelupdater.SettingsActivity"
+            android:label="@string/app_settings"
+            android:theme="@style/SettingsTheme">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychokernelupdater.jollakernelUpdaterActivity" />
         </activity>
 
         <activity
-            android:name="com.psychomods.updater.DownloadsActivity"
+            android:name="com.psychokernelupdater.DownloadsActivity"
             android:label="@string/app_downloads">
             
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychomods.updater.jollakernelUpdaterActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.psychokernelupdater.jollakernelUpdaterActivity" />
         </activity>
         
-        <receiver android:name="com.psychomods.updater.DownloadReceiver"
+        <receiver android:name="com.psychokernelupdater.DownloadReceiver"
                   tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="com.psychomods.updater.action.DL_KERNEL_ACTION" />
-                <action android:name="com.psychomods.updater.action.CLEAR_DL_ACTION" />
+                <action android:name="com.jollakernelupdater.action.DL_KERNEL_ACTION" />
+                <action android:name="com.jollakernelupdater.action.CLEAR_DL_ACTION" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.psychomods.updater.CheckinReceiver">
+        <receiver android:name="com.psychokernelupdater.CheckinReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

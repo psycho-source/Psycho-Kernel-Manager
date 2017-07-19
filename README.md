@@ -1,6 +1,9 @@
-jolla-kernel Updater -  v1.8
+Psycho-Kernel Updater -  v1.0
 =============================
 
-Kernel updater for my jolla-kernel!
+Kernel updater for my Psycho-Kernel!
 
-https://github.com/jollaman999/jolla-kernel_bullhead
+https://github.com/psycho-source/Psycho-Kernel
+
+
+Special Thanks to jollaman999... :)

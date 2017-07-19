@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -23,7 +24,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        class="com.jollakernelupdater.DownloadBarFragment"
+        class="com.psychokernelupdater.DownloadBarFragment"
         android:id="@+id/downloads_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,7 @@
         tools:layout="@layout/download_bar" />
 
     <fragment
-        class="com.jollakernelupdater.DownloadListFragment"
+        class="com.psychokernelupdater.DownloadListFragment"
         android:id="@+id/download_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

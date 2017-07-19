@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
+     Copyright (C) 2017 Psycho-Mods
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 <resources>
 
-    <string name="app_name" translatable="false">jolla-kernel Updater</string>
+    <string name="app_name" translatable="false">Psycho-Kernel Updater</string>
     <string name="app_license">License</string>
     <string name="app_contrib">Contributors</string>
     <string name="app_downloads">Downloads</string>
@@ -44,24 +45,24 @@
     <string name="main_device">Device</string>
     <string name="main_kernel">Kernel</string>
     <string name="main_about">About</string>
-    <string name="main_otaid" translatable="false">jolla-kernel Updater ID</string>
+    <string name="main_otaid" translatable="false">Psycho-Kernel Updater ID</string>
 
-    <string name="kernel_download_ticker">jolla-kernel Update Available</string>
-    <string name="kernel_download_title">jolla-kernel Update Available: %1$s</string>
-    <string name="kernel_download_details">jolla-kernel update is available\n\nVersion: %1$s</string>
-    <string name="kernel_download_progress">jolla-kernel Update Downloading</string>
-    <string name="kernel_download_failed">jolla-kernel Download Failed</string>
-    <string name="kernel_download_done">jolla-kernel Download Complete</string>
-    <string name="kernel_download_alert_title">Downloading jolla-kernel update (%1$s version %2$s)</string>
-    <string name="kernel_toast_no_update">There is no jolla-kernel update at this time</string>
-    <string name="kernel_update_to">This update will update your jolla-kernel to version %2$s</string>
-    <string name="kernel_version">jolla-kernel Version</string>
+    <string name="kernel_download_ticker">Psycho-Kernel Update Available</string>
+    <string name="kernel_download_title">Psycho-Kernel Update Available: %1$s</string>
+    <string name="kernel_download_details">Psycho-Kernel update is available\n\nVersion: %1$s</string>
+    <string name="kernel_download_progress">Psycho-Kernel Update Downloading</string>
+    <string name="kernel_download_failed">Psycho-Kernel Download Failed</string>
+    <string name="kernel_download_done">Psycho-Kernel Download Complete</string>
+    <string name="kernel_download_alert_title">Downloading Psycho-Kernel update (%1$s version %2$s)</string>
+    <string name="kernel_toast_no_update">There is no Psycho-Kernel update at this time</string>
+    <string name="kernel_update_to">This update will update your Psycho-Kernel to version %2$s</string>
+    <string name="kernel_version">Psycho-Kernel Version</string>
     <string name="kernel_version_unknown">Unknown Kernel Version</string>
-    <string name="kernel_unsupported">No jolla-kernel?</string>
-    <string name="kernel_unsupported_summary">It seems you are not using a jolla-kernel! :(\n\n(jolla-kernel.prop missing)</string>
+    <string name="kernel_unsupported">No Psycho-Kernel?</string>
+    <string name="kernel_unsupported_summary">It seems you are not using a Psycho-Kernel! :(\n\n(Psycho-Kernel.prop missing)</string>
 
     <string name="alert_nodata_title">No Data Connection!</string>
-    <string name="alert_nodata_message">You have no data connection.\nPlease turn on Wi-Fi or Mobile Data in order to check for and download jolla-kernel updates.</string>
+    <string name="alert_nodata_message">You have no data connection.\nPlease turn on Wi-Fi or Mobile Data in order to check for and download Psycho-Kernel updates.</string>
     <string name="alert_nowifi_title">No Wi-Fi Connection!</string>
     <string name="alert_nowifi_message">You are on a mobile connection.\nThis app uses data heavily to download Kernel updates.\nIt is recommended to turn on Wi-Fi to avoid overage charges.</string>
     <string name="alert_wifi_settings">Wi-Fi Settings</string>
@@ -72,12 +73,12 @@
     <string name="alert_update_title">Kernel update available!</string>
     <string name="alert_downloading">Downloading…</string>
     <string name="alert_unsupported_title">Unsupported Kernel</string>
-    <string name="alert_unsupported_message">There is no jolla-kernel! This updater only available with jolla-kernel!\n\n(jolla-kernel.prop missing)</string>
+    <string name="alert_unsupported_message">There is no Psycho-Kernel! This updater only available with Psycho-Kernel!\n\n(Psycho-Kernel.prop missing)</string>
 
     <string name="menu_downloads">Downloads</string>
     <string name="menu_settings">Settings</string>
 
-    <string name="notif_source">jolla-kernel Update</string>
+    <string name="notif_source">Psycho-Kernel Update</string>
     <string name="notif_completed">Download finished. Tap to flash update.</string>
 
     <string name="toast_delete">File deleted successfully</string>
@@ -88,8 +89,8 @@
     <string name="toast_update_fetch_error">There was an error fetching update information</string>
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
 
-    <string name="about_ota_title" translatable="false">jolla-kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2017\nBy jollaman999\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
+    <string name="about_ota_title" translatable="false">Psycho-Kernel Updater</string>
+    <string name="about_ota_summary">Copyright © 2017\nBy Psycho-MOds\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
     <string name="about_version_title">Version</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
@@ -100,7 +101,7 @@
     <string name="update_fetch_error">Error fetching update info: %1$s</string>
     <string name="updates_new">New update: %1$s (version %2$s)\nTap to download/flash!</string>
 
-    <string name="downloads_kernel_label">Downloading jolla-kernel Update</string>
+    <string name="downloads_kernel_label">Downloading Psycho-Kernel Update</string>
     <string name="downloads_size_progress_b" translatable="false">%1$.1f%% (%2$d / %3$d bytes)</string>
     <string name="downloads_size_progress_kb" translatable="false">%1$.1f%% (%2$d / %3$d KB)</string>
     <string name="downloads_size_progress_mb" translatable="false">%1$.1f%% (%2$d / %3$d MB)</string>
@@ -126,7 +127,7 @@
     <string name="downloads_complete">Finished! Ready to flash!</string>
     <string name="downloads_file" translatable="false">%1$s</string>
 
-    <string name="settings_title">jolla-kernel Updater Settings</string>
+    <string name="settings_title">Updater Settings</string>
     <string name="settings_notif_title">Notify me of new updates</string>
     <string name="settings_notif_summary_off">Update notifications will not be shown\nYou will have to open the app manually to see if there are updates</string>
     <string name="settings_notif_summary_on">Update notifications will be shown</string>
@@ -146,7 +147,7 @@
 
     <string name="allow_permissions">Please allow permissions for kernel updates!</string>
     <string name="need_storage_permission">Please grant storage permission.</string>
-    <string name="need_root_permission">jolla-kernel Updater needs root permission!</string>
+    <string name="need_root_permission">Psycho-Kernel Updater needs root permission!</string>
     <string name="root_check_failed">Failed to check root status! Is \'whoami\' command missing?</string>
     <string name="su_exec_error">Error occurred while executing SU command. Is it enabled?</string>
     <string name="unsupported_su">Unsupported SU binary! Please install latest version of Magisk or SuperSU.</string>
