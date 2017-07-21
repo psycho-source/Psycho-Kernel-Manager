@@ -32,7 +32,7 @@ public class Config {
 
     static final String HTTPC_UA = "Psycho-Mods Updater App";
 
-    static final String SITE_BASE_URL = "http://psycho-mods.rf.gd/";
+    static final String SITE_BASE_URL = "https://psycho-mods.000webhostapp.com/";
     public static final String SITE_GITHUB_URL = "https://github.com/psycho-source";
     private static final String SITE_CHANGELOG_URL_PART1 = "https://github.com/psycho-source/Kernel-Updates/blob/";
     private static final String SITE_CHANGELOG_URL_PART2_EN = "https://raw.githubusercontent.com/psycho-source/Psycho-Kernel/master/flashable/META-INF/com/google/android/aroma/psycho.txt";

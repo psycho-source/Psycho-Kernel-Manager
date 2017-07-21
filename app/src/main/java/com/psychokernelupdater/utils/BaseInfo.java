@@ -35,7 +35,7 @@ import android.util.Log;
 
 import com.psychokernelupdater.DownloadBarFragment;
 import com.psychokernelupdater.DownloadReceiver;
-import com.psychokernelupdater.jollakernelUpdaterActivity;
+import com.psychokernelupdater.psychokernelUpdaterActivity;
 import com.psychokernelupdater.R;
 
 import org.json.JSONObject;
@@ -109,7 +109,7 @@ public abstract class BaseInfo implements Parcelable, Serializable {
     public void showUpdateNotif(Context ctx) {
         if (isDownloading(ctx)) return;
 
-        Intent mainIntent = new Intent(ctx, jollakernelUpdaterActivity.class);
+        Intent mainIntent = new Intent(ctx, psychokernelUpdaterActivity.class);
         mainIntent.setAction(getNotifAction());
         this.addToIntent(mainIntent);
         PendingIntent mainPIntent = PendingIntent.getActivity(ctx, 0, mainIntent, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -22,7 +22,7 @@ import android.content.Context;
 
 import com.psychokernelupdater.DownloadReceiver;
 import com.psychokernelupdater.DownloadsActivity;
-import com.psychokernelupdater.jollakernelUpdaterActivity;
+import com.psychokernelupdater.psychokernelUpdaterActivity;
 import com.psychokernelupdater.R;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class KernelInfo extends BaseInfo {
 
     @Override
     public String getNotifAction() {
-        return jollakernelUpdaterActivity.KERNEL_NOTIF_ACTION;
+        return psychokernelUpdaterActivity.KERNEL_NOTIF_ACTION;
     }
 
     @Override

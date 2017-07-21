@@ -48,8 +48,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class jollakernelUpdaterActivity extends BaseDownloadDialogActivity {
-    public static final String KERNEL_NOTIF_ACTION = "com.jollakernelupdater.action.KERNEL_NOTIF_ACTION";
+public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
+    public static final String KERNEL_NOTIF_ACTION = "com.psychokernelupdater.action.KERNEL_NOTIF_ACTION";
 
     public static final String EXTRA_FLAG_DOWNLOAD_DIALOG = "SHOW_DOWNLOAD_DIALOG";
 

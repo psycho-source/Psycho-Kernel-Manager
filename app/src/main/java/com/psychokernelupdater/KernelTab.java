@@ -178,10 +178,10 @@ public class KernelTab extends ListFragment {
         Activity act = getActivity();
         if (info != null && info.isUpdate()) {
             setUpdateSummary(getString(R.string.updates_new, info.name, info.version));
-            if (act instanceof jollakernelUpdaterActivity) ((jollakernelUpdaterActivity) act).updateKernelTabIcon(true);
+            if (act instanceof psychokernelUpdaterActivity) ((psychokernelUpdaterActivity) act).updateKernelTabIcon(true);
         } else {
             setUpdateSummary(R.string.updates_none);
-            if (act instanceof jollakernelUpdaterActivity) ((jollakernelUpdaterActivity) act).updateKernelTabIcon(false);
+            if (act instanceof psychokernelUpdaterActivity) ((psychokernelUpdaterActivity) act).updateKernelTabIcon(false);
             Toast.makeText(act, R.string.kernel_toast_no_update, Toast.LENGTH_SHORT).show();
         }
     }
