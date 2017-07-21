@@ -5,6 +5,8 @@
 
 app/build
 build
+dist
+projectFilesBackup
 .idea/workspace.xml
 .gradle
 local.properties
