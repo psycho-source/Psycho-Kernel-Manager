@@ -22,6 +22,7 @@ import android.app.Dialog;
 
 public interface DownloadDialogCallback extends DialogCallback {
     void onDownloadDialogShown(long downloadID, Dialog dlg);
+
     void onDownloadDialogClosed(long downloadID, Dialog dlg);
 }
 

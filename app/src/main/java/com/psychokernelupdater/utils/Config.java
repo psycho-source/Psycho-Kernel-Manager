@@ -22,39 +22,33 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.File;
-import java.util.Locale;
 
 public class Config {
 
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "2.0";
 
     public static final String LOG_TAG = "psycho::";
-
-    static final String HTTPC_UA = "Psycho-Mods Updater App";
-
-    static final String SITE_BASE_URL = "https://psycho-mods.000webhostapp.com/";
     public static final String SITE_GITHUB_URL = "https://github.com/psycho-source";
-    private static final String SITE_CHANGELOG_URL_PART1 = "https://github.com/psycho-source/Kernel-Updates/blob/";
-    private static final String SITE_CHANGELOG_URL_PART2_EN = "https://raw.githubusercontent.com/psycho-source/Psycho-Kernel/master/flashable/META-INF/com/google/android/aroma/psycho.txt";
-    private static final String SITE_CHANGELOG_URL_PART2_KO = "https://raw.githubusercontent.com/psycho-source/Psycho-Kernel/master/flashable/META-INF/com/google/android/aroma/psycho.txt";
-    static final String SITE_CHANGELOG_URL_EN = SITE_CHANGELOG_URL_PART1 +
-                                                          android.os.Build.DEVICE.toLowerCase(Locale.US) +
-                                                          SITE_CHANGELOG_URL_PART2_EN;
-    static final String SITE_CHANGELOG_URL_KO = SITE_CHANGELOG_URL_PART1 +
-                                                          android.os.Build.DEVICE.toLowerCase(Locale.US) +
-                                                          SITE_CHANGELOG_URL_PART2_KO;
+    public static final String KERNEL_SD_PATH = "/Psycho-Kernel/";
+    static final String HTTPC_UA = "Psycho-Mods Updater App";
+    static final String SITE_BASE_URL = "https://psycho-mods.000webhostapp.com/";
     static final String KERNEL_PULL_URL = "Psycho-Kernel_json/";
-
     static final int KERNEL_NOTIF_ID = 200;
     static final int KERNEL_FAILED_NOTIF_ID = 201;
     static final int KERNEL_FLASH_NOTIF_ID = 202;
-
+    private static final String SITE_CHANGELOG_URL_PART1 = "https://raw.githubusercontent.com/";
+    private static final String SITE_CHANGELOG_URL_PART2_EN = "psycho-source/Psycho-Kernel/master/flashable/META-INF/com/google/android/aroma/psycho.txt";
+    static final String SITE_CHANGELOG_URL_EN = SITE_CHANGELOG_URL_PART1 +
+            SITE_CHANGELOG_URL_PART2_EN;
+    private static final String SITE_CHANGELOG_URL_PART2_KO = "psycho-source/Psycho-Kernel/master/flashable/META-INF/com/google/android/aroma/psycho.txt";
+    static final String SITE_CHANGELOG_URL_KO = SITE_CHANGELOG_URL_PART1 +
+            SITE_CHANGELOG_URL_PART2_KO;
     private static final String BASE_DL_PATH = PropUtils.getSystemSdPath();
-    public static final String KERNEL_SD_PATH = "/Psycho-Kernel/";
     private static final String KERNEL_DL_PATH = BASE_DL_PATH + "/Psycho-Kernel/";
-
-    private static final File DL_PATH_FILE = new File(BASE_DL_PATH);
     public static final File KERNEL_DL_PATH_FILE = new File(KERNEL_DL_PATH);
+    private static final File DL_PATH_FILE = new File(BASE_DL_PATH);
+    private static final String PREFS_NAME = "prefs";
+    private static Config instance = null;
 
     static {
         //noinspection ResultOfMethodCallIgnored
@@ -63,21 +57,16 @@ public class Config {
         KERNEL_DL_PATH_FILE.mkdirs();
     }
 
+    private final SharedPreferences PREFS;
     private boolean showNotif = true;
     private boolean wifiOnlyDl = true;
     private boolean autoDl = false;
-
     private boolean ignoredUnsupportedWarn = false;
     private boolean ignoredDataWarn = false;
     private boolean ignoredWifiWarn = false;
-
     private KernelInfo storedKernelUpdate = null;
-
     private long romDownloadID = -1;
     private long kernelDownloadID = -1;
-
-    private static final String PREFS_NAME = "prefs";
-    private final SharedPreferences PREFS;
 
     private Config(Context ctx) {
         ctx = ctx.getApplicationContext();
@@ -102,7 +91,7 @@ public class Config {
 
         kernelDownloadID = PREFS.getLong("kernelDownloadID", kernelDownloadID);
     }
-    private static Config instance = null;
+
     public static synchronized Config getInstance(Context ctx) {
         if (instance == null) instance = new Config(ctx);
         return instance;

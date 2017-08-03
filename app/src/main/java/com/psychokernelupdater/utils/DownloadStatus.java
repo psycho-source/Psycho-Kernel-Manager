@@ -37,13 +37,11 @@ public class DownloadStatus {
     private static final int GBYTE_THRESH = 966367641; //0.9gb
 
     private final long ID;
-
+    protected BaseInfo info = null;
     private int status;
     private int reason;
     private int totalBytes;
     private int downloadedBytes;
-
-    protected BaseInfo info = null;
 
     private DownloadStatus(long id) {
         ID = id;
@@ -158,32 +156,32 @@ public class DownloadStatus {
         int statusTextRes;
 
         switch (getReason()) {
-        case DownloadManager.ERROR_CANNOT_RESUME:
-            statusTextRes = R.string.downloads_failed_resume;
-            break;
-        case DownloadManager.ERROR_DEVICE_NOT_FOUND:
-            statusTextRes = R.string.downloads_failed_mount;
-            break;
-        case DownloadManager.ERROR_FILE_ALREADY_EXISTS:
-            statusTextRes = R.string.downloads_failed_fileexists;
-            break;
-        case DownloadManager.ERROR_HTTP_DATA_ERROR:
-        case DownloadManager.ERROR_UNHANDLED_HTTP_CODE:
-        case DownloadManager.ERROR_TOO_MANY_REDIRECTS:
-            statusTextRes = R.string.downloads_failed_http;
-            break;
-        case DownloadManager.ERROR_INSUFFICIENT_SPACE:
-            statusTextRes = R.string.downloads_failed_space;
-            break;
-        case DownloadManager.ERROR_FILE_ERROR:
-        case DownloadManager.ERROR_UNKNOWN:
-            statusTextRes = R.string.downloads_failed_unknown;
-            break;
-        case DownloadStatus.ERROR_MD5_MISMATCH:
-            statusTextRes = R.string.downloads_failed_md5;
-            break;
-        default:
-            statusTextRes = R.string.downloads_no_status;
+            case DownloadManager.ERROR_CANNOT_RESUME:
+                statusTextRes = R.string.downloads_failed_resume;
+                break;
+            case DownloadManager.ERROR_DEVICE_NOT_FOUND:
+                statusTextRes = R.string.downloads_failed_mount;
+                break;
+            case DownloadManager.ERROR_FILE_ALREADY_EXISTS:
+                statusTextRes = R.string.downloads_failed_fileexists;
+                break;
+            case DownloadManager.ERROR_HTTP_DATA_ERROR:
+            case DownloadManager.ERROR_UNHANDLED_HTTP_CODE:
+            case DownloadManager.ERROR_TOO_MANY_REDIRECTS:
+                statusTextRes = R.string.downloads_failed_http;
+                break;
+            case DownloadManager.ERROR_INSUFFICIENT_SPACE:
+                statusTextRes = R.string.downloads_failed_space;
+                break;
+            case DownloadManager.ERROR_FILE_ERROR:
+            case DownloadManager.ERROR_UNKNOWN:
+                statusTextRes = R.string.downloads_failed_unknown;
+                break;
+            case DownloadStatus.ERROR_MD5_MISMATCH:
+                statusTextRes = R.string.downloads_failed_md5;
+                break;
+            default:
+                statusTextRes = R.string.downloads_no_status;
         }
 
         return ctx.getString(statusTextRes);

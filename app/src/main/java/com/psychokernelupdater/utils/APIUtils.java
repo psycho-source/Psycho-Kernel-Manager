@@ -24,6 +24,10 @@ import android.util.Log;
 
 import com.psychokernelupdater.R;
 
+import org.json.JSONObject;
+
+import java.util.Locale;
+
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.HttpStatus;
@@ -32,19 +36,28 @@ import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-import org.json.JSONObject;
-
-import java.util.Locale;
-
 public class APIUtils {
 
     public static void fetchKernelInfo(Context ctx, APICallback callback) {
         if (!PropUtils.isKernelOtaEnabled()) {
-            if (callback != null) callback.onError(ctx.getString(R.string.kernel_unsupported), null);
+            if (callback != null)
+                callback.onError(ctx.getString(R.string.kernel_unsupported), null);
             return;
         }
 
         new APITask(ctx, Config.KERNEL_PULL_URL, callback).execute();
+    }
+
+    interface APICallback {
+        void onStart(APITask task);
+
+        void onSuccess(String message, JSONObject respObj);
+
+        void onError(String message, JSONObject respObj);
+
+        void onCancel();
+
+        void onComplete(boolean success);
     }
 
     public static class APITask extends AsyncTask<Void, Void, Boolean> {
@@ -155,19 +168,25 @@ public class APIUtils {
         }
     }
 
-    interface APICallback {
-        void onStart(APITask task);
-        void onSuccess(String message, JSONObject respObj);
-        void onError(String message, JSONObject respObj);
-        void onCancel();
-        void onComplete(boolean success);
-    }
-
     static abstract class APIAdapter implements APICallback {
-        @Override public void onStart(APITask task) { }
-        @Override public void onSuccess(String message, JSONObject respObj) { }
-        @Override public void onError(String message, JSONObject respObj) { }
-        @Override public void onCancel() { }
-        @Override public void onComplete(boolean success) { }
+        @Override
+        public void onStart(APITask task) {
+        }
+
+        @Override
+        public void onSuccess(String message, JSONObject respObj) {
+        }
+
+        @Override
+        public void onError(String message, JSONObject respObj) {
+        }
+
+        @Override
+        public void onCancel() {
+        }
+
+        @Override
+        public void onComplete(boolean success) {
+        }
     }
 }

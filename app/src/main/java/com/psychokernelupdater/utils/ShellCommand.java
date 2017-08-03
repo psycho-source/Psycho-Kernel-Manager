@@ -38,8 +38,7 @@ class ShellCommand {
         final String stderr;
         final Integer exit_value;
 
-        CommandResult(Integer exit_value_in, String stdout_in, String stderr_in)
-        {
+        CommandResult(Integer exit_value_in, String stdout_in, String stderr_in) {
             exit_value = exit_value_in;
             stdout = stdout_in;
             stderr = stderr_in;
@@ -60,7 +59,7 @@ class ShellCommand {
                 DataOutputStream toProcess = new DataOutputStream(process.getOutputStream());
                 toProcess.writeBytes("exec " + s + "\n");
                 toProcess.flush();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e(Config.LOG_TAG + "ShellCmd", "Exception while trying to run: '" + s + "' " + e.getMessage());
                 process = null;
             }
@@ -76,7 +75,7 @@ class ShellCommand {
             try {
                 if (dis.available() > 0) {
                     buffer = new StringBuffer(dis.readLine());
-                    while(dis.available() > 0)
+                    while (dis.available() > 0)
                         buffer.append("\n").append(dis.readLine());
                 }
                 dis.close();
@@ -100,7 +99,7 @@ class ShellCommand {
                     stdout = getStreamLines(process.getInputStream());
                     stderr = getStreamLines(process.getErrorStream());
 
-                } catch(InterruptedException | NullPointerException e) {
+                } catch (InterruptedException | NullPointerException e) {
                     Log.e(Config.LOG_TAG + "ShellCmd", "runWaitFor " + e.toString());
                 }
             }

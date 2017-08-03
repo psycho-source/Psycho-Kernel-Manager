@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
      Copyright (C) 2017 Psycho-Mods
@@ -19,7 +18,7 @@
 
 <resources>
 
-    <string name="app_name" translatable="false">Psycho-Kernel Updater</string>
+    <string name="app_name" translatable="false">Kernel Manager</string>
     <string name="app_license">License</string>
     <string name="app_contrib">Contributors</string>
     <string name="app_downloads">Downloads</string>
@@ -41,12 +40,10 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-
     <string name="main_device">Device</string>
     <string name="main_kernel">Kernel</string>
     <string name="main_about">About</string>
     <string name="main_otaid" translatable="false">Psycho-Kernel Updater ID</string>
-
     <string name="kernel_download_ticker">Psycho-Kernel Update Available</string>
     <string name="kernel_download_title">Psycho-Kernel Update Available: %1$s</string>
     <string name="kernel_download_details">Psycho-Kernel update is available\n\nVersion: %1$s</string>
@@ -60,27 +57,22 @@
     <string name="kernel_version_unknown">Unknown Kernel Version</string>
     <string name="kernel_unsupported">No Psycho-Kernel?</string>
     <string name="kernel_unsupported_summary">It seems you are not using a Psycho-Kernel! :(\n\n(Psycho-Kernel.prop missing)</string>
-
     <string name="alert_nodata_title">No Data Connection!</string>
     <string name="alert_nodata_message">You have no data connection.\nPlease turn on Wi-Fi or Mobile Data in order to check for and download Psycho-Kernel updates.</string>
     <string name="alert_nowifi_title">No Wi-Fi Connection!</string>
     <string name="alert_nowifi_message">You are on a mobile connection.\nThis app uses data heavily to download Kernel updates.\nIt is recommended to turn on Wi-Fi to avoid overage charges.</string>
     <string name="alert_wifi_settings">Wi-Fi Settings</string>
-
     <string name="alert_install_title">Install ZIP</string>
     <string name="alert_install_message">Installing this update will reboot into recovery to flash the ZIP file. After installation, the system will automatically reboot.</string>
     <string name="alert_noinstall_message">Unfortunately, Kernels on your device must be flashed manually.\nPlease use the correct method for your device to flash the Kernel\n\nThe .zip file is located at: %1$s</string>
     <string name="alert_update_title">Kernel update available!</string>
     <string name="alert_downloading">Downloading…</string>
     <string name="alert_unsupported_title">Unsupported Kernel</string>
-    <string name="alert_unsupported_message">There is no Psycho-Kernel! This updater only available with Psycho-Kernel!\n\n(Psycho-Kernel.prop missing)</string>
-
+    <string name="alert_unsupported_message">There is no Psycho-Kernel! This App only available with Psycho-Kernel!\n\n(Psycho-Kernel.prop missing)</string>
     <string name="menu_downloads">Downloads</string>
     <string name="menu_settings">Settings</string>
-
     <string name="notif_source">Psycho-Kernel Update</string>
     <string name="notif_completed">Download finished. Tap to flash update.</string>
-
     <string name="toast_delete">File deleted successfully</string>
     <string name="toast_delete_error">There was a problem while deleting the selected file</string>
     <string name="toast_file_error">Error loading file</string>
@@ -88,19 +80,16 @@
     <string name="toast_nosd_error">Your SD card is unavailable</string>
     <string name="toast_update_fetch_error">There was an error fetching update information</string>
     <string name="toast_downloading">Your download is still running, check notifications for progress…</string>
-
-    <string name="about_ota_title" translatable="false">Psycho-Kernel Updater</string>
-    <string name="about_ota_summary">Copyright © 2017\nBy Psycho-MOds\n(Based on OTA Updater)\n\nAll of kernel and updater sources are available in my Github.\n(Tap to visit my Github.)</string>
+    <string name="about_ota_title" translatable="false">Psycho-Kernel Manager</string>
+    <string name="about_ota_summary">Copyright © 2017\nBy Psycho-Mods\n(Based on OTA Updater)\n\nAll of kernel sources are available in my Github.\n(Tap to visit my Github.)</string>
     <string name="about_version_title">Version</string>
     <string name="about_license_title">Open-Source License</string>
     <string name="about_contrib_title">Contributors</string>
-
     <string name="updates_avail_title">Available Updates</string>
     <string name="updates_checking">Checking for available updates…</string>
     <string name="updates_none">No update available. Tap to check manually.</string>
     <string name="update_fetch_error">Error fetching update info: %1$s</string>
     <string name="updates_new">New update: %1$s (version %2$s)\nTap to download/flash!</string>
-
     <string name="downloads_kernel_label">Downloading Psycho-Kernel Update</string>
     <string name="downloads_size_progress_b" translatable="false">%1$.1f%% (%2$d / %3$d bytes)</string>
     <string name="downloads_size_progress_kb" translatable="false">%1$.1f%% (%2$d / %3$d KB)</string>
@@ -126,8 +115,7 @@
     <string name="downloads_no_status">Unable to get download status</string>
     <string name="downloads_complete">Finished! Ready to flash!</string>
     <string name="downloads_file" translatable="false">%1$s</string>
-
-    <string name="settings_title">Updater Settings</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_notif_title">Notify me of new updates</string>
     <string name="settings_notif_summary_off">Update notifications will not be shown\nYou will have to open the app manually to see if there are updates</string>
     <string name="settings_notif_summary_on">Update notifications will be shown</string>
@@ -140,16 +128,37 @@
     <string name="settings_resetwarn_title">Reset ignored warnings</string>
     <string name="settings_resetwarn_summary">Any warnings that have been ignored will be shown again.</string>
     <string name="settings_support">Support Development</string>
-
     <string name="unknown_error">An unknown error has occurred!</string>
     <string name="alert_changelog">View Changelog</string>
     <string name="about_version_unknown">Unknown Version </string>
-
     <string name="allow_permissions">Please allow permissions for kernel updates!</string>
     <string name="need_storage_permission">Please grant storage permission.</string>
-    <string name="need_root_permission">Psycho-Kernel Updater needs root permission!</string>
+    <string name="need_root_permission">Psycho-Kernel Manager needs root permission!</string>
     <string name="root_check_failed">Failed to check root status! Is \'whoami\' command missing?</string>
     <string name="su_exec_error">Error occurred while executing SU command. Is it enabled?</string>
     <string name="unsupported_su">Unsupported SU binary! Please install latest version of Magisk or SuperSU.</string>
-
+    <string name="title_activity_ads">Ads</string>
+    <string name="Home">Home</string>
+    <string name="pk">Psycho-Kernel</string>
+    <string name="email">Think Psycho</string>
+    <string name="donate">Support Me</string>
+    <string name="title_activity_donate">Donate</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="donate_paypal">PayPal</string>
+    <string name="donate_paytm">PayTM</string>
+    <string name="paypal_button">Donate Via PayPal!</string>
+    <string name="qr">Scan The Above Code.</string>
+    <string name="number">7530964486</string>
+    <string name="helper">Press and Hold the number to Copy.</string>
+    <string name="transition_dialog">transition_dialog</string>
+    <string name="DialogTitle">Suggestions?</string>
+    <string name="DialogText">Got Some Ideas to Improve This? \nWant To Donate but not with PayPal? \nShare it with Me, I Will be happy to hear from you. \nDrop an E-mail at</string>
+    <string name="Email">nishsin26@gmail.com</string>
+    <string name="about">About this app!</string>
+    <string name="about_he">About</string>
+    <string name="title_activity_about">About</string>
+    <string name="ab_main">Psycho-Kernel Manager</string>
+    <string name="ab_hel">Kernel Manager Designed Specially For Psycho-Kernel.</string>
+    <string name="ab_thanks">Special Thanks </string>
+    <string name="ab_lis">• OTA Update Center \n\n• jollaman999 \n\n• FabDialogMorph</string>
 </resources>

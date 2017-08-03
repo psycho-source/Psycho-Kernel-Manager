@@ -37,8 +37,13 @@ import java.util.Locale;
 
 public class Utils {
     private static final SimpleDateFormat OTA_DATE = new SimpleDateFormat("yyyyMMdd-kkmm", Locale.US);
+    private static final HashMap<File, String> MD5_FILE_CACHE = new HashMap<>();
+    private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static String device = null;
+    private static String deviceID = null;
 
-    private Utils() { }
+    private Utils() {
+    }
 
     private static String md5(String s) {
         try {
@@ -52,7 +57,6 @@ public class Utils {
         return "";
     }
 
-    private static final HashMap<File, String> MD5_FILE_CACHE = new HashMap<>();
     static String md5(File f) {
         if (!f.exists()) return "";
         if (MD5_FILE_CACHE.containsKey(f)) {
@@ -85,8 +89,10 @@ public class Utils {
             e.printStackTrace();
         } finally {
             if (in != null) {
-                try { in.close(); }
-                catch (IOException ignored) { }
+                try {
+                    in.close();
+                } catch (IOException ignored) {
+                }
             }
         }
         return "";
@@ -119,7 +125,6 @@ public class Utils {
         return OTA_DATE.format(date);
     }
 
-    private static String device = null;
     static String getDevice() {
         if (device != null) return device;
 
@@ -128,7 +133,6 @@ public class Utils {
         return device;
     }
 
-    private static String deviceID = null;
     static String getRandomID() {
 
         if (deviceID != null) return deviceID;
@@ -144,7 +148,7 @@ public class Utils {
 
         name = Normalizer.normalize(name, Normalizer.Form.NFD);
         name = name.trim();
-        name = name.replaceAll("[^\\p{ASCII}]","");
+        name = name.replaceAll("[^\\p{ASCII}]", "");
         name = name.replaceAll("[ _-]+", "_");
         name = name.replaceAll("(^_|_$)", "");
         name = name.toLowerCase(Locale.US);
@@ -152,7 +156,6 @@ public class Utils {
         return name;
     }
 
-    private static final char[] HEX_DIGITS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
     private static String byteArrToStr(byte[] bytes) {
         StringBuilder str = new StringBuilder();
         for (byte b : bytes) {

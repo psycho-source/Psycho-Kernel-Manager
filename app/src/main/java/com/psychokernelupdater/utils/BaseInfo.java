@@ -26,17 +26,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.psychokernelupdater.DownloadBarFragment;
 import com.psychokernelupdater.DownloadReceiver;
-import com.psychokernelupdater.psychokernelUpdaterActivity;
 import com.psychokernelupdater.R;
+import com.psychokernelupdater.psychokernelUpdaterActivity;
 
 import org.json.JSONObject;
 
@@ -126,8 +128,10 @@ public abstract class BaseInfo implements Parcelable, Serializable {
         builder.setTicker(ctx.getString(getNotifTextStr(), version));
         builder.setWhen(System.currentTimeMillis());
         builder.setSmallIcon(R.drawable.ic_stat_system_update);
+        builder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.logo));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(ctx.getString(getNotifDetailsStr(), version)));
-        builder.setPriority(NotificationCompat.PRIORITY_LOW);
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setColor(ContextCompat.getColor(ctx, R.color.colorAccent));
         builder.addAction(R.drawable.ic_action_av_download, ctx.getString(R.string.download), dlPIntent);
 
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);

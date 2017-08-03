@@ -18,16 +18,23 @@
 
 package com.psychokernelupdater;
 
-import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.psychokernelupdater.utils.BaseDownloadDialogActivity;
 import com.psychokernelupdater.utils.BaseInfo;
 import com.psychokernelupdater.utils.Config;
@@ -41,12 +48,14 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DownloadsActivity extends BaseDownloadDialogActivity {
+
     public static final String FLASH_KERNEL_ACTION = "com.jollakernelupdater.action.FLASH_KERNEL_ACTION";
-
-    private final ArrayList<Dialog> dlgs = new ArrayList<>();
-
     public static boolean is_called_by_DownloadList;
     public static String DownloadList_File_Name;
+    private final ArrayList<Dialog> dlgs = new ArrayList<>();
+    DrawerLayout drawerLayout;
+    NavigationView mNavigationView;
+    private AdView mAdView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,10 +69,50 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
         setContentView(R.layout.downloads);
 
-        ActionBar bar = getSupportActionBar();
-        assert bar != null;
+        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar1);
 
-        bar.setDisplayHomeAsUpEnabled(true);
+        MobileAds.initialize(this, "ca-app-pub-3026712685276849~6203773285");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        setSupportActionBar(toolbar1);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                menuItem.setChecked(true);
+                Intent i;
+                switch (menuItem.getItemId()) {
+                    case R.id.settings:
+                        i = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.downloads:
+                        i = new Intent(getApplicationContext(), DownloadsActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.home:
+                        i = new Intent(getApplicationContext(), psychokernelUpdaterActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.donate:
+                        i = new Intent(getApplicationContext(), Donate.class);
+                        startActivity(i);
+                        break;
+                    case R.id.about:
+                        i = new Intent(getApplicationContext(), About.class);
+                        startActivity(i);
+                        break;
+                }
+                return true;
+            }
+        });
 
         String action = getIntent().getAction();
         if (action != null && action.equals(FLASH_KERNEL_ACTION)) {
@@ -194,8 +243,8 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
             if (Build.MANUFACTURER.toLowerCase(Locale.US).contains("sony")) {
                 if (backup) {
                     os.writeBytes("echo 'backup_rom /sdcard/clockworkmod/backup/ota_" +
-                        new SimpleDateFormat("yyyy-MM-dd_HH.mm", Locale.US).format(new Date()) +
-                        "' >> /cache/recovery/extendedcommand\n");
+                            new SimpleDateFormat("yyyy-MM-dd_HH.mm", Locale.US).format(new Date()) +
+                            "' >> /cache/recovery/extendedcommand\n");
                 }
                 if (wipeData) {
                     os.writeBytes("echo 'format(\"/data\");' >> /cache/recovery/extendedcommand\n");
@@ -218,7 +267,7 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
                     os.writeBytes("echo '--wipe_cache' >> /cache/recovery/command\n");
                 }
 
-                for (String file: files) {
+                for (String file : files) {
                     os.writeBytes("echo '--update_package=" + file + "' >> /cache/recovery/command\n");
                 }
             }

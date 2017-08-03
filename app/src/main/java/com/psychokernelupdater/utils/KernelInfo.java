@@ -22,17 +22,16 @@ import android.content.Context;
 
 import com.psychokernelupdater.DownloadReceiver;
 import com.psychokernelupdater.DownloadsActivity;
-import com.psychokernelupdater.psychokernelUpdaterActivity;
 import com.psychokernelupdater.R;
+import com.psychokernelupdater.psychokernelUpdaterActivity;
 
 import java.io.File;
 import java.util.Date;
 
 public class KernelInfo extends BaseInfo {
-    private static final String KEY_NAME = "kernel";
-
     public static final InfoFactory<KernelInfo> FACTORY = new InfoFactory<>(KernelInfo.class);
     public static final Creator<KernelInfo> CREATOR = FACTORY.getParcelableCreator();
+    private static final String KEY_NAME = "kernel";
 
     @Override
     public String getFlashAction() {

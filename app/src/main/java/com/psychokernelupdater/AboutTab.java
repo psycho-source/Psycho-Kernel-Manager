@@ -18,10 +18,10 @@
 
 package com.psychokernelupdater;
 
-import android.support.v4.app.ListFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,22 +80,22 @@ public class AboutTab extends ListFragment {
         setListAdapter(new SimpleAdapter(getActivity(),
                 DATA,
                 R.layout.two_line_icon_list_item,
-                new String[] { KEY_TITLE, KEY_SUMMARY },
-                new int[] { android.R.id.text1, android.R.id.text2 }));
+                new String[]{KEY_TITLE, KEY_SUMMARY},
+                new int[]{android.R.id.text1, android.R.id.text2}));
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         switch (position) {
-        case 0:
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_GITHUB_URL)));
-            break;
-        case 2:
-            startActivity(new Intent(getActivity(), LicenseActivity.class));
-            break;
-        case 3:
-            startActivity(new Intent(getActivity(), ContributorsActivity.class));
-            break;
+            case 0:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.SITE_GITHUB_URL)));
+                break;
+            case 2:
+                startActivity(new Intent(getActivity(), LicenseActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(getActivity(), ContributorsActivity.class));
+                break;
         }
     }
 }

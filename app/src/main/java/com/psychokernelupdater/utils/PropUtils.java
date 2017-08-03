@@ -33,36 +33,32 @@ import java.util.regex.Pattern;
 public class PropUtils {
     private static final String GEN_OTA_PROP = "/system/Psycho-Kernel_updater.prop";
     private static final String KERNEL_OTA_PROP = "/proc/Psycho-Kernel";
-
+    // from AOSP source: packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java
+    private static final String PROC_VERSION_REGEX =
+            "\\w+\\s+" + /* ignore: Linux */
+                    "\\w+\\s+" + /* ignore: version */
+                    "([^\\s]+)\\s+" + /* group 1: 2.6.22-omap1 */
+                    "\\(([^\\s@]+@[^\\s@]+)\\)+\\s+" + /* group 2: (xxxxxx@xxxxx.constant) */
+                    // "(gcc" followed by anything up to two consecutive ")"
+                    // separated by only white space (which seems to be the norm)
+                    "\\(gcc.*\\)\\s+" +
+                    "([^\\s]+)\\s+" + /* group 3: #26 */
+                    "(?:SMP\\s+)?" + /* ignore: SMP (optional) */
+                    "(?:PREEMPT\\s+)?" + /* ignore: PREEMPT (optional) */
+                    "(.+)"; /* group 4: date */
     private static /*final*/ boolean KERNEL_OTA_ENABLED;
     private static String cachedKernelID = null;
     private static Date cachedKernelDate = null;
     private static String cachedKernelVer = null;
     private static String cachedKernelUname = null;
-
     private static String cachedSystemSdPath = null;
     private static String cachedRecoverySdPath = null;
-
     private static Boolean cachedNoFlash = null;
     private static String cachedRebootCmd = null;
 
     static {
         KERNEL_OTA_ENABLED = new File(KERNEL_OTA_PROP).exists();
     }
-
-    // from AOSP source: packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java
-    private static final String PROC_VERSION_REGEX =
-            "\\w+\\s+" + /* ignore: Linux */
-            "\\w+\\s+" + /* ignore: version */
-            "([^\\s]+)\\s+" + /* group 1: 2.6.22-omap1 */
-            "\\(([^\\s@]+@[^\\s@]+)\\)+\\s+" + /* group 2: (xxxxxx@xxxxx.constant) */
-            // "(gcc" followed by anything up to two consecutive ")"
-            // separated by only white space (which seems to be the norm)
-            "\\(gcc.*\\)\\s+" +
-            "([^\\s]+)\\s+" + /* group 3: #26 */
-            "(?:SMP\\s+)?" + /* ignore: SMP (optional) */
-            "(?:PREEMPT\\s+)?" + /* ignore: PREEMPT (optional) */
-            "(.+)"; /* group 4: date */
 
     public static boolean isKernelOtaEnabled() {
         return KERNEL_OTA_ENABLED;
@@ -141,6 +137,7 @@ public class PropUtils {
 
         return "/sdcard" + userPath;
     }
+
     private static void readGenOtaProp() {
         if (!new File(GEN_OTA_PROP).exists()) {
             cachedNoFlash = LegacyCompat.getNoflash();
@@ -150,7 +147,8 @@ public class PropUtils {
 
             if (cachedNoFlash == null) cachedNoFlash = false;
             if (cachedRebootCmd == null) cachedRebootCmd = "reboot recovery";
-            if (cachedSystemSdPath == null) cachedSystemSdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            if (cachedSystemSdPath == null)
+                cachedSystemSdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (cachedRecoverySdPath == null) cachedRecoverySdPath = getDefaultRecoverySdPath();
             return;
         }
@@ -182,9 +180,9 @@ public class PropUtils {
             cachedKernelID = kernelOtaProp.getString("kernel-name");
             cachedKernelVer = kernelOtaProp.getString("version");
             cachedKernelDate = Utils.parseDate(kernelOtaProp.getString("buildtime"));
-            Log.i(Config.LOG_TAG+ "ReadOTAProp", "kernel-name: " + cachedKernelID);
-            Log.i(Config.LOG_TAG+ "ReadOTAProp", "version: " + cachedKernelVer);
-            Log.i(Config.LOG_TAG+ "ReadOTAProp", "buildtime: " + cachedKernelDate);
+            Log.i(Config.LOG_TAG + "ReadOTAProp", "kernel-name: " + cachedKernelID);
+            Log.i(Config.LOG_TAG + "ReadOTAProp", "version: " + cachedKernelVer);
+            Log.i(Config.LOG_TAG + "ReadOTAProp", "buildtime: " + cachedKernelDate);
         } catch (JSONException e) {
             Log.e(Config.LOG_TAG + "ReadOTAProp", "Error in Psycho-Kernel.prop file!");
         }

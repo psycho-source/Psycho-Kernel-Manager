@@ -37,40 +37,40 @@
             android:padding="5dip">
 
             <TextView
+                android:id="@+id/download_kernel_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/downloads_kernel_label"
-                android:id="@+id/download_kernel_label"
                 android:layout_alignParentBottom="false"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:text="@string/downloads_kernel_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
+                android:id="@+id/download_kernel_progress_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/download_kernel_progress_text"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <ProgressBar
+                android:id="@+id/download_kernel_progress_bar"
                 style="@style/ProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/download_kernel_progress_bar"
-                android:indeterminate="true"
-                android:layout_alignParentTop="false"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/download_kernel_label" />
+                android:layout_alignParentTop="false"
+                android:layout_below="@+id/download_kernel_label"
+                android:indeterminate="true" />
 
             <TextView
+                android:id="@+id/download_kernel_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/download_kernel_status"
                 android:layout_below="@+id/download_kernel_progress_bar"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </RelativeLayout>
 
@@ -78,12 +78,12 @@
             android:id="@+id/download_kernel_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:src="@drawable/ic_close"
-            android:layout_marginStart="5dip"
-            android:layout_marginEnd="10dip"
             android:layout_gravity="center_vertical"
-            android:contentDescription="@string/cancel" />
+            android:layout_marginEnd="10dip"
+            android:layout_marginStart="5dip"
+            android:layout_weight="0"
+            android:contentDescription="@string/cancel"
+            android:src="@drawable/ic_close" />
 
     </LinearLayout>
 
@@ -91,8 +91,8 @@
         android:id="@+id/download_bottom_border"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="3dip"
         android:layout_marginBottom="0dip"
+        android:layout_marginTop="3dip"
         android:visibility="gone" />
 
 </LinearLayout>

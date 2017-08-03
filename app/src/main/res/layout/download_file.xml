@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
      Copyright (C) 2017 Psycho-Mods
@@ -17,12 +16,11 @@
      limitations under the License.
 -->
 
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:drawableStart="@drawable/ic_archive"
     android:drawablePadding="7dip"
+    android:drawableStart="@drawable/ic_archive"
+    android:gravity="center_vertical"
     android:padding="7dip"
     android:textAppearance="?android:attr/textAppearanceMedium" />

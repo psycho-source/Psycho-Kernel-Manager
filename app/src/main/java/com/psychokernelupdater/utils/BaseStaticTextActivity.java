@@ -59,8 +59,10 @@ public abstract class BaseStaticTextActivity extends Activity {
             return;
         } finally {
             if (in != null) {
-                try { in.close(); }
-                catch (IOException ignored) { }
+                try {
+                    in.close();
+                } catch (IOException ignored) {
+                }
             }
         }
 
@@ -84,9 +86,9 @@ public abstract class BaseStaticTextActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return false;
     }

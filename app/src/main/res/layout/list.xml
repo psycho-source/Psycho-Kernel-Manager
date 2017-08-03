@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
      Copyright (C) 2017 Psycho-Mods
@@ -22,9 +21,10 @@
     android:layout_height="match_parent"
     android:paddingLeft="10dip"
     android:paddingRight="10dip">
-    
-    <ListView android:id="@android:id/list" 
+
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    
+
 </FrameLayout>

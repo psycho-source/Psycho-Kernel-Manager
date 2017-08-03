@@ -27,13 +27,22 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
-import com.psychokernelupdater.utils.Config;
-import com.psychokernelupdater.utils.KernelInfo;
 import com.psychokernelupdater.utils.APIUtils;
 import com.psychokernelupdater.utils.BaseInfo;
+import com.psychokernelupdater.utils.Config;
+import com.psychokernelupdater.utils.KernelInfo;
 import com.psychokernelupdater.utils.PropUtils;
 
 public class CheckinReceiver extends BroadcastReceiver {
+    public static void setDailyAlarm(Context ctx) {
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(ctx, CheckinReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        am.cancel(pendingIntent);
+        am.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + 86400000, AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
     @Override
     public void onReceive(Context ctx, Intent intent) {
         final Context context = ctx.getApplicationContext();
@@ -87,14 +96,5 @@ public class CheckinReceiver extends BroadcastReceiver {
                 }
             });
         }
-    }
-
-    public static void setDailyAlarm(Context ctx) {
-        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(ctx, CheckinReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        am.cancel(pendingIntent);
-        am.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + 86400000, AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

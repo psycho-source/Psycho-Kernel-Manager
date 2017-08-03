@@ -21,30 +21,29 @@
 
 
         <CheckBoxPreference
-            android:title="@string/settings_notif_title"
-            android:summaryOn="@string/settings_notif_summary_on"
-            android:summaryOff="@string/settings_notif_summary_off"
             android:defaultValue="true"
-            android:key="notif_pref" />
+            android:key="notif_pref"
+            android:summaryOff="@string/settings_notif_summary_off"
+            android:summaryOn="@string/settings_notif_summary_on"
+            android:title="@string/settings_notif_title" />
 
-        <CheckBoxPreference 
-            android:title="@string/settings_wifidl_title"
-            android:summaryOn="@string/settings_wifidl_summary_on"
-            android:summaryOff="@string/settings_wifidl_summary_off"
-            android:defaultValue="true" 
-            android:key="wifidl_pref" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="wifidl_pref"
+        android:summaryOff="@string/settings_wifidl_summary_off"
+        android:summaryOn="@string/settings_wifidl_summary_on"
+        android:title="@string/settings_wifidl_title" />
         
         <CheckBoxPreference 
-            android:title="@string/settings_autodl_title"
-            android:summaryOn="@string/settings_autodl_summary_on"
-            android:summaryOff="@string/settings_autodl_summary_off"
             android:defaultValue="false"
-            android:key="autodl_pref" />
+            android:key="autodl_pref"
+            android:summaryOff="@string/settings_autodl_summary_off"
+            android:summaryOn="@string/settings_autodl_summary_on"
+            android:title="@string/settings_autodl_title" />
         
         <Preference
-            android:title="@string/settings_resetwarn_title"
+            android:key="resetwarn_pref"
             android:summary="@string/settings_resetwarn_summary"
-            android:key="resetwarn_pref" />
-
+            android:title="@string/settings_resetwarn_title" />
 
 </PreferenceScreen>

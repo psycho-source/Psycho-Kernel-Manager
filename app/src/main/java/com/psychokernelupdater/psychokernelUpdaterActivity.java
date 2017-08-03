@@ -19,30 +19,34 @@
 package com.psychokernelupdater;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.psychokernelupdater.utils.BaseDownloadDialogActivity;
 import com.psychokernelupdater.utils.Config;
 import com.psychokernelupdater.utils.KernelInfo;
-import com.psychokernelupdater.utils.Utils;
 import com.psychokernelupdater.utils.PropUtils;
+import com.psychokernelupdater.utils.Utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,14 +54,14 @@ import java.io.InputStreamReader;
 
 public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
     public static final String KERNEL_NOTIF_ACTION = "com.psychokernelupdater.action.KERNEL_NOTIF_ACTION";
-
     public static final String EXTRA_FLAG_DOWNLOAD_DIALOG = "SHOW_DOWNLOAD_DIALOG";
-
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    DrawerLayout drawerLayout;
+    NavigationView mNavigationView;
     Context context;
-    private Config cfg;
-
-    ActionBar bar;
     TabLayout tabLayout;
+    private AdView mAdView;
+    private Config cfg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +99,9 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
             return;
         }
 
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), R.string.need_storage_permission, Toast.LENGTH_LONG).show();
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-            return;
         }
 
         context = getApplicationContext();
@@ -204,7 +207,69 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
         }
 
         setContentView(R.layout.main);
+        Toolbar toolbar3 = (Toolbar) findViewById(R.id.toolbar3);
+        MobileAds.initialize(this, "ca-app-pub-3026712685276849~6203773285");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar3, R.string.app_name, R.string.app_name) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu();
+                syncState();
+            }
 
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+                syncState();
+            }
+        };
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        //Set the custom toolbar
+        if (toolbar3 != null) {
+            setSupportActionBar(toolbar3);
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        actionBarDrawerToggle.syncState();
+
+        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                menuItem.setChecked(true);
+                Intent i;
+                switch (menuItem.getItemId()) {
+                    case R.id.settings:
+                        i = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.downloads:
+                        i = new Intent(getApplicationContext(), DownloadsActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.home:
+                        i = new Intent(getApplicationContext(), psychokernelUpdaterActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.donate:
+                        i = new Intent(getApplicationContext(), Donate.class);
+                        startActivity(i);
+                        break;
+                    case R.id.about:
+                        i = new Intent(getApplicationContext(), About.class);
+                        startActivity(i);
+                        break;
+                }
+                return true;
+            }
+        });
         ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -215,12 +280,6 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        bar = getSupportActionBar();
-        assert bar != null;
-
-        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
-        bar.setTitle(R.string.app_name);
 
         if (cfg.hasStoredKernelUpdate()) {
             TabLayout.Tab tab = tabLayout.getTabAt(1);
@@ -234,6 +293,64 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
                 cfg.getStoredKernelUpdate().showUpdateNotif(this);
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleNotifAction(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    public void updateKernelTabIcon(boolean update) {
+        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        if (tab != null) {
+            if (update) {
+                tab.setIcon(R.drawable.ic_action_warning);
+            } else {
+                tab.setIcon(null);
+            }
+        }
+    }
+
+    private boolean handleNotifAction(Intent intent) {
+        String action = intent.getAction();
+        if (KERNEL_NOTIF_ACTION.equals(action)) {
+            KernelInfo.FACTORY.clearUpdateNotif(this);
+
+            if (intent.getBooleanExtra(EXTRA_FLAG_DOWNLOAD_DIALOG, false)) {
+                DownloadBarFragment.showDownloadingDialog(this, cfg.getKernelDownloadID(), this);
+            } else {
+                KernelInfo info = KernelInfo.FACTORY.fromIntent(intent);
+                if (info == null) info = cfg.getStoredKernelUpdate();
+                if (info != null) info.showUpdateDialog(this, this);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -274,95 +391,5 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
             }
             return null;
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 0:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startMainActivity(context);
-                } else {
-                    finish();
-                }
-                break;
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleNotifAction(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i;
-        switch (item.getItemId()) {
-        case R.id.settings:
-            i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-            break;
-        case R.id.downloads:
-            i = new Intent(this, DownloadsActivity.class);
-            startActivity(i);
-            break;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    public void updateKernelTabIcon(boolean update) {
-        TabLayout.Tab tab = tabLayout.getTabAt(1);
-        if (tab != null) {
-            if (update) {
-                tab.setIcon(R.drawable.ic_action_warning);
-            } else {
-                tab.setIcon(null);
-            }
-        }
-    }
-
-    private boolean handleNotifAction(Intent intent) {
-        String action = intent.getAction();
-        if (KERNEL_NOTIF_ACTION.equals(action)) {
-            KernelInfo.FACTORY.clearUpdateNotif(this);
-
-            if (intent.getBooleanExtra(EXTRA_FLAG_DOWNLOAD_DIALOG, false)) {
-                DownloadBarFragment.showDownloadingDialog(this, cfg.getKernelDownloadID(), this);
-            } else {
-                KernelInfo info = KernelInfo.FACTORY.fromIntent(intent);
-                if (info == null) info = cfg.getStoredKernelUpdate();
-                if (info != null) info.showUpdateDialog(this, this);
-            }
-        } else {
-            return false;
-        }
-        return true;
     }
 }

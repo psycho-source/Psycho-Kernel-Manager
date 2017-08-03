@@ -76,41 +76,41 @@ public class DownloadListFragment extends ListFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
-                        case 0:
-                            DownloadsActivity.is_called_by_DownloadList = true;
-                            DownloadsActivity.DownloadList_File_Name = info.toString();
+                            case 0:
+                                DownloadsActivity.is_called_by_DownloadList = true;
+                                DownloadsActivity.DownloadList_File_Name = info.toString();
 
-                            Intent intent = new Intent(getActivity(), DownloadsActivity.class);
-                            intent.setAction(DownloadsActivity.FLASH_KERNEL_ACTION);
-                            getActivity().startActivity(intent);
-                            break;
-                        case 1:
-                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switch (which){
-                                        case DialogInterface.BUTTON_POSITIVE:
-                                            //Yes button clicked
-                                            if (info.file.delete()) {
-                                                Toast.makeText(getActivity(), R.string.toast_delete, Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(getActivity(), R.string.toast_delete_error, Toast.LENGTH_SHORT).show();
-                                            }
-                                            updateFileList();
-                                            break;
+                                Intent intent = new Intent(getActivity(), DownloadsActivity.class);
+                                intent.setAction(DownloadsActivity.FLASH_KERNEL_ACTION);
+                                getActivity().startActivity(intent);
+                                break;
+                            case 1:
+                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                //Yes button clicked
+                                                if (info.file.delete()) {
+                                                    Toast.makeText(getActivity(), R.string.toast_delete, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(getActivity(), R.string.toast_delete_error, Toast.LENGTH_SHORT).show();
+                                                }
+                                                updateFileList();
+                                                break;
 
-                                        case DialogInterface.BUTTON_NEGATIVE:
-                                            //No button clicked
-                                            break;
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                //No button clicked
+                                                break;
+                                        }
                                     }
-                                }
-                            };
+                                };
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setMessage(R.string.are_you_sure)
-                                    .setPositiveButton(R.string.yes, dialogClickListener)
-                                    .setNegativeButton(R.string.no, dialogClickListener).show();
-                            break;
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage(R.string.are_you_sure)
+                                        .setPositiveButton(R.string.yes, dialogClickListener)
+                                        .setNegativeButton(R.string.no, dialogClickListener).show();
+                                break;
                         }
                     }
                 })
@@ -119,13 +119,15 @@ public class DownloadListFragment extends ListFragment {
         dlg.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                if (getActivity() instanceof DialogCallback) ((DialogCallback) getActivity()).onDialogShown(dlg);
+                if (getActivity() instanceof DialogCallback)
+                    ((DialogCallback) getActivity()).onDialogShown(dlg);
             }
         });
         dlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if (getActivity() instanceof DialogCallback) ((DialogCallback) getActivity()).onDialogClosed(dlg);
+                if (getActivity() instanceof DialogCallback)
+                    ((DialogCallback) getActivity()).onDialogClosed(dlg);
             }
         });
         dlg.show();
@@ -163,7 +165,7 @@ public class DownloadListFragment extends ListFragment {
 
         @Override
         public String toString() {
-            return getString(R.string.downloads_file, name)  + ".zip";
+            return getString(R.string.downloads_file, name) + ".zip";
         }
     }
 }

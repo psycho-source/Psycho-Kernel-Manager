@@ -19,8 +19,8 @@
 package com.psychokernelupdater;
 
 import android.app.Activity;
-import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +28,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.psychokernelupdater.utils.APIUtils;
 import com.psychokernelupdater.utils.BaseInfo;
 import com.psychokernelupdater.utils.Config;
-import com.psychokernelupdater.utils.KernelInfo;
-import com.psychokernelupdater.utils.APIUtils;
 import com.psychokernelupdater.utils.DownloadDialogCallback;
+import com.psychokernelupdater.utils.KernelInfo;
 import com.psychokernelupdater.utils.PropUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,16 +48,17 @@ public class KernelTab extends ListFragment {
     protected static final String KEY_TITLE = "title";
     protected static final String KEY_SUMMARY = "summary";
     protected static final String KEY_ICON = "icon";
-
+    private static KernelTab activeFragment = null;
     private final ArrayList<HashMap<String, Object>> DATA = new ArrayList<>();
     private /*final*/ int AVAIL_UPDATES_IDX = -1;
     private /*final*/ SimpleAdapter adapter;
-
     private Config cfg;
     private boolean fetching = false;
     private boolean is_init = true;
 
-    private static KernelTab activeFragment = null;
+    public static void notifyActiveFragment() {
+        if (activeFragment != null) activeFragment.updateStatus();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,8 +122,8 @@ public class KernelTab extends ListFragment {
         adapter = new SimpleAdapter(getActivity(),
                 DATA,
                 R.layout.two_line_icon_list_item,
-                new String[] { KEY_TITLE, KEY_SUMMARY, KEY_ICON },
-                new int[] { android.R.id.text1, android.R.id.text2, android.R.id.icon });
+                new String[]{KEY_TITLE, KEY_SUMMARY, KEY_ICON},
+                new int[]{android.R.id.text1, android.R.id.text2, android.R.id.icon});
         setListAdapter(adapter);
     }
 
@@ -178,10 +179,12 @@ public class KernelTab extends ListFragment {
         Activity act = getActivity();
         if (info != null && info.isUpdate()) {
             setUpdateSummary(getString(R.string.updates_new, info.name, info.version));
-            if (act instanceof psychokernelUpdaterActivity) ((psychokernelUpdaterActivity) act).updateKernelTabIcon(true);
+            if (act instanceof psychokernelUpdaterActivity)
+                ((psychokernelUpdaterActivity) act).updateKernelTabIcon(true);
         } else {
             setUpdateSummary(R.string.updates_none);
-            if (act instanceof psychokernelUpdaterActivity) ((psychokernelUpdaterActivity) act).updateKernelTabIcon(false);
+            if (act instanceof psychokernelUpdaterActivity)
+                ((psychokernelUpdaterActivity) act).updateKernelTabIcon(false);
             Toast.makeText(act, R.string.kernel_toast_no_update, Toast.LENGTH_SHORT).show();
         }
     }
@@ -231,9 +234,5 @@ public class KernelTab extends ListFragment {
                 fetching = false;
             }
         });
-    }
-
-    public static void notifyActiveFragment() {
-        if (activeFragment != null) activeFragment.updateStatus();
     }
 }

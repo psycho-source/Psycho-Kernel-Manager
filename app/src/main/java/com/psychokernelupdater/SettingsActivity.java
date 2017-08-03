@@ -84,9 +84,9 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return false;
     }
@@ -99,7 +99,7 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
         } else if (preference == wifidlPref) {
             cfg.setWifiOnlyDl(wifidlPref.isChecked());
         } else if (preference == autodlPref) {
-                cfg.setAutoDlState(autodlPref.isChecked());
+            cfg.setAutoDlState(autodlPref.isChecked());
         } else if (preference == resetWarnPref) {
             cfg.clearIgnored();
         } else {

@@ -27,12 +27,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.psychokernelupdater.utils.BaseInfo;
-import com.psychokernelupdater.utils.KernelInfo;
 import com.psychokernelupdater.utils.DownloadStatus;
+import com.psychokernelupdater.utils.KernelInfo;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
@@ -88,15 +90,17 @@ public class DownloadReceiver extends BroadcastReceiver {
                     info.addToIntent(flashIntent);
                     PendingIntent flashPIntent = PendingIntent.getActivity(context, 0, flashIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                    Notification notif = new NotificationCompat.Builder(context)
-                            .setTicker(context.getString(info.getDownloadDoneTitle()))
-                            .setContentTitle(context.getString(info.getDownloadDoneTitle()))
-                            .setSmallIcon(R.drawable.ic_stat_av_download)
-                            .setContentText(context.getString(R.string.notif_completed))
-                            .setContentIntent(mainPIntent)
-                            .addAction(R.drawable.ic_action_system_update, context.getString(R.string.install), flashPIntent)
-                            .build();
-                    nm.notify(info.getFlashNotifID(), notif);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                    builder.setTicker(context.getString(info.getDownloadDoneTitle()));
+                    builder.setContentTitle(context.getString(info.getDownloadDoneTitle()));
+                    builder.setSmallIcon(R.drawable.ic_stat_av_download);
+                    builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
+                    builder.setContentText(context.getString(R.string.notif_completed));
+                    builder.setContentIntent(mainPIntent);
+                    builder.addAction(R.drawable.ic_action_system_update, context.getString(R.string.install), flashPIntent);
+                    builder.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+                    Notification notification = builder.build();
+                    nm.notify(info.getFlashNotifID(), notification);
                 } else {
                     Intent mainIntent = new Intent(context, psychokernelUpdaterActivity.class);
                     mainIntent.setAction(info.getNotifAction());
@@ -113,16 +117,18 @@ public class DownloadReceiver extends BroadcastReceiver {
                     clearIntent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, status.getId());
                     PendingIntent clearPIntent = PendingIntent.getBroadcast(context, 2, clearIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                    Notification notif = new NotificationCompat.Builder(context)
-                            .setTicker(context.getString(info.getDownloadFailedTitle()))
-                            .setContentTitle(context.getString(info.getDownloadFailedTitle()))
-                            .setContentText(status.getErrorString(context))
-                            .setSmallIcon(R.drawable.ic_stat_warning)
-                            .setContentIntent(mainPIntent)
-                            .setDeleteIntent(clearPIntent)
-                            .addAction(R.drawable.ic_action_refresh, context.getString(R.string.retry), dlPIntent)
-                            .build();
-                    nm.notify(info.getFailedNotifID(), notif);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                    builder.setTicker(context.getString(info.getDownloadFailedTitle()));
+                    builder.setContentTitle(context.getString(info.getDownloadFailedTitle()));
+                    builder.setContentText(status.getErrorString(context));
+                    builder.setSmallIcon(R.drawable.ic_stat_warning);
+                    builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
+                    builder.setContentIntent(mainPIntent);
+                    builder.setDeleteIntent(clearPIntent);
+                    builder.addAction(R.drawable.ic_action_refresh, context.getString(R.string.retry), dlPIntent);
+                    builder.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+                    Notification notification = builder.build();
+                    nm.notify(info.getFlashNotifID(), notification);
                 }
                 break;
             }
