@@ -25,4 +25,5 @@
     <dimen name="dialog_corners">4dp</dimen>
     <dimen name="dialog_elevation">6dp</dimen>
     <dimen name="button_corners">4dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
 </resources>

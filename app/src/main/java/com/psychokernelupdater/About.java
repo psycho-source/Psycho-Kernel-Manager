@@ -63,6 +63,10 @@ public class About extends AppCompatActivity {
                         i = new Intent(getApplicationContext(), About.class);
                         startActivity(i);
                         break;
+                    case R.id.spec:
+                        i = new Intent(getApplicationContext(), SplashActivity.class);
+                        startActivity(i);
+                        break;
                 }
                 return true;
             }

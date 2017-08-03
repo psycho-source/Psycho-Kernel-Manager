@@ -8,11 +8,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-alpha8'
+
     }
 }
 
 allprojects {
     repositories {
         mavenCentral()
+        jcenter()
     }
 }

@@ -11,6 +11,10 @@
             android:icon="@drawable/nav_down"
             android:title="@string/menu_downloads" />
         <item
+            android:id="@+id/spec"
+            android:icon="@drawable/pro"
+            android:title="@string/pro" />
+        <item
             android:id="@+id/donate"
             android:icon="@drawable/nav_don"
             android:title="@string/donate" />

@@ -26,4 +26,9 @@
     <color name="fab_background_color">#F44336</color>
     <color name="dialog_background_color">#fafafa</color>
     <color name="dialog_background_scrim">#99323232</color>
+    <color name="colorBalance">#43a047</color>
+    <color name="colorPerformance">#fb8c00</color>
+    <color name="colorBattery">#03a9f4</color>
+    <color name="colorGaming">#ef5350</color>
+    <color name="splash_background">#212121</color>
 </resources>
