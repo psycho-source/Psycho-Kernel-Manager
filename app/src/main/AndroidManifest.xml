@@ -49,18 +49,16 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/Splash.ActivityTheme"
-            android:screenOrientation="portrait">
-             <!--<intent-filter>
-                 <action android:name="android.intent.action.MAIN"/>
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
+            android:screenOrientation="portrait"
+            android:theme="@style/Splash.ActivityTheme">
         </activity>
         <activity
             android:name=".LicenseActivity"
@@ -128,7 +126,7 @@
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

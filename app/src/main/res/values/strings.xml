@@ -178,4 +178,8 @@
     <string name="profileTile">Profile</string>
     <string name="spec">Profiles</string>
     <string name="pro">Profiles</string>
+    <string name="short_down">Downloads</string>
+    <string name="short_disab">Not Available</string>
+    <string name="long_pro">Kernel Profiles</string>
+    <string name="long_set">App Settings</string>
 </resources>
