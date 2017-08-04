@@ -1,4 +1,4 @@
-Psycho-Kernel Updater -  v1.0
+Psycho-Kernel Updater -  v2.0
 =============================
 
 Kernel updater for my Psycho-Kernel!
