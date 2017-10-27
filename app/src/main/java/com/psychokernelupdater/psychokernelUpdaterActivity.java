@@ -39,6 +39,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.Duration;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -235,6 +239,19 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        AppUpdater appUpdater = new AppUpdater(this);
+        appUpdater.setUpdateFrom(UpdateFrom.XML);
+        appUpdater.setUpdateXML("https://raw.githubusercontent.com/psycho-source/x3/master/update.xml");
+        appUpdater.setDisplay(Display.SNACKBAR);
+        appUpdater.showAppUpdated(true);
+        appUpdater.setTitleOnUpdateAvailable("Kernel Manager App Update available");
+        appUpdater.setContentOnUpdateAvailable("App Update Available!");
+        appUpdater.setTitleOnUpdateNotAvailable("Update not available!");
+        appUpdater.setContentOnUpdateNotAvailable("No update available!");
+        appUpdater.setButtonUpdate("Update Now");
+        appUpdater.setDuration(Duration.INDEFINITE);
+        appUpdater.start();
 
         actionBarDrawerToggle.syncState();
 
