@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.psychokernelupdater.utils.Config;
+
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
@@ -29,10 +31,17 @@ public class MainActivity extends AppCompatActivity {
     private int notaneasteregg = 0;
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
+    private Config cfg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cfg = Config.getInstance(getApplicationContext());
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
         Toolbar toolbar7 = (Toolbar) findViewById(R.id.toolbar7);
 

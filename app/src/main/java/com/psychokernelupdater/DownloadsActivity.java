@@ -56,6 +56,7 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
     private AdView mAdView;
+    private Config cfg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,13 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
             Toast.makeText(this, extState.equals(Environment.MEDIA_SHARED) ? R.string.toast_nosd_shared : R.string.toast_nosd_error, Toast.LENGTH_LONG).show();
             finish();
         }
+
+        cfg = Config.getInstance(getApplicationContext());
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
 
         setContentView(R.layout.downloads);
 

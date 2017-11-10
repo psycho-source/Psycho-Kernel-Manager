@@ -182,4 +182,8 @@
     <string name="short_disab">Not Available</string>
     <string name="long_pro">Kernel Profiles</string>
     <string name="long_set">App Settings</string>
+    <string name="theme_switch_header">Switch Themes</string>
+    <string name="theme_switch_info_off">Switch to Dark Theme.\n{App Restart is required}</string>
+    <string name="theme_switch_info_on">Switch to Light Theme.\n{App Restart is required}</string>
+    <string name="title_activity_settings2">Settings</string>
 </resources>

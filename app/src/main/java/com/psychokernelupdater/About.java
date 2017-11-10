@@ -3,7 +3,6 @@ package com.psychokernelupdater;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,17 +11,24 @@ import android.view.MenuItem;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.psychokernelupdater.utils.Config;
 
 public class About extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
-    TabLayout tabLayout;
     private AdView mAdView;
+    private Config cfg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cfg = Config.getInstance(getApplicationContext());
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
         setContentView(R.layout.about);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar6);
         MobileAds.initialize(this, "ca-app-pub-3026712685276849~6203773285");

@@ -61,6 +61,7 @@ public class Config {
     private boolean showNotif = true;
     private boolean wifiOnlyDl = true;
     private boolean autoDl = false;
+    private boolean themeSt = false;
     private boolean ignoredUnsupportedWarn = false;
     private boolean ignoredDataWarn = false;
     private boolean ignoredWifiWarn = false;
@@ -75,7 +76,9 @@ public class Config {
 
         showNotif = PREFS.getBoolean("showNotif", showNotif);
         wifiOnlyDl = PREFS.getBoolean("wifiOnlyDl", wifiOnlyDl);
+
         autoDl = PREFS.getBoolean("autoDl", autoDl);
+        themeSt = PREFS.getBoolean("themeSt", themeSt);
 
         ignoredUnsupportedWarn = PREFS.getBoolean("ignoredUnsupportedWarn", ignoredUnsupportedWarn);
         ignoredDataWarn = PREFS.getBoolean("ignoredDataWarn", ignoredDataWarn);
@@ -97,6 +100,13 @@ public class Config {
         return instance;
     }
 
+    public boolean getThemeSt() { return themeSt; }
+
+    public void setThemeSt(boolean themeSt) {
+        this.themeSt = themeSt;
+        putBoolean("themeSt", themeSt);
+    }
+
     public boolean getShowNotif() {
         return showNotif;
     }
@@ -106,9 +116,7 @@ public class Config {
         putBoolean("showNotif", showNotif);
     }
 
-    public boolean getWifiOnlyDl() {
-        return wifiOnlyDl;
-    }
+    public boolean getWifiOnlyDl() { return wifiOnlyDl; }
 
     public void setWifiOnlyDl(boolean wifiOnlyDl) {
         this.wifiOnlyDl = wifiOnlyDl;

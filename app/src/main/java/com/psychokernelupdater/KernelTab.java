@@ -19,8 +19,10 @@
 package com.psychokernelupdater;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,13 +73,19 @@ public class KernelTab extends ListFragment {
         item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.main_device));
         item.put(KEY_SUMMARY, android.os.Build.DEVICE.toLowerCase(Locale.US));
-        item.put(KEY_ICON, R.drawable.ic_device);
+        if (cfg.getThemeSt())
+            item.put(KEY_ICON, R.drawable.ic_device_dark);
+        else
+            item.put(KEY_ICON, R.drawable.ic_device);
         DATA.add(item);
 
         item = new HashMap<>();
         item.put(KEY_TITLE, getString(R.string.main_kernel));
         item.put(KEY_SUMMARY, PropUtils.getKernelVersion());
-        item.put(KEY_ICON, R.drawable.ic_info_outline);
+        if (cfg.getThemeSt())
+            item.put(KEY_ICON, R.drawable.ic_info_outline_dark);
+        else
+            item.put(KEY_ICON, R.drawable.ic_info_outline);
         DATA.add(item);
 
         if (PropUtils.isKernelOtaEnabled()) {
@@ -91,13 +99,19 @@ public class KernelTab extends ListFragment {
             item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.kernel_version));
             item.put(KEY_SUMMARY, kernelVersion);
-            item.put(KEY_ICON, R.drawable.ic_settings);
+            if (cfg.getThemeSt())
+                item.put(KEY_ICON, R.drawable.ic_settings_dark);
+            else
+                item.put(KEY_ICON, R.drawable.ic_settings);
             DATA.add(item);
 
             item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.updates_avail_title));
             checkForKernelUpdates();
-            item.put(KEY_ICON, R.drawable.ic_cloud_download);
+            if (cfg.getThemeSt())
+                item.put(KEY_ICON, R.drawable.ic_cloud_download_dark);
+            else
+                item.put(KEY_ICON, R.drawable.ic_cloud_download);
             AVAIL_UPDATES_IDX = DATA.size();
             DATA.add(item);
         } else {
@@ -106,7 +120,10 @@ public class KernelTab extends ListFragment {
             item = new HashMap<>();
             item.put(KEY_TITLE, getString(R.string.kernel_unsupported));
             item.put(KEY_SUMMARY, getString(R.string.kernel_unsupported_summary));
-            item.put(KEY_ICON, R.drawable.ic_cloud_off);
+            if (cfg.getThemeSt())
+                item.put(KEY_ICON, R.drawable.ic_cloud_off_dark);
+            else
+                item.put(KEY_ICON, R.drawable.ic_cloud_off);
             DATA.add(item);
         }
     }

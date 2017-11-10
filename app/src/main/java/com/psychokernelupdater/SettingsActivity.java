@@ -26,6 +26,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
@@ -44,6 +45,7 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
     private CheckBoxPreference wifidlPref;
     private CheckBoxPreference autodlPref;
     private Preference resetWarnPref;
+    private SwitchPreference themeSwitch;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -69,6 +71,9 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
         autodlPref.setChecked(cfg.getAutoDlState());
 
         resetWarnPref = findPreference("resetwarn_pref");
+
+        themeSwitch = (SwitchPreference) findPreference("theme_switch");
+        themeSwitch.setChecked(cfg.getThemeSt());
     }
 
     @Override
@@ -102,6 +107,8 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
             cfg.setAutoDlState(autodlPref.isChecked());
         } else if (preference == resetWarnPref) {
             cfg.clearIgnored();
+        } else if (preference == themeSwitch) {
+            cfg.setThemeSt(themeSwitch.isChecked());
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

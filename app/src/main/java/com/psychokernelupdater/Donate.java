@@ -19,6 +19,7 @@ import android.view.View;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.psychokernelupdater.utils.Config;
 
 public class Donate extends AppCompatActivity {
 
@@ -27,10 +28,17 @@ public class Donate extends AppCompatActivity {
     TabLayout tabLayout;
     private AdView mAdView;
     private int RC_LOGIN = 100;
+    private Config cfg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cfg = Config.getInstance(getApplicationContext());
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
         setContentView(R.layout.donate);
         Toolbar toolbar2 = (Toolbar) findViewById(R.id.toolbar2);
 

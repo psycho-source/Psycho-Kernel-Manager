@@ -24,6 +24,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -31,6 +34,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -107,7 +111,6 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), R.string.need_storage_permission, Toast.LENGTH_LONG).show();
         }
-
         context = getApplicationContext();
         startMainActivity(context);
     }
@@ -209,6 +212,12 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
             });
             dlg.show();
         }
+
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
 
         setContentView(R.layout.main);
         Toolbar toolbar3 = (Toolbar) findViewById(R.id.toolbar3);
