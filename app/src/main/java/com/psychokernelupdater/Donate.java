@@ -32,13 +32,14 @@ public class Donate extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         cfg = Config.getInstance(getApplicationContext());
         if (cfg.getThemeSt())
             setTheme(R.style.AppThemeDark);
 
         else
             setTheme(R.style.AppTheme);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.donate);
         Toolbar toolbar2 = (Toolbar) findViewById(R.id.toolbar2);
 

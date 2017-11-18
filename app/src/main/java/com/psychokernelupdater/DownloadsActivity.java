@@ -60,6 +60,13 @@ public class DownloadsActivity extends BaseDownloadDialogActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        cfg = Config.getInstance(getApplicationContext());
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         String extState = Environment.getExternalStorageState();

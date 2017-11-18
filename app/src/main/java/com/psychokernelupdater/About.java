@@ -22,13 +22,15 @@ public class About extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         cfg = Config.getInstance(getApplicationContext());
         if (cfg.getThemeSt())
             setTheme(R.style.AppThemeDark);
 
         else
             setTheme(R.style.AppTheme);
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar6);
         MobileAds.initialize(this, "ca-app-pub-3026712685276849~6203773285");

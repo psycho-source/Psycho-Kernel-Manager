@@ -50,14 +50,22 @@ public class SettingsActivity extends PreferenceActivity implements DialogCallba
     @Override
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
+
+
+        cfg = Config.getInstance(getApplicationContext());
+
+        if (cfg.getThemeSt())
+            setTheme(R.style.SettingsThemeDark);
+
+        else
+            setTheme(R.style.SettingsTheme);
+
         super.onCreate(savedInstanceState);
 
         final ActionBar bar = getActionBar();
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
         }
-
-        cfg = Config.getInstance(getApplicationContext());
 
         addPreferencesFromResource(R.xml.settings);
 

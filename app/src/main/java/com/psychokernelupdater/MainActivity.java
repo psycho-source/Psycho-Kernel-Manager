@@ -26,22 +26,55 @@ import eu.chainfire.libsuperuser.Shell;
 
 public class MainActivity extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    NavigationView mNavigationView;
     private CardView oldCard;
     private List<String> suResult = null;
     private int notaneasteregg = 0;
-    DrawerLayout drawerLayout;
-    NavigationView mNavigationView;
     private Config cfg;
+
+    // Method that interprets a profile and sets it
+    public static void setProfile(int profile) {
+        int numProfiles = 3;
+        if (profile > numProfiles || profile < 0) {
+            setProp(0);
+        } else {
+            setProp(profile);
+        }
+
+    }
+
+    // Method that sets system property
+    private static void setProp(final int profile) {
+        new AsyncTask<Object, Object, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                Shell.SU.run("setprop persist.spectrum.profile " + profile);
+                return null;
+            }
+        }.execute();
+    }
+
+    // Method that converts List<String> to String
+    public static String listToString(List<String> list) {
+        StringBuilder Builder = new StringBuilder();
+        for (String out : list) {
+            Builder.append(out);
+        }
+        return Builder.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         cfg = Config.getInstance(getApplicationContext());
         if (cfg.getThemeSt())
             setTheme(R.style.AppThemeDark);
 
         else
             setTheme(R.style.AppTheme);
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar7 = (Toolbar) findViewById(R.id.toolbar7);
 
@@ -166,28 +199,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // Method that interprets a profile and sets it
-    public static void setProfile(int profile) {
-        int numProfiles = 3;
-        if (profile > numProfiles || profile < 0) {
-            setProp(0);
-        } else {
-            setProp(profile);
-        }
-
-    }
-
-    // Method that sets system property
-    private static void setProp(final int profile) {
-        new AsyncTask<Object, Object, Void>() {
-            @Override
-            protected Void doInBackground(Object... params) {
-                Shell.SU.run("setprop persist.spectrum.profile " + profile);
-                return null;
-            }
-        }.execute();
-    }
-
     // Method that detects the selected profile on launch
     private void initSelected() {
         SharedPreferences profile = this.getSharedPreferences("profile", Context.MODE_PRIVATE);
@@ -282,15 +293,6 @@ public class MainActivity extends AppCompatActivity {
                 setProfile(0);
             return false;
         }
-    }
-
-    // Method that converts List<String> to String
-    public static String listToString(List<String> list) {
-        StringBuilder Builder = new StringBuilder();
-        for(String out : list){
-            Builder.append(out);
-        }
-        return Builder.toString();
     }
 
     // Method that completes card onClick tasks

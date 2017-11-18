@@ -24,9 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -34,7 +31,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -117,6 +113,12 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
 
     private void startMainActivity(Context context) {
         cfg = Config.getInstance(context);
+
+        if (cfg.getThemeSt())
+            setTheme(R.style.AppThemeDark);
+
+        else
+            setTheme(R.style.AppTheme);
 
         boolean data = Utils.dataAvailable(this);
         boolean wifi = Utils.wifiConnected(this);
@@ -213,11 +215,7 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
             dlg.show();
         }
 
-        if (cfg.getThemeSt())
-            setTheme(R.style.AppThemeDark);
 
-        else
-            setTheme(R.style.AppTheme);
 
         setContentView(R.layout.main);
         Toolbar toolbar3 = (Toolbar) findViewById(R.id.toolbar3);
@@ -253,7 +251,7 @@ public class psychokernelUpdaterActivity extends BaseDownloadDialogActivity {
         appUpdater.setUpdateFrom(UpdateFrom.XML);
         appUpdater.setUpdateXML("https://raw.githubusercontent.com/psycho-source/x3/master/update.xml");
         appUpdater.setDisplay(Display.SNACKBAR);
-        appUpdater.showAppUpdated(true);
+        appUpdater.showAppUpdated(false);
         appUpdater.setTitleOnUpdateAvailable("Kernel Manager App Update available");
         appUpdater.setContentOnUpdateAvailable("App Update Available!");
         appUpdater.setTitleOnUpdateNotAvailable("Update not available!");

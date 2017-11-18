@@ -45,7 +45,9 @@
         <item name="color">#FFFFFFFF</item>
     </style>
 
-    <style name="SettingsTheme" parent="AppTheme" />
+    <style name="SettingsThemeDark" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar" />
+
+    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

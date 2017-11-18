@@ -186,4 +186,5 @@
     <string name="theme_switch_info_off">Switch to Dark Theme.\n{App Restart is required}</string>
     <string name="theme_switch_info_on">Switch to Light Theme.\n{App Restart is required}</string>
     <string name="title_activity_settings2">Settings</string>
+    <string name="restart">Restart Application</string>
 </resources>

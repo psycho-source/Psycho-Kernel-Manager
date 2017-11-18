@@ -68,4 +68,12 @@
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
         <item name="android:statusBarColor">@color/settoverlay</item>
     </style>
+
+    <style name="SettingsThemeDark" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor">@color/settoverlay</item>
+    </style>
 </resources>
