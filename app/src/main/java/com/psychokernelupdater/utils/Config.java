@@ -28,7 +28,7 @@ public class Config {
     public static final String VERSION = "2.0";
 
     public static final String LOG_TAG = "psycho::";
-    public static final String SITE_GITHUB_URL = "https://github.com/psycho-source";
+    public static final String SITE_GITHUB_URL = "https://github.com/psycho-source/Psycho-Kernel";
     public static final String KERNEL_SD_PATH = "/Psycho-Kernel/";
     static final String HTTPC_UA = "Psycho-Mods Updater App";
     static final String SITE_BASE_URL = "https://psycho-mods.000webhostapp.com/";
@@ -100,7 +100,9 @@ public class Config {
         return instance;
     }
 
-    public boolean getThemeSt() { return themeSt; }
+    public boolean getThemeSt() {
+        return themeSt;
+    }
 
     public void setThemeSt(boolean themeSt) {
         this.themeSt = themeSt;
@@ -116,7 +118,9 @@ public class Config {
         putBoolean("showNotif", showNotif);
     }
 
-    public boolean getWifiOnlyDl() { return wifiOnlyDl; }
+    public boolean getWifiOnlyDl() {
+        return wifiOnlyDl;
+    }
 
     public void setWifiOnlyDl(boolean wifiOnlyDl) {
         this.wifiOnlyDl = wifiOnlyDl;

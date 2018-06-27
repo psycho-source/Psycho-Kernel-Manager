@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_new_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_new_about">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="?android:attr/colorAccent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    app:srcCompat="@drawable/ic_money" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/paypal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/banner"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_paypal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="PayPal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/paytm_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/paypal_info"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_paytm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="PayTM"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/free_border"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/paytm_info"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="?android:dividerHorizontal" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/freeVid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/free_border"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_adsense" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Watch a free video"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/freeVid"
+                android:visibility="visible"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-3026712685276849/8290654845"></com.google.android.gms.ads.AdView>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/header_layout"
+            app:menu="@menu/drawer_view" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>

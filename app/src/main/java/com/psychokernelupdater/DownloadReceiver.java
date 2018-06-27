@@ -50,7 +50,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 
         if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, R.string.need_storage_permission, Toast.LENGTH_LONG).show();
-            Intent i = new Intent(context, psychokernelUpdaterActivity.class);
+            Intent i = new Intent(context, new_main.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
             return;
@@ -80,12 +80,12 @@ public class DownloadReceiver extends BroadcastReceiver {
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (error == 0) {
-                    Intent mainIntent = new Intent(context, psychokernelUpdaterActivity.class);
+                    Intent mainIntent = new Intent(context, new_main.class);
                     mainIntent.setAction(info.getNotifAction());
-                    mainIntent.putExtra(psychokernelUpdaterActivity.EXTRA_FLAG_DOWNLOAD_DIALOG, true);
+                    mainIntent.putExtra(new_main.EXTRA_FLAG_DOWNLOAD_DIALOG, true);
                     PendingIntent mainPIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                    Intent flashIntent = new Intent(context, DownloadsActivity.class);
+                    Intent flashIntent = new Intent(context, new_main.class);
                     flashIntent.setAction(info.getFlashAction());
                     info.addToIntent(flashIntent);
                     PendingIntent flashPIntent = PendingIntent.getActivity(context, 0, flashIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -102,7 +102,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                     Notification notification = builder.build();
                     nm.notify(info.getFlashNotifID(), notification);
                 } else {
-                    Intent mainIntent = new Intent(context, psychokernelUpdaterActivity.class);
+                    Intent mainIntent = new Intent(context, new_main.class);
                     mainIntent.setAction(info.getNotifAction());
                     info.addToIntent(mainIntent);
                     PendingIntent mainPIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -142,9 +142,9 @@ public class DownloadReceiver extends BroadcastReceiver {
                 BaseInfo info = status.getInfo();
                 if (info == null) return;
 
-                Intent i = new Intent(context, psychokernelUpdaterActivity.class);
+                Intent i = new Intent(context, new_main.class);
                 i.setAction(info.getNotifAction());
-                i.putExtra(psychokernelUpdaterActivity.EXTRA_FLAG_DOWNLOAD_DIALOG, true);
+                i.putExtra(new_main.EXTRA_FLAG_DOWNLOAD_DIALOG, true);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
                 break;

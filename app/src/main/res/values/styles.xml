@@ -18,63 +18,41 @@
 
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="AppThemeDark" parent="@android:style/ThemeOverlay.Material.Dark">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">#FFFFFFFF</item>
-    </style>
-
-    <style name="SettingsThemeDark" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar" />
-
-    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar" />
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="AppTheme.Dialog" parent="AppTheme.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/dialog_background_scrim</item>
-        <!--<item name="android:windowAnimationStyle">@null</item>-->
-        <!--<item name="android:windowContentTransitions">true</item>-->
-    </style>
-
-   <style name="Splash.ActivityTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:navigationBarColor">@color/splash_background</item>
-        <item name="android:statusBarColor">@color/splash_background</item>
-        <item name="android:windowBackground">@drawable/splash</item>
+    <style name="NewAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">#fafafa</item>
+        <item name="android:colorPrimaryDark">#e0e0e0</item>
+        <item name="android:colorAccent">#2196f3</item>
+        <item name="colorPrimary">#fafafa</item>
+        <item name="colorPrimaryDark">#e0e0e0</item>
+        <item name="colorAccent">#2196f3</item>
         <item name="android:windowLightStatusBar">true</item>
-   </style>
+        <item name="android:statusBarColor">#e0e0e0</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyleNew</item>
+        <item name="android:preferenceStyle">@style/perf_theme</item>
+    </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="NewAppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="IntroTheme" parent="NewAppTheme">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="NewAppTheme.transparent" parent="NewAppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="perf_theme" parent="@style/PreferenceFragment.Material">
+        <item name="colorAccent">@color/Blue</item>
+    </style>
+
+    <style name="DrawerArrowStyleNew" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">#FF000000</item>
+    </style>
 
     <style name="ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal" />
+
 </resources>

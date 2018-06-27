@@ -4,9 +4,10 @@
 *.log
 
 app/build
+app/release
 build
 dist
 projectFilesBackup
-.idea/workspace.xml
+.idea
 .gradle
 local.properties

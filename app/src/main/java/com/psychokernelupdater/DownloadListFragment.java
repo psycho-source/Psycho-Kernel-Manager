@@ -77,11 +77,11 @@ public class DownloadListFragment extends ListFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
                             case 0:
-                                DownloadsActivity.is_called_by_DownloadList = true;
-                                DownloadsActivity.DownloadList_File_Name = info.toString();
+                                download_new.is_called_by_DownloadList = true;
+                                download_new.DownloadList_File_Name = info.toString();
 
-                                Intent intent = new Intent(getActivity(), DownloadsActivity.class);
-                                intent.setAction(DownloadsActivity.FLASH_KERNEL_ACTION);
+                                Intent intent = new Intent(getActivity(), download_new.class);
+                                intent.setAction(download_new.FLASH_KERNEL_ACTION);
                                 getActivity().startActivity(intent);
                                 break;
                             case 1:

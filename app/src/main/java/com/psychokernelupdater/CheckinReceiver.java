@@ -87,7 +87,7 @@ public class CheckinReceiver extends BroadcastReceiver {
             APIUtils.fetchKernelInfo(context, new BaseInfo.InfoLoadAdapter<KernelInfo>(KernelInfo.class, context) {
                 @Override
                 public void onInfoLoaded(KernelInfo info) {
-                    KernelTab.notifyActiveFragment();
+
                 }
 
                 @Override

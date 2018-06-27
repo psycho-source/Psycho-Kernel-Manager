@@ -1,5 +1,7 @@
 package com.psychokernelupdater;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,18 +9,26 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.psychokernelupdater.utils.Config;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 
@@ -26,12 +36,16 @@ import eu.chainfire.libsuperuser.Shell;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
-    NavigationView mNavigationView;
+    public static final String EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X";
+    public static final String EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y";
+    RelativeLayout rootLayoutSpec;
     private CardView oldCard;
     private List<String> suResult = null;
     private int notaneasteregg = 0;
-    private Config cfg;
+    private DrawerLayout mDrawerLayout;
+    private Intent in;
+    private int revealX, revealY;
+    private AdView mAdView;
 
     // Method that interprets a profile and sets it
     public static void setProfile(int profile) {
@@ -67,54 +81,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        cfg = Config.getInstance(getApplicationContext());
-        if (cfg.getThemeSt())
-            setTheme(R.style.AppThemeDark);
-
-        else
-            setTheme(R.style.AppTheme);
-
+        setTheme(R.style.NewAppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar7 = (Toolbar) findViewById(R.id.toolbar7);
+        setContentView(R.layout.spectrum_new);
+        rootLayoutSpec = (RelativeLayout) findViewById(R.id.spec_main);
+        final Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
+            rootLayoutSpec.setVisibility(View.INVISIBLE);
+            revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0);
+            revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0);
+            ViewTreeObserver viewTreeObserver = rootLayoutSpec.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        revealActivity(revealX, revealY);
+                        rootLayoutSpec.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        setSupportActionBar(toolbar7);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_new_spectrum);
+        setSupportActionBar(toolbar);
+        final ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setDisplayShowHomeEnabled(true);
+        }
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        final NavigationView mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                drawerLayout.closeDrawers();
-                menuItem.setChecked(true);
-                Intent i;
-                switch (menuItem.getItemId()) {
-                    case R.id.settings:
-                        i = new Intent(getApplicationContext(), SettingsActivity.class);
-                        startActivity(i);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        in = new Intent(MainActivity.this, new_main.class);
                         break;
                     case R.id.downloads:
-                        i = new Intent(getApplicationContext(), DownloadsActivity.class);
-                        startActivity(i);
-                        break;
-                    case R.id.home:
-                        i = new Intent(getApplicationContext(), psychokernelUpdaterActivity.class);
-                        startActivity(i);
-                        break;
-                    case R.id.donate:
-                        i = new Intent(getApplicationContext(), Donate.class);
-                        startActivity(i);
+                        in = new Intent(MainActivity.this, download_new.class);
                         break;
                     case R.id.about:
-                        i = new Intent(getApplicationContext(), About.class);
-                        startActivity(i);
+                        in = new Intent(MainActivity.this, new_about.class);
+                        break;
+                    case R.id.donate:
+                        in = new Intent(MainActivity.this, new_support.class);
                         break;
                     case R.id.spec:
-                        i = new Intent(getApplicationContext(), SplashActivity.class);
-                        startActivity(i);
+                        in = null;
                         break;
+                }
+                mDrawerLayout.closeDrawers();
+                if (in != null) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(in);
+                            finish();
+                        }
+                    }, 250);
                 }
                 return true;
             }
@@ -148,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         card0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            cardClick(card0, 0, balColor);
+                cardClick(card0, 0, balColor);
                 if (notaneasteregg == 1) {
                     notaneasteregg++;
                 } else {
@@ -191,12 +216,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
 
     // Method that detects the selected profile on launch
@@ -322,14 +345,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.custom_profile:
                 Intent i = new Intent(this, ProfileLoaderActivity.class);
                 startActivity(i);
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MainActivity.this, new_main.class));
+        finish();
+    }
+
+    protected void revealActivity(int x, int y) {
+        float finalRadius = (float) (Math.max(rootLayoutSpec.getWidth(), rootLayoutSpec.getHeight()) * 1.1);
+        Animator circularReveal = ViewAnimationUtils.createCircularReveal(rootLayoutSpec, x, y, 0, finalRadius);
+        circularReveal.setDuration(800);
+        circularReveal.setInterpolator(new AccelerateInterpolator());
+        rootLayoutSpec.setVisibility(View.VISIBLE);
+        circularReveal.start();
+        circularReveal.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                SplashActivity.getInstance().finish();
+            }
+        });
     }
 }
 

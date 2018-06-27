@@ -145,7 +145,7 @@ public class DownloadBarFragment extends Fragment {
                             dm.remove(downloadID);
                         } else if (status != null) {
                             if (status.getStatus() == DownloadManager.STATUS_SUCCESSFUL) {
-                                Intent i = new Intent(ctx, DownloadsActivity.class);
+                                Intent i = new Intent(ctx, download_new.class);
                                 i.setAction(info.getFlashAction());
                                 info.addToIntent(i);
                                 ctx.startActivity(i);

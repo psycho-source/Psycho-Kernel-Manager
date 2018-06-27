@@ -21,9 +21,9 @@ package com.psychokernelupdater.utils;
 import android.content.Context;
 
 import com.psychokernelupdater.DownloadReceiver;
-import com.psychokernelupdater.DownloadsActivity;
 import com.psychokernelupdater.R;
-import com.psychokernelupdater.psychokernelUpdaterActivity;
+import com.psychokernelupdater.download_new;
+import com.psychokernelupdater.new_main;
 
 import java.io.File;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class KernelInfo extends BaseInfo {
 
     @Override
     public String getFlashAction() {
-        return DownloadsActivity.FLASH_KERNEL_ACTION;
+        return download_new.FLASH_KERNEL_ACTION;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class KernelInfo extends BaseInfo {
 
     @Override
     public String getNotifAction() {
-        return psychokernelUpdaterActivity.KERNEL_NOTIF_ACTION;
+        return new_main.KERNEL_NOTIF_ACTION;
     }
 
     @Override

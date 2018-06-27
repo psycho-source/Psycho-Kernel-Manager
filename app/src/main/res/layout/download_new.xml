@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_new_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_new_download">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/downloads_bar"
+                class="com.psychokernelupdater.DownloadBarFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                tools:layout="@layout/download_bar" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/downloads_bar"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <fragment
+                    android:id="@+id/download_list"
+                    class="com.psychokernelupdater.DownloadListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/downloads_bar"
+                    tools:layout="@layout/download_list" />
+
+            </android.support.v7.widget.CardView>
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:translationZ="10dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3026712685276849/9291486140"></com.google.android.gms.ads.AdView>
+
+        </RelativeLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/header_layout"
+            app:menu="@menu/drawer_view" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>

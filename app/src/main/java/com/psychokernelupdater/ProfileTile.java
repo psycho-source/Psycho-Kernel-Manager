@@ -41,7 +41,7 @@ public class ProfileTile extends TileService {
             MainActivity.setProfile(2);
             editor.putString("profile", "2");
             editor.apply();
-        } else if (isActive && !click){
+        } else if (isActive && !click) {
             MainActivity.setProfile(1);
             editor.putString("profile", "1");
             editor.apply();
@@ -81,7 +81,7 @@ public class ProfileTile extends TileService {
             newLabel = "Battery";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.battery);
             click = true;
-        } else if (profile.getString("profile", "").contains("1")){
+        } else if (profile.getString("profile", "").contains("1")) {
             newLabel = "Performance";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.rocket);
             click = true;

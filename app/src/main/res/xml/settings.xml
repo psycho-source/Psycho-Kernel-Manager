@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
      Copyright (C) 2017 Psycho-Mods
@@ -17,22 +16,15 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="theme_switch"
-        android:title="@string/theme_switch_header"
-        android:summaryOff="@string/theme_switch_info_off"
-        android:summaryOn="@string/theme_switch_info_on"/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="main_tree">
 
     <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="notif_pref"
-            android:summaryOff="@string/settings_notif_summary_off"
-            android:summaryOn="@string/settings_notif_summary_on"
-            android:title="@string/settings_notif_title" />
+        android:defaultValue="true"
+        android:key="notif_pref"
+        android:summaryOff="@string/settings_notif_summary_off"
+        android:summaryOn="@string/settings_notif_summary_on"
+        android:title="@string/settings_notif_title" />
 
     <CheckBoxPreference
         android:defaultValue="true"
@@ -40,17 +32,17 @@
         android:summaryOff="@string/settings_wifidl_summary_off"
         android:summaryOn="@string/settings_wifidl_summary_on"
         android:title="@string/settings_wifidl_title" />
-        
-        <CheckBoxPreference 
-            android:defaultValue="false"
-            android:key="autodl_pref"
-            android:summaryOff="@string/settings_autodl_summary_off"
-            android:summaryOn="@string/settings_autodl_summary_on"
-            android:title="@string/settings_autodl_title" />
-        
-        <Preference
-            android:key="resetwarn_pref"
-            android:summary="@string/settings_resetwarn_summary"
-            android:title="@string/settings_resetwarn_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="autodl_pref"
+        android:summaryOff="@string/settings_autodl_summary_off"
+        android:summaryOn="@string/settings_autodl_summary_on"
+        android:title="@string/settings_autodl_title" />
+
+    <PreferenceScreen
+        android:key="resetwarn_pref"
+        android:summary="@string/settings_resetwarn_summary"
+        android:title="@string/settings_resetwarn_title" />
 
 </PreferenceScreen>

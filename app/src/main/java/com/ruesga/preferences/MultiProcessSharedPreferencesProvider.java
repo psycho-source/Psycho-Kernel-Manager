@@ -60,6 +60,14 @@ public class MultiProcessSharedPreferencesProvider extends ContentProvider {
     private static final int PREFERENCES_DATA_ID = 2;
 
     private static final UriMatcher sURLMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static final String FIELD_KEY = "key";
+    private static final String FIELD_VALUE = "value";
+    private static final String[] PROJECTION = {
+            FIELD_KEY,
+            FIELD_VALUE
+    };
+    private static Map<String, MultiProcessSharedPreferences> sInstances = new HashMap<>();
+
     static {
         sURLMatcher.addURI(
                 AUTHORITY,
@@ -71,16 +79,64 @@ public class MultiProcessSharedPreferencesProvider extends ContentProvider {
                 PREFERENCES_DATA_ID);
     }
 
-    private static final String FIELD_KEY = "key";
-    private static final String FIELD_VALUE = "value";
-
-    private static final String[] PROJECTION = {
-            FIELD_KEY,
-            FIELD_VALUE
-    };
-
     private Context mContext;
     private Map<String, SharedPreferences> mPreferences = new HashMap<>();
+
+    private static String marshallSet(Set<String> set) {
+        JSONArray array = new JSONArray();
+        for (String value : set) {
+            array.put(value);
+        }
+        return array.toString();
+    }
+
+    private static Set<String> unmarshallSet(String value) throws JSONException {
+        JSONArray array = new JSONArray(value);
+        int size = array.length();
+        Set<String> set = new HashSet<>(size);
+        for (int i = 0; i < size; i++) {
+            set.add(array.getString(i));
+        }
+        return set;
+    }
+
+    public static MultiProcessSharedPreferences getDefaultSharedPreferences(Context context) {
+        final String defaultName;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            defaultName = PreferenceManager.getDefaultSharedPreferencesName(context);
+        } else {
+            defaultName = context.getPackageName() + "_preferences";
+        }
+        return getSharedPreferences(context, defaultName);
+    }
+
+    public static MultiProcessSharedPreferences getSharedPreferences(Context context, String name) {
+        if (!sInstances.containsKey(name)) {
+            sInstances.put(name, new MultiProcessSharedPreferences(
+                    context.getApplicationContext(), name));
+        }
+        return sInstances.get(name);
+    }
+
+    private static String encodePath(String path) {
+        return new String(Base64.encode(path.getBytes(), Base64.NO_WRAP));
+    }
+
+    private static String decodePath(String path) {
+        return new String(Base64.decode(path.getBytes(), Base64.NO_WRAP));
+    }
+
+    public static Uri resolveUri(String key, String prefFileName) {
+        Uri.Builder builder =
+                CONTENT_URI.buildUpon()
+                        .appendPath(PREFERENCES_ENTITY)
+                        .appendPath(encodePath(prefFileName))
+                        .appendPath(PREFERENCE_ENTITY);
+        if (!TextUtils.isEmpty(key)) {
+            builder = builder.appendPath(encodePath(key));
+        }
+        return builder.build();
+    }
 
     @Override
     @SuppressWarnings("ConstantConditions")
@@ -279,171 +335,10 @@ public class MultiProcessSharedPreferencesProvider extends ContentProvider {
         mContext.getContentResolver().notifyChange(uri, null);
     }
 
-    private static String marshallSet(Set<String> set) {
-        JSONArray array = new JSONArray();
-        for (String value : set) {
-            array.put(value);
-        }
-        return array.toString();
-    }
-
-    private static Set<String> unmarshallSet(String value) throws JSONException {
-        JSONArray array = new JSONArray(value);
-        int size = array.length();
-        Set<String> set = new HashSet<>(size);
-        for (int i = 0; i < size; i++) {
-            set.add(array.getString(i));
-        }
-        return set;
-    }
-
-    private static Map<String, MultiProcessSharedPreferences> sInstances = new HashMap<>();
-
-    public static MultiProcessSharedPreferences getDefaultSharedPreferences(Context context) {
-        final String defaultName;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            defaultName = PreferenceManager.getDefaultSharedPreferencesName(context);
-        } else {
-            defaultName = context.getPackageName() + "_preferences";
-        }
-        return getSharedPreferences(context, defaultName);
-    }
-
-    public static MultiProcessSharedPreferences getSharedPreferences(Context context, String name) {
-        if (!sInstances.containsKey(name)) {
-            sInstances.put(name, new MultiProcessSharedPreferences(
-                    context.getApplicationContext(), name));
-        }
-        return sInstances.get(name);
-    }
-
     public static class MultiProcessSharedPreferences implements SharedPreferences {
         private final String mPreferencesFileName;
-
-        private static class MultiProcessEditor implements Editor {
-
-            private final Context mContext;
-            private final String mPreferencesFileName;
-            private final List<Pair<String, Object>> mValues;
-            private final Set<String> mRemovedEntries;
-            private boolean mClearAllFlag;
-
-            private MultiProcessEditor(Context context, String name) {
-                mContext = context;
-                mPreferencesFileName = name;
-                mValues = new ArrayList<>();
-                mRemovedEntries = new HashSet<>();
-                mClearAllFlag = false;
-            }
-
-            @Override
-            public Editor putString(String key, String value) {
-                mValues.add(new Pair<>(key, (Object) value));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor putStringSet(String key, Set<String> values) {
-                mValues.add(new Pair<>(key, (Object) values));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor putInt(String key, int value) {
-                mValues.add(new Pair<>(key, (Object) value));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor putLong(String key, long value) {
-                mValues.add(new Pair<>(key, (Object) value));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor putFloat(String key, float value) {
-                mValues.add(new Pair<>(key, (Object) value));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor putBoolean(String key, boolean value) {
-                mValues.add(new Pair<>(key, (Object) value));
-                mRemovedEntries.remove(key);
-                return this;
-            }
-
-            @Override
-            public Editor remove(String key) {
-                Iterator<Pair<String, Object>> it = mValues.iterator();
-                while (it.hasNext()) {
-                    if (it.next().first.equals(key)) {
-                        it.remove();
-                        break;
-                    }
-                }
-                mRemovedEntries.add(key);
-                return this;
-            }
-
-            @Override
-            public Editor clear() {
-                mClearAllFlag = true;
-                mRemovedEntries.clear();
-                mValues.clear();
-                return this;
-            }
-
-            @Override
-            @SuppressWarnings("unchecked")
-            public boolean commit() {
-                if (mClearAllFlag) {
-                    Uri uri = resolveUri(null, mPreferencesFileName);
-                    mContext.getContentResolver().delete(uri, null, null);
-                }
-                mClearAllFlag = false;
-
-                ContentValues values = new ContentValues();
-                for (Pair<String, Object> v : mValues) {
-                    Uri uri = resolveUri(v.first, mPreferencesFileName);
-                    values.put(FIELD_KEY, v.first);
-                    if (v.second instanceof Boolean) {
-                        values.put(FIELD_VALUE, (Boolean) v.second);
-                    } else if (v.second instanceof Long) {
-                        values.put(FIELD_VALUE, (Long) v.second);
-                    } else if (v.second instanceof Integer) {
-                        values.put(FIELD_VALUE, (Integer) v.second);
-                    } else if (v.second instanceof Float) {
-                        values.put(FIELD_VALUE, (Float) v.second);
-                    } else if (v.second instanceof String) {
-                        values.put(FIELD_VALUE, (String) v.second);
-                    } else if (v.second instanceof Set) {
-                        values.put(FIELD_VALUE, marshallSet((Set<String>) v.second));
-                    } else {
-                        throw new IllegalArgumentException("Unsupported type for key " + v.first);
-                    }
-
-                    mContext.getContentResolver().update(uri, values, null, null);
-                }
-
-                for (String key : mRemovedEntries) {
-                    Uri uri = resolveUri(key, mPreferencesFileName);
-                    mContext.getContentResolver().delete(uri, null, null);
-                }
-                return true;
-            }
-
-            @Override
-            public void apply() {
-                commit();
-            }
-        }
-
+        private final Context mContext;
+        private final List<OnSharedPreferenceChangeListener> mListeners = new ArrayList<>();
         private final ContentObserver mObserver = new ContentObserver(new Handler()) {
             @Override
             public boolean deliverSelfNotifications() {
@@ -462,9 +357,6 @@ public class MultiProcessSharedPreferencesProvider extends ContentProvider {
             }
         };
         private boolean mObserving = false;
-
-        private final Context mContext;
-        private final List<OnSharedPreferenceChangeListener> mListeners = new ArrayList<>();
 
         private MultiProcessSharedPreferences(Context context, String name) {
             mContext = context;
@@ -713,25 +605,129 @@ public class MultiProcessSharedPreferencesProvider extends ContentProvider {
         public void unregisterOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener cb) {
             mListeners.remove(cb);
         }
-    }
 
-    private static String encodePath(String path) {
-        return new String(Base64.encode(path.getBytes(), Base64.NO_WRAP));
-    }
+        private static class MultiProcessEditor implements Editor {
 
-    private static String decodePath(String path) {
-        return new String(Base64.decode(path.getBytes(), Base64.NO_WRAP));
-    }
+            private final Context mContext;
+            private final String mPreferencesFileName;
+            private final List<Pair<String, Object>> mValues;
+            private final Set<String> mRemovedEntries;
+            private boolean mClearAllFlag;
 
-    public static Uri resolveUri(String key, String prefFileName) {
-        Uri.Builder builder =
-                CONTENT_URI.buildUpon()
-                        .appendPath(PREFERENCES_ENTITY)
-                        .appendPath(encodePath(prefFileName))
-                        .appendPath(PREFERENCE_ENTITY);
-        if (!TextUtils.isEmpty(key)) {
-            builder = builder.appendPath(encodePath(key));
+            private MultiProcessEditor(Context context, String name) {
+                mContext = context;
+                mPreferencesFileName = name;
+                mValues = new ArrayList<>();
+                mRemovedEntries = new HashSet<>();
+                mClearAllFlag = false;
+            }
+
+            @Override
+            public Editor putString(String key, String value) {
+                mValues.add(new Pair<>(key, (Object) value));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor putStringSet(String key, Set<String> values) {
+                mValues.add(new Pair<>(key, (Object) values));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor putInt(String key, int value) {
+                mValues.add(new Pair<>(key, (Object) value));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor putLong(String key, long value) {
+                mValues.add(new Pair<>(key, (Object) value));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor putFloat(String key, float value) {
+                mValues.add(new Pair<>(key, (Object) value));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor putBoolean(String key, boolean value) {
+                mValues.add(new Pair<>(key, (Object) value));
+                mRemovedEntries.remove(key);
+                return this;
+            }
+
+            @Override
+            public Editor remove(String key) {
+                Iterator<Pair<String, Object>> it = mValues.iterator();
+                while (it.hasNext()) {
+                    if (it.next().first.equals(key)) {
+                        it.remove();
+                        break;
+                    }
+                }
+                mRemovedEntries.add(key);
+                return this;
+            }
+
+            @Override
+            public Editor clear() {
+                mClearAllFlag = true;
+                mRemovedEntries.clear();
+                mValues.clear();
+                return this;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public boolean commit() {
+                if (mClearAllFlag) {
+                    Uri uri = resolveUri(null, mPreferencesFileName);
+                    mContext.getContentResolver().delete(uri, null, null);
+                }
+                mClearAllFlag = false;
+
+                ContentValues values = new ContentValues();
+                for (Pair<String, Object> v : mValues) {
+                    Uri uri = resolveUri(v.first, mPreferencesFileName);
+                    values.put(FIELD_KEY, v.first);
+                    if (v.second instanceof Boolean) {
+                        values.put(FIELD_VALUE, (Boolean) v.second);
+                    } else if (v.second instanceof Long) {
+                        values.put(FIELD_VALUE, (Long) v.second);
+                    } else if (v.second instanceof Integer) {
+                        values.put(FIELD_VALUE, (Integer) v.second);
+                    } else if (v.second instanceof Float) {
+                        values.put(FIELD_VALUE, (Float) v.second);
+                    } else if (v.second instanceof String) {
+                        values.put(FIELD_VALUE, (String) v.second);
+                    } else if (v.second instanceof Set) {
+                        values.put(FIELD_VALUE, marshallSet((Set<String>) v.second));
+                    } else {
+                        throw new IllegalArgumentException("Unsupported type for key " + v.first);
+                    }
+
+                    mContext.getContentResolver().update(uri, values, null, null);
+                }
+
+                for (String key : mRemovedEntries) {
+                    Uri uri = resolveUri(key, mPreferencesFileName);
+                    mContext.getContentResolver().delete(uri, null, null);
+                }
+                return true;
+            }
+
+            @Override
+            public void apply() {
+                commit();
+            }
         }
-        return builder.build();
     }
 }

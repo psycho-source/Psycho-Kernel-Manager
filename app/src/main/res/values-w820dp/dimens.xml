@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 OTA Update Center
      Copyright (C) 2017 jollaman999
      Copyright (C) 2017 Psycho-Mods
@@ -17,6 +16,4 @@
      limitations under the License.
 -->
 
-<resources>
-    <dimen name="activity_horizontal_margin">64dp</dimen>
-</resources>
+<resources></resources>

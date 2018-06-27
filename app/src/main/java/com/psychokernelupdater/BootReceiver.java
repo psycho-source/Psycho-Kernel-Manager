@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-public class BootReceiver extends BroadcastReceiver{
+public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -21,7 +21,6 @@ public class BootReceiver extends BroadcastReceiver{
             }
         }
     }
-
 
 
 }

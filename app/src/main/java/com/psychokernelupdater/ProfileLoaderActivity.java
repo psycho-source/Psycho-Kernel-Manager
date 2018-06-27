@@ -34,62 +34,9 @@ import eu.chainfire.libsuperuser.Shell;
 
 import static java.lang.System.in;
 
-public class ProfileLoaderActivity extends AppCompatActivity{
-    private static final int SELECT_FILE = 1;
+public class ProfileLoaderActivity extends AppCompatActivity {
     static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_loader);
-
-        CardView fileSelect = (CardView) findViewById(R.id.profCard);
-        final Switch applyOnBoot = (Switch) findViewById(R.id.boot);
-        SharedPreferences first = this.getSharedPreferences("firstFind", Context.MODE_PRIVATE);
-        SharedPreferences.Editor feditor = first.edit();
-        SharedPreferences boot = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
-
-        if (first.getBoolean("firstFind", true)) {
-            aboutDialog();
-            feditor.putBoolean("firstFind", false);
-            feditor.apply();
-        }
-
-        applyOnBoot.setChecked(boot.getBoolean("loadOnBoot", false));
-
-        try {
-            if (ContextCompat.checkSelfPermission(ProfileLoaderActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                ActivityCompat.requestPermissions(ProfileLoaderActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        fileSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-                startActivityForResult(intent, SELECT_FILE);
-            }
-        });
-
-        applyOnBoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences prefs = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-
-                if (applyOnBoot.isChecked()) {
-                    editor.putBoolean("loadOnBoot", true);
-                    editor.apply();
-                } else {
-                    editor.putBoolean("loadOnBoot", false);
-                    editor.apply();
-                }
-            }
-        });
-    }
+    private static final int SELECT_FILE = 1;
 
     // Method that parses profile file
     public static void setEXKMProfile(final String path) {
@@ -117,59 +64,6 @@ public class ProfileLoaderActivity extends AppCompatActivity{
                 return null;
             }
         }.execute();
-    }
-
-    // Method that creates intro dialog
-    private void aboutDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.aboutLoader);
-        dialog.setMessage(R.string.loaderDesc);
-        dialog.setCancelable(true);
-        AlertDialog supportDialog = dialog.create();
-        supportDialog.show();
-    }
-
-    // Method that sets property as a string
-    private void setProp(final String profile) {
-        new AsyncTask<Object, Object, Void>() {
-            @Override
-            protected Void doInBackground(Object... params) {
-                Shell.SU.run("setprop persist.spectrum.profile " + profile);
-                return null;
-            }
-        }.execute();
-    }
-
-    // Method that prompts the user for confirmation
-    protected void profileDialog(final String path){
-        final Dialog pDialog = new Dialog(ProfileLoaderActivity.this);
-        pDialog.setTitle("Profile Loader");
-        pDialog.setContentView(R.layout.profile_dialog);
-        Button pDialogCancel = (Button) pDialog.findViewById(R.id.pDialogCancel);
-        pDialogCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pDialog.dismiss();
-            }
-        });
-        Button pDialogConfirm = (Button) pDialog.findViewById(R.id.pDialogConfirm);
-        pDialogConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEXKMProfile(path);
-                setProp("custom");
-                SharedPreferences prefs = getApplication().getSharedPreferences("profilePath", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                SharedPreferences prof = getApplication().getSharedPreferences("profile", Context.MODE_PRIVATE);
-                SharedPreferences.Editor peditor = prof.edit();
-                editor.putString("profilePath", path);
-                editor.apply();
-                peditor.putString("profile", "custom");
-                peditor.apply();
-                pDialog.dismiss();
-            }
-        });
-        pDialog.show();
     }
 
     // File path methods taken from aFileChooser, thanks to iPaulPro: https://github.com/iPaulPro/aFileChooser
@@ -210,7 +104,7 @@ public class ProfileLoaderActivity extends AppCompatActivity{
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -263,6 +157,112 @@ public class ProfileLoaderActivity extends AppCompatActivity{
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.profile_loader);
+
+        CardView fileSelect = (CardView) findViewById(R.id.profCard);
+        final Switch applyOnBoot = (Switch) findViewById(R.id.boot);
+        SharedPreferences first = this.getSharedPreferences("firstFind", Context.MODE_PRIVATE);
+        SharedPreferences.Editor feditor = first.edit();
+        SharedPreferences boot = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
+
+        if (first.getBoolean("firstFind", true)) {
+            aboutDialog();
+            feditor.putBoolean("firstFind", false);
+            feditor.apply();
+        }
+
+        applyOnBoot.setChecked(boot.getBoolean("loadOnBoot", false));
+
+        try {
+            if (ContextCompat.checkSelfPermission(ProfileLoaderActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(ProfileLoaderActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        fileSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                startActivityForResult(intent, SELECT_FILE);
+            }
+        });
+
+        applyOnBoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                if (applyOnBoot.isChecked()) {
+                    editor.putBoolean("loadOnBoot", true);
+                    editor.apply();
+                } else {
+                    editor.putBoolean("loadOnBoot", false);
+                    editor.apply();
+                }
+            }
+        });
+    }
+
+    // Method that creates intro dialog
+    private void aboutDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.aboutLoader);
+        dialog.setMessage(R.string.loaderDesc);
+        dialog.setCancelable(true);
+        AlertDialog supportDialog = dialog.create();
+        supportDialog.show();
+    }
+
+    // Method that sets property as a string
+    private void setProp(final String profile) {
+        new AsyncTask<Object, Object, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                Shell.SU.run("setprop persist.spectrum.profile " + profile);
+                return null;
+            }
+        }.execute();
+    }
+
+    // Method that prompts the user for confirmation
+    protected void profileDialog(final String path) {
+        final Dialog pDialog = new Dialog(ProfileLoaderActivity.this);
+        pDialog.setTitle("Profile Loader");
+        pDialog.setContentView(R.layout.profile_dialog);
+        Button pDialogCancel = (Button) pDialog.findViewById(R.id.pDialogCancel);
+        pDialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pDialog.dismiss();
+            }
+        });
+        Button pDialogConfirm = (Button) pDialog.findViewById(R.id.pDialogConfirm);
+        pDialogConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setEXKMProfile(path);
+                setProp("custom");
+                SharedPreferences prefs = getApplication().getSharedPreferences("profilePath", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                SharedPreferences prof = getApplication().getSharedPreferences("profile", Context.MODE_PRIVATE);
+                SharedPreferences.Editor peditor = prof.edit();
+                editor.putString("profilePath", path);
+                editor.apply();
+                peditor.putString("profile", "custom");
+                peditor.apply();
+                pDialog.dismiss();
+            }
+        });
+        pDialog.show();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
@@ -272,8 +272,7 @@ public class ProfileLoaderActivity extends AppCompatActivity{
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(ProfileLoaderActivity.this, "Read permissions are required to run this app.", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     Toast.makeText(ProfileLoaderActivity.this, "Read permissions granted!", Toast.LENGTH_SHORT).show();
                 }
                 break;

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_new_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_new_about">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="?android:attr/colorAccent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    app:srcCompat="@drawable/ic_info" />
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/banner">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/man_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground"
+                        app:cardCornerRadius="12dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPadding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/about_ota_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/about_ota_summary" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/thanks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/man_info"
+                        app:cardCornerRadius="12dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPadding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="@string/ab_thanks"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:textSize="16sp" />
+
+                            <RelativeLayout
+                                android:id="@+id/otaUpdCen"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:selectableItemBackground">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="OTA Update Center" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/specKern"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:selectableItemBackground">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="Spectrum Kernel Manager" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/jolla"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:selectableItemBackground">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="Jollaman999" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/appUpd"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:selectableItemBackground">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="AppUpdater" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/thanks"
+                        android:visibility="visible"
+                        app:cardCornerRadius="12dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPadding="16dp">
+
+                        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/adView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            ads:adSize="BANNER"
+                            ads:adUnitId="ca-app-pub-3026712685276849/4978914034"></com.google.android.gms.ads.AdView>
+
+                    </android.support.v7.widget.CardView>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/header_layout"
+            app:menu="@menu/drawer_view" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>
